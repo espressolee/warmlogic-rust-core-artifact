@@ -15,7 +15,10 @@ echo "== python: dev install =="
 $PY -m pip install -e ".[dev]" >/dev/null
 
 echo "== build+install the extension (maturin links against this interpreter) =="
-( cd rust_core && maturin develop --release --features python )
+# maturin is installed here, not assumed: this script is the single source of
+# truth for the supported path, so it must work on a bare checkout.
+$PY -m pip install -q maturin
+( cd rust_core && "$PY" -m maturin develop --release --features python )
 
 echo "== core tests (the supported subset, not the full legacy suite) =="
 $PY -m pytest -q tests/ci tests/docs
