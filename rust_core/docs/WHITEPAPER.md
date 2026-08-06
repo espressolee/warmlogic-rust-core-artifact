@@ -503,8 +503,8 @@ WarmLogic demonstrates that post-quantum cryptographic governance is achievable 
 
 With 143 passing tests, zero CRITICAL/HIGH vulnerabilities, and production-ready cryptographic layer, WarmLogic is positioned as a foundation for the next generation of AI governance systems.
 
-**Code Availability**: https://github.com/espressolee/WarmLogic
-**Security Contact**: https://github.com/espressolee/WarmLogic/security
+**Code Availability**: https://github.com/espressolee/warmlogic-rust-core-artifact
+**Security Contact**: https://github.com/espressolee/warmlogic-rust-core-artifact/security
 
 ---
 

@@ -336,5 +336,5 @@ Apache-2.0
 
 ## Contact
 
-- Repository: https://github.com/espressolee/WarmLogic
-- Security Issues: https://github.com/espressolee/WarmLogic/security
+- Repository: https://github.com/espressolee/warmlogic-rust-core-artifact
+- Security Issues: https://github.com/espressolee/warmlogic-rust-core-artifact/security

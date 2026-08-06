@@ -13,9 +13,9 @@ keywords:
 maintainers:
   - name: espressolee
     email: 70549809+espressolee@users.noreply.github.com
-home: https://github.com/espressolee/WarmLogic
+home: https://github.com/espressolee/warmlogic-rust-core-artifact
 sources:
-  - https://github.com/espressolee/WarmLogic
+  - https://github.com/espressolee/warmlogic-rust-core-artifact
 dependencies:
   - name: prometheus
     version: ">=25.0.0"

@@ -10,7 +10,7 @@
 
 ```bash
 # Clone and start
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd warmlogic
 docker compose up -d
 
@@ -30,7 +30,7 @@ open http://localhost:8033
 
 ```bash
 # Clone
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd warmlogic
 
 # Create Virtual Environment

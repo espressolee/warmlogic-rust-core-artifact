@@ -35,7 +35,7 @@ This project adheres to a code of conduct. By participating, you agree to uphold
 
 ```bash
 # Clone the repository
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd rust_core
 
 # Build
@@ -311,7 +311,7 @@ proptest::proptest! {
 
 **DO NOT** open public issues for security vulnerabilities.
 
-Contact: https://github.com/espressolee/WarmLogic/security
+Contact: https://github.com/espressolee/warmlogic-rust-core-artifact/security
 
 See [SECURITY.md](SECURITY.md) for full security policy.
 

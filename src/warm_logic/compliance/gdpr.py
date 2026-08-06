@@ -571,7 +571,7 @@ class GDPRCompliance:
     def __init__(
         self,
         controller_name: str = "WarmLogic",
-        controller_contact: str = "dpo@github.com/espressolee/WarmLogic",
+        controller_contact: str = "dpo@github.com/espressolee/warmlogic-rust-core-artifact",
     ):
         self.data_subject_rights = DataSubjectRights()
         self.consent_manager = ConsentManager()
@@ -831,7 +831,7 @@ def get_gdpr_compliance() -> GDPRCompliance:
 
 def initialize_gdpr(
     controller_name: str = "WarmLogic",
-    controller_contact: str = "dpo@github.com/espressolee/WarmLogic",
+    controller_contact: str = "dpo@github.com/espressolee/warmlogic-rust-core-artifact",
 ) -> GDPRCompliance:
     """Initialize GDPR compliance infrastructure."""
     global _gdpr_compliance

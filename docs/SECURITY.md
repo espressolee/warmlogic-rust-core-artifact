@@ -98,7 +98,7 @@ If a security anomaly is detected (e.g., unexpected lock file, hash mismatch):
 **DO NOT** create a public GitHub issue for security vulnerabilities.
 
 Instead, please report them via:
-1. **Email**: https://github.com/espressolee/WarmLogic/security
+1. **Email**: https://github.com/espressolee/warmlogic-rust-core-artifact/security
 2. **GitHub Security Advisories**: [Report a vulnerability](https://github.com/warmlogic/warmlogic-core/security/advisories/new)
 
 ### Response Timeline

@@ -46,7 +46,7 @@
 The fastest way to get started:
 
 ```bash
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd warmlogic
 make setup
 ```
@@ -76,7 +76,7 @@ python3 --version  # Should be 3.12+
 rustc --version    # Should be 1.75+
 
 # 4. Clone and install
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd warmlogic
 make setup
 ```
@@ -98,7 +98,7 @@ source ~/.cargo/env
 sudo apt install build-essential pkg-config libssl-dev
 
 # 5. Clone and install
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd warmlogic
 make setup
 ```
@@ -117,7 +117,7 @@ source ~/.cargo/env
 sudo dnf install gcc openssl-devel
 
 # 4. Clone and install
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd warmlogic
 make setup
 ```
@@ -172,7 +172,7 @@ For development or custom configurations:
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd warmlogic
 
 # 2. Create virtual environment
@@ -407,5 +407,5 @@ After installation:
 ## Getting Help
 
 - [Troubleshooting Guide](TROUBLESHOOTING.md)
-- [GitHub Issues](https://github.com/espressolee/WarmLogic/issues)
-- [GitHub Discussions](https://github.com/espressolee/WarmLogic/discussions)
+- [GitHub Issues](https://github.com/espressolee/warmlogic-rust-core-artifact/issues)
+- [GitHub Discussions](https://github.com/espressolee/warmlogic-rust-core-artifact/discussions)

@@ -11,7 +11,7 @@
 | [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)             | Common issues and solutions |
 | [GLOSSARY.md](docs/GLOSSARY.md)                           | Project terminology         |
 | [Tutorials](docs/tutorial/README.md)                      | Step-by-step guides         |
-| [FAQ](https://github.com/espressolee/WarmLogic/wiki/FAQ) | Frequently asked questions  |
+| [FAQ](https://github.com/espressolee/warmlogic-rust-core-artifact/wiki/FAQ) | Frequently asked questions  |
 
 ---
 
@@ -23,7 +23,7 @@ For general questions, ideas, and community discussion:
 - **Ideas**: Feature suggestions and feedback
 - **Show & Tell**: Share your projects using WarmLogic
 
-👉 [Open GitHub Discussions](https://github.com/espressolee/WarmLogic/discussions)
+👉 [Open GitHub Discussions](https://github.com/espressolee/warmlogic-rust-core-artifact/discussions)
 
 ### GitHub Issues
 For bug reports and feature requests:
@@ -31,7 +31,7 @@ For bug reports and feature requests:
 - Include reproduction steps for bugs
 - Check existing issues before creating new ones
 
-👉 [Open an Issue](https://github.com/espressolee/WarmLogic/issues)
+👉 [Open an Issue](https://github.com/espressolee/warmlogic-rust-core-artifact/issues)
 
 ---
 
@@ -40,8 +40,8 @@ For bug reports and feature requests:
 **Do NOT create public issues for security vulnerabilities.**
 
 Please report security issues via:
-1. [GitHub Security Advisories](https://github.com/espressolee/WarmLogic/security/advisories/new)
-2. Email: https://github.com/espressolee/WarmLogic/security
+1. [GitHub Security Advisories](https://github.com/espressolee/warmlogic-rust-core-artifact/security/advisories/new)
+2. Email: https://github.com/espressolee/warmlogic-rust-core-artifact/security
 
 See [SECURITY.md](SECURITY.md) for our full security policy.
 
@@ -51,7 +51,7 @@ See [SECURITY.md](SECURITY.md) for our full security policy.
 
 For enterprise inquiries, partnerships, or issues that don't fit other channels:
 
-- **Email**: https://github.com/espressolee/WarmLogic/issues
+- **Email**: https://github.com/espressolee/warmlogic-rust-core-artifact/issues
 - **Response Time**: 1-3 business days
 
 ---

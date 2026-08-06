@@ -520,7 +520,7 @@ wl.self_test()
 
 1. Check this guide
 2. Check [FAQ.md](FAQ.md)
-3. Search [GitHub Issues](https://github.com/espressolee/WarmLogic/issues)
+3. Search [GitHub Issues](https://github.com/espressolee/warmlogic-rust-core-artifact/issues)
 4. Run diagnostics: `wlctl diagnose > report.txt`
 
 ### Reporting Issues
@@ -536,8 +536,8 @@ Include:
 
 ### Resources
 
-- [GitHub Issues](https://github.com/espressolee/WarmLogic/issues)
-- [GitHub Discussions](https://github.com/espressolee/WarmLogic/discussions)
+- [GitHub Issues](https://github.com/espressolee/warmlogic-rust-core-artifact/issues)
+- [GitHub Discussions](https://github.com/espressolee/warmlogic-rust-core-artifact/discussions)
 - [FAQ](FAQ.md)
 - [Installation Guide](INSTALLATION.md)
 

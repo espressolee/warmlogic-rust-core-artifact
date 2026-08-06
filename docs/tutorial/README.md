@@ -53,4 +53,4 @@ rustc --version   # 1.75+ required
 
 - [TROUBLESHOOTING.md](../TROUBLESHOOTING.md) - Common issues and solutions
 - [GLOSSARY.md](../GLOSSARY.md) - Term definitions
-- [GitHub Discussions](https://github.com/espressolee/WarmLogic/discussions) - Questions and discussions
+- [GitHub Discussions](https://github.com/espressolee/warmlogic-rust-core-artifact/discussions) - Questions and discussions

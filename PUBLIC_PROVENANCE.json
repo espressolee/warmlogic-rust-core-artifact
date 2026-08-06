@@ -33,7 +33,7 @@
   "content_identity": {
     "method": "sha256 over sorted records of \"path\\0mode\\0sha256(file bytes)\" for every tracked file, EXCLUDING PUBLIC_PROVENANCE.json itself",
     "why_self_excluded": "A file cannot contain its own hash. The excluded file is bound instead by the signed release tag.",
-    "content_manifest_root_excluding_self": "4f10d4eb510242c02f2570be984c4ad35ca77fe8e8c3143cb151bb454f7bdb58",
+    "content_manifest_root_excluding_self": "239f193f00deaf4a540b3386d1e96abc686210737e38d5e84d6dc5c359a6172e",
     "file_count_hashed": 1791,
     "recompute": "python3 - <<'EOF'  (see docs; algorithm is fully specified above)",
     "warning": "A digest over file NAMES alone does not bind content and must not be used. An earlier revision of this lane made exactly that error."
@@ -46,7 +46,7 @@
     ".github/workflows/publication-audit.yml": "8d50f7d474369bf5a10b10c21e5a9f6d8e97d36bf537804e4f7f354dd0f34b5c",
     "docs/CLAIM_EVIDENCE.md": "14b7335a821360370ecb82e7d6841492469b9ae77a9928001a35a982e30e294c",
     "KNOWN_LIMITATIONS.md": "c541ce02f98b6d9582b82f62e069215edbeb5a142410e0e924183604703f74f6",
-    "STATUS.md": "395abdd727383323856f1bc9169f8c45d9889baf7b9de4107bee0232bfd5f4e8",
+    "STATUS.md": "e97316de1fc6c60f25147f3380986675b21d334c5519be943d5e1b7a0e2683b2",
     "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
   },
   "commit_binding": {

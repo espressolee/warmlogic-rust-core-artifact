@@ -5,7 +5,7 @@ edition = "2021"
 rust-version = "1.85"  # MSRV - set by pyo3 0.29 (1.83) and getrandom 0.4 (1.85, edition2024)
 description = "Post-quantum governance kernel: Rust crypto/consensus core with Python bindings (Rust core)"
 license = "Apache-2.0"
-repository = "https://github.com/espressolee/WarmLogic"
+repository = "https://github.com/espressolee/warmlogic-rust-core-artifact"
 
 [lib]
 name = "warm_logic_rs"

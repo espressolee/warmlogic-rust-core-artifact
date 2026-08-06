@@ -313,8 +313,8 @@ wlctl start --port 8001
 ### 더 많은 문제 해결 방법은 어디서 찾나요?
 
 - [TROUBLESHOOTING_ko.md](TROUBLESHOOTING_ko.md) - 전체 문제 해결 가이드
-- [GitHub Issues](https://github.com/espressolee/WarmLogic/issues)
-- [GitHub Discussions](https://github.com/espressolee/WarmLogic/discussions)
+- [GitHub Issues](https://github.com/espressolee/warmlogic-rust-core-artifact/issues)
+- [GitHub Discussions](https://github.com/espressolee/warmlogic-rust-core-artifact/discussions)
 
 ---
 

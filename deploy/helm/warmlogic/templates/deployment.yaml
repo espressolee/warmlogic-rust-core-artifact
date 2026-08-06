@@ -57,7 +57,7 @@ spec:
             - name: WARMLOGIC_LOG_LEVEL
               value: {{ .Values.warmlogic.logLevel }}
             - name: WARMLOGIC_AIRGAP_MODE
-              value: {{ .Values.github.com/espressolee/WarmLogicrgapMode | quote }}
+              value: {{ .Values.warmlogic.airgapMode | quote }}
             - name: WARMLOGIC_FIPS_MODE
               value: {{ .Values.warmlogic.security.fipsMode | quote }}
           envFrom:

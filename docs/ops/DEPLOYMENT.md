@@ -47,7 +47,7 @@ docker run -d \
   -p 8000:8000 \
   -v $(pwd)/data:/app/data \
   -e WARM_NODE_ID=$(uuidgen) \
-  -e WARM_GOSSIP_SEED="node.mainnet.github.com/espressolee/WarmLogic:4000" \
+  -e WARM_GOSSIP_SEED="node.mainnet.github.com/espressolee/warmlogic-rust-core-artifact:4000" \
   warmlogic/sovereign-node:latest
 ```
 

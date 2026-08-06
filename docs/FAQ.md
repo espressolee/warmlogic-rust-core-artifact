@@ -294,6 +294,6 @@ wlctl logs --tail 100
 
 ## Still Have Questions?
 
-- [GitHub Discussions](https://github.com/espressolee/WarmLogic/discussions)
-- [Issue Tracker](https://github.com/espressolee/WarmLogic/issues)
+- [GitHub Discussions](https://github.com/espressolee/warmlogic-rust-core-artifact/discussions)
+- [Issue Tracker](https://github.com/espressolee/warmlogic-rust-core-artifact/issues)
 - [GLOSSARY.md](GLOSSARY.md) - Term definitions

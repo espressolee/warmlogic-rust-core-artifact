@@ -95,7 +95,7 @@ Control plane for WarmLogic Sovereign Nodes.
 All endpoints require `X-API-Key` header with `SOVEREIGN_COCKPIT_KEY`.
 """,
     version="0.4.0",
-    contact={"name": "espressolee", "email": "https://github.com/espressolee/WarmLogic/issues"},
+    contact={"name": "espressolee", "email": "https://github.com/espressolee/warmlogic-rust-core-artifact/issues"},
     license_info={"name": "Apache-2.0", "url": "https://www.apache.org/licenses/LICENSE-2.0"},
     openapi_tags=[
         {"name": "status", "description": "System status and health checks"},

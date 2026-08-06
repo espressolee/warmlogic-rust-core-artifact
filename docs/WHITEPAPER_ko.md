@@ -495,5 +495,5 @@ WarmLogic은 양자내성 전자서명(ML-DSA-65, FIPS 204), 비잔틴 장애 �
 
 *WarmLogic 백서 v1.0 — 2026년 2월*
 *espressolee*
-*소스 코드: github.com/espressolee/WarmLogic*
+*소스 코드: github.com/espressolee/warmlogic-rust-core-artifact*
 *상태: 릴리스 후보 (experimental) — 보안 감사 대기 중*

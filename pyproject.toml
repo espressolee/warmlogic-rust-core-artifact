@@ -26,7 +26,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Security :: Cryptography",
 ]
-urls = { Homepage = "https://github.com/espressolee/WarmLogic", Repository = "https://github.com/espressolee/WarmLogic", Documentation = "https://github.com/espressolee/WarmLogic/tree/main/docs" }
+urls = { Homepage = "https://github.com/espressolee/warmlogic-rust-core-artifact", Repository = "https://github.com/espressolee/warmlogic-rust-core-artifact", Documentation = "https://github.com/espressolee/warmlogic-rust-core-artifact/tree/main/docs" }
 dependencies = [
     "fastapi>=0.110.0",
     "pydantic>=2.7.0",

@@ -150,7 +150,7 @@ docker buildx build \
 
 ```bash
 # Clone repository
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd rust_core
 
 # Build release
@@ -384,9 +384,9 @@ RUST_BACKTRACE=1 cargo run
 
 ### Support
 
-- **Issues**: https://github.com/espressolee/WarmLogic/issues
-- **Security**: https://github.com/espressolee/WarmLogic/security
-- **Documentation**: https://github.com/espressolee/WarmLogic/tree/main/docs
+- **Issues**: https://github.com/espressolee/warmlogic-rust-core-artifact/issues
+- **Security**: https://github.com/espressolee/warmlogic-rust-core-artifact/security
+- **Documentation**: https://github.com/espressolee/warmlogic-rust-core-artifact/tree/main/docs
 
 ---
 

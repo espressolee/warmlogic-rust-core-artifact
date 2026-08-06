@@ -71,7 +71,7 @@ LABEL org.opencontainers.image.description="Post-quantum cryptographic runtime f
 LABEL org.opencontainers.image.version="1.0.1"
 LABEL org.opencontainers.image.vendor="WarmLogic"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
-LABEL org.opencontainers.image.source="https://github.com/espressolee/WarmLogic"
+LABEL org.opencontainers.image.source="https://github.com/espressolee/warmlogic-rust-core-artifact"
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \

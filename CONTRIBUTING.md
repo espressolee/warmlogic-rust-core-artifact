@@ -17,7 +17,7 @@ Thank you for your interest in contributing to WarmLogic. This document covers t
 
 ```bash
 # Clone the repository
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd warmlogic
 
 # Create and activate a virtual environment
@@ -248,19 +248,26 @@ When touching governance, consensus, or evidence paths:
 
 - Link to the relevant GOVDEC document
 - Include a minimal evidence set (manifests, audit JSON)
-- For protocol changes, propose an RFC with design rationale and backward compatibility analysis
 
 ---
 
 ## CI
 
-Pull requests trigger:
-- Lint checks (`flake8`, `black`, `isort`, `mypy`)
-- Quick test suite (`pytest -m "not slow"`)
-- Rust build and test (`cargo test`)
-- Security scanning (`detect-secrets`)
+This repository has exactly **two** workflows, both read-only and on
+GitHub-hosted runners:
 
-Nightly builds run the full test suite, coverage reports, and dashboard audits.
+- **Core CI** — runs `scripts/ci_core.sh`: `cargo fmt --check`,
+  `cargo check --lib --features python`, build and install the extension,
+  `pytest tests/ci tests/docs`, ML-DSA-65 roundtrip.
+- **Publication Surface Sanity** — four structural checks. It is *not* an
+  execution of AuditProfile v1; see `AUDIT_PROFILE.json`, field `execution`.
+
+There are **no** nightly builds, no coverage gate, no dashboard audits, no
+`cargo test` job and no clippy job. The earlier text here described the private
+54-workflow repository this artifact was exported from, not this one.
+
+`scripts/ci_core.sh` is the single source of truth: what CI runs is exactly
+what you can run locally, and what an external reproducer should run.
 
 ---
 
@@ -270,10 +277,23 @@ Nightly builds run the full test suite, coverage reports, and dashboard audits.
 
 ---
 
+## Maintenance scope
+
+This is a **frozen artifact**, not an active project. Accepted:
+
+- build, packaging or reproduction failures
+- security or sanitization findings (see `SECURITY.md`)
+- **claim-accuracy corrections** — anywhere a document, comment or code path
+  claims more than the evidence supports. These are the most valuable reports
+  this repository can receive.
+
+Not accepted: feature requests, roadmap proposals, RFCs, and fixes to the
+surfaces listed as unsupported in `STATUS.md`. Those are not neglected; they
+are deliberately out of scope, and adding them would make this a product again.
+
 ## Getting Help
 
-- **GitHub Discussions**: Questions, ideas, RFC proposals
-- **Issues**: Bug reports and feature requests
+- **Issues**: build failures, reproduction failures, claim-accuracy corrections
 - [Docs Index](docs/INDEX.md)
 - [Troubleshooting Guide](docs/ops/TROUBLESHOOTING.md)
 

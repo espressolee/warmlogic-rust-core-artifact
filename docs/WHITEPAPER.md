@@ -895,5 +895,5 @@ For complete threat analysis, see `docs/THREAT_MODEL.md`. Key threats:
 
 *WarmLogic Whitepaper v1.0 — February 2026*
 *espressolee*
-*Source code: github.com/espressolee/WarmLogic*
+*Source code: github.com/espressolee/warmlogic-rust-core-artifact*
 *Status: Release Candidate (experimental) — Pending Security Audit*

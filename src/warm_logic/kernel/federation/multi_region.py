@@ -522,29 +522,29 @@ def create_default_region_configs() -> List[RegionConfig]:
         RegionConfig(
             region=Region.US_EAST,
             display_name="US East (Virginia)",
-            primary_endpoint="us-east.github.com/espressolee/WarmLogic:8443",
-            backup_endpoints=["us-east-2.github.com/espressolee/WarmLogic:8443"],
+            primary_endpoint="us-east.github.com/espressolee/warmlogic-rust-core-artifact:8443",
+            backup_endpoints=["us-east-2.github.com/espressolee/warmlogic-rust-core-artifact:8443"],
             is_primary=True,
         ),
         RegionConfig(
             region=Region.US_WEST,
             display_name="US West (Oregon)",
-            primary_endpoint="us-west.github.com/espressolee/WarmLogic:8443",
+            primary_endpoint="us-west.github.com/espressolee/warmlogic-rust-core-artifact:8443",
         ),
         RegionConfig(
             region=Region.EU_WEST,
             display_name="EU West (Ireland)",
-            primary_endpoint="eu-west.github.com/espressolee/WarmLogic:8443",
+            primary_endpoint="eu-west.github.com/espressolee/warmlogic-rust-core-artifact:8443",
         ),
         RegionConfig(
             region=Region.EU_CENTRAL,
             display_name="EU Central (Frankfurt)",
-            primary_endpoint="eu-central.github.com/espressolee/WarmLogic:8443",
+            primary_endpoint="eu-central.github.com/espressolee/warmlogic-rust-core-artifact:8443",
         ),
         RegionConfig(
             region=Region.ASIA_PACIFIC,
             display_name="Asia Pacific (Tokyo)",
-            primary_endpoint="ap-northeast.github.com/espressolee/WarmLogic:8443",
+            primary_endpoint="ap-northeast.github.com/espressolee/warmlogic-rust-core-artifact:8443",
         ),
         RegionConfig(
             region=Region.SOVEREIGN_LOCAL,

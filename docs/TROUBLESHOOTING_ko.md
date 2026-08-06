@@ -516,7 +516,7 @@ wl.self_test()
 
 1. 이 가이드 확인
 2. [FAQ_ko.md](FAQ_ko.md) 확인
-3. [GitHub Issues](https://github.com/espressolee/WarmLogic/issues) 검색
+3. [GitHub Issues](https://github.com/espressolee/warmlogic-rust-core-artifact/issues) 검색
 4. 진단 실행: `wlctl diagnose > report.txt`
 
 ### 이슈 보고
@@ -532,8 +532,8 @@ wl.self_test()
 
 ### 리소스
 
-- [GitHub Issues](https://github.com/espressolee/WarmLogic/issues)
-- [GitHub Discussions](https://github.com/espressolee/WarmLogic/discussions)
+- [GitHub Issues](https://github.com/espressolee/warmlogic-rust-core-artifact/issues)
+- [GitHub Discussions](https://github.com/espressolee/warmlogic-rust-core-artifact/discussions)
 - [FAQ_ko](FAQ_ko.md)
 - [설치 가이드](INSTALLATION.md)
 

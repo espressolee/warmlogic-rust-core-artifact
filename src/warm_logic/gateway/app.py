@@ -163,7 +163,7 @@ All cryptographic operations use ML-DSA-65 (FIPS 204) for quantum resistance.
         contact={
             "name": "espressolee",
             "email": "70549809+espressolee@users.noreply.github.com",
-            "url": "https://github.com/espressolee/WarmLogic",
+            "url": "https://github.com/espressolee/warmlogic-rust-core-artifact",
         },
         license_info={
             "name": "Apache-2.0",

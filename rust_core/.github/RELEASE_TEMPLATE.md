@@ -41,7 +41,7 @@
 warm_logic_rs = "{VERSION}"
 
 # Or clone and build
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd rust_core
 cargo build --release
 ```
@@ -63,4 +63,4 @@ cargo build --release
 
 ## Full Changelog
 
-https://github.com/espressolee/WarmLogic/compare/v{PREV_VERSION}...v{VERSION}
+https://github.com/espressolee/warmlogic-rust-core-artifact/compare/v{PREV_VERSION}...v{VERSION}

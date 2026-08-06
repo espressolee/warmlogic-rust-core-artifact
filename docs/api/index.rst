@@ -39,7 +39,7 @@ Installation
    pip install warm-logic
 
    # Or from source
-   git clone https://github.com/espressolee/WarmLogic
+   git clone https://github.com/espressolee/warmlogic-rust-core-artifact
    cd warmlogic
    make setup
 

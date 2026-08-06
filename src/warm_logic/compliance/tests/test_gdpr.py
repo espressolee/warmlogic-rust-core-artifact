@@ -421,7 +421,7 @@ class TestProcessingRegister(unittest.TestCase):
 
     def test_add_record(self):
         """Test adding a processing record."""
-        register = ProcessingRegister("WarmLogic", "dpo@github.com/espressolee/WarmLogic")
+        register = ProcessingRegister("WarmLogic", "dpo@github.com/espressolee/warmlogic-rust-core-artifact")
         record = ProcessingRecord(
             record_id="rec123",
             processing_activity="Analytics",
@@ -437,7 +437,7 @@ class TestProcessingRegister(unittest.TestCase):
 
     def test_export_register(self):
         """Test exporting Article 30 register."""
-        register = ProcessingRegister("WarmLogic", "dpo@github.com/espressolee/WarmLogic")
+        register = ProcessingRegister("WarmLogic", "dpo@github.com/espressolee/warmlogic-rust-core-artifact")
         record = ProcessingRecord(
             record_id="rec123",
             processing_activity="Analytics",

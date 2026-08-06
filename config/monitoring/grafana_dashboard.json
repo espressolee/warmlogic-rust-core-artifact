@@ -23,14 +23,14 @@
             "tags": [],
             "title": "Documentation",
             "type": "link",
-            "url": "https://github.com/espressolee/WarmLogic/tree/main/docs"
+            "url": "https://github.com/espressolee/warmlogic-rust-core-artifact/tree/main/docs"
         },
         {
             "icon": "external link",
             "tags": [],
             "title": "Runbooks",
             "type": "link",
-            "url": "https://github.com/espressolee/WarmLogic/tree/main/docs/runbooks"
+            "url": "https://github.com/espressolee/warmlogic-rust-core-artifact/tree/main/docs/runbooks"
         }
     ],
     "panels": [

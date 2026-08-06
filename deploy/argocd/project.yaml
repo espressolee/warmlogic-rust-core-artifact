@@ -9,7 +9,7 @@ spec:
   description: WarmLogic Sovereign AI Governance Kernel
 
   sourceRepos:
-    - https://github.com/espressolee/WarmLogic.git
+    - https://github.com/espressolee/warmlogic-rust-core-artifact.git
     - https://github.com/WarmLogic/*
 
   destinations:

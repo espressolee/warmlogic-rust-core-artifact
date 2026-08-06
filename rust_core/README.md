@@ -74,7 +74,7 @@ WarmLogic solves this by wrapping AI reasoning in a **cryptographic kernel** tha
 ### Installation (3 Lines)
 
 ```bash
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd warmlogic
 make setup
 ```
@@ -235,8 +235,8 @@ Found a vulnerability? See [SECURITY.md](SECURITY.md) for responsible disclosure
 
 ## Community
 
-- [GitHub Discussions](https://github.com/espressolee/WarmLogic/discussions)
-- [Issue Tracker](https://github.com/espressolee/WarmLogic/issues)
+- [GitHub Discussions](https://github.com/espressolee/warmlogic-rust-core-artifact/discussions)
+- [Issue Tracker](https://github.com/espressolee/warmlogic-rust-core-artifact/issues)
 
 ---
 

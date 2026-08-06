@@ -95,8 +95,8 @@ Join an existing WarmLogic network:
 ```python
 # Connect to bootstrap nodes
 client.connect_to_mesh([
-    "bootstrap1.github.com/espressolee/WarmLogic:4001",
-    "bootstrap2.github.com/espressolee/WarmLogic:4001"
+    "bootstrap1.github.com/espressolee/warmlogic-rust-core-artifact:4001",
+    "bootstrap2.github.com/espressolee/warmlogic-rust-core-artifact:4001"
 ])
 
 # Verify mesh status

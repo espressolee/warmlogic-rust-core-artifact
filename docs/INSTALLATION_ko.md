@@ -15,7 +15,7 @@ WarmLogic은 **3줄**로 설치할 수 있도록 설계되었습니다.
 사전 요구사항: `python3.12+`, `rust 1.75+`, `make`
 
 ```bash
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd warmlogic
 make setup
 ```

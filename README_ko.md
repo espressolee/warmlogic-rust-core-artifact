@@ -92,7 +92,7 @@ WarmLogic은 AI 추론을 **암호학적 커널**로 감싸 모든 결정에 대
 ### 설치 (3줄)
 
 ```bash
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd warmlogic
 make setup
 ```
@@ -208,8 +208,8 @@ make format
 
 ## 커뮤니티
 
-- [GitHub Discussions](https://github.com/espressolee/WarmLogic/discussions)
-- [Issue Tracker](https://github.com/espressolee/WarmLogic/issues)
+- [GitHub Discussions](https://github.com/espressolee/warmlogic-rust-core-artifact/discussions)
+- [Issue Tracker](https://github.com/espressolee/warmlogic-rust-core-artifact/issues)
 
 ---
 

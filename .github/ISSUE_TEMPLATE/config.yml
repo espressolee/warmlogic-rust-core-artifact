@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Documentation
-    url: https://github.com/espressolee/WarmLogic
+    url: https://github.com/espressolee/warmlogic-rust-core-artifact
     about: Check Quickstart and Docs Index first

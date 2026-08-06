@@ -18,7 +18,7 @@ pip install warm-logic
 
 ```bash
 # Clone repository
-git clone https://github.com/espressolee/WarmLogic.git
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact.git
 cd warmlogic
 
 # Create virtual environment
@@ -195,5 +195,5 @@ nc -zv seed.example.com 8468
 
 ## Support
 
-- GitHub Issues: https://github.com/espressolee/WarmLogic/issues
-- Documentation: https://github.com/espressolee/WarmLogic/tree/main/docs
+- GitHub Issues: https://github.com/espressolee/warmlogic-rust-core-artifact/issues
+- Documentation: https://github.com/espressolee/warmlogic-rust-core-artifact/tree/main/docs

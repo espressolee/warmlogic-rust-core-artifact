@@ -355,8 +355,8 @@ cargo fmt --check
 
 ## 11. Contact Information
 
-- **Security Issues**: https://github.com/espressolee/WarmLogic/security
-- **Repository**: https://github.com/espressolee/WarmLogic
+- **Security Issues**: https://github.com/espressolee/warmlogic-rust-core-artifact/security
+- **Repository**: https://github.com/espressolee/warmlogic-rust-core-artifact
 - **Audit Coordinator**: [TBD]
 
 ---

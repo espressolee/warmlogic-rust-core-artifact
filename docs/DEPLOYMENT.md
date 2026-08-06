@@ -77,7 +77,7 @@
 
 ```bash
 # Clone repository
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd warmlogic
 
 # Setup environment

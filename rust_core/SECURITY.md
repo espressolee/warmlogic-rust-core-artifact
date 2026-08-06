@@ -13,7 +13,7 @@ We take security vulnerabilities seriously. If you discover a security issue, pl
 
 ### Contact
 
-- **Email**: https://github.com/espressolee/WarmLogic/security
+- **Email**: https://github.com/espressolee/warmlogic-rust-core-artifact/security
 - **PGP Key**: Available upon request
 
 ### What to Include

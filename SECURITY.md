@@ -27,7 +27,7 @@ Use GitHub's private vulnerability reporting:
 
 ### Alternative: Email
 
-Email: **https://github.com/espressolee/WarmLogic/security**
+Email: **https://github.com/espressolee/warmlogic-rust-core-artifact/security**
 
 Include:
 - Affected file paths and modules
@@ -45,14 +45,32 @@ Include:
 
 ## Response Timeline
 
-| Action | Timeline |
-|--------|----------|
-| Initial acknowledgment | Within 48 hours |
-| Vulnerability assessment | Within 7 days |
-| Patch development | Within 30 days (critical: 7 days) |
-| Public disclosure | After patch release + 14 days |
+**There is none, and the table that used to be here was withdrawn.**
 
-This is a research project maintained by a small team. We respond on a best-effort basis but prioritize security issues.
+It promised acknowledgment within 48 hours, assessment within 7 days and a
+patch within 30. That contradicted `STATUS.md`, which states this artifact has
+no support SLA, and it was never something a single maintainer working on this
+part-time could commit to. "Maintained by a small team" was also inaccurate:
+it is one person.
+
+What is actually true:
+
+- Reports are read on a **best-effort basis**, with no committed timeline.
+- A report may receive **no response at all**. Please plan disclosure on that
+  assumption rather than waiting on an acknowledgment that may not come.
+- If you need a bounded timeline, do not rely on this channel.
+
+## What is worth reporting
+
+This is a **single-host research artifact** with 6.76% line coverage, no
+independent security review, and an explicit list of unsupported fail-open
+surfaces in `STATUS.md`. Finding a vulnerability in that second list is
+expected, not surprising, and it is already disclosed there.
+
+Most useful: something that contradicts a claim the artifact actually makes —
+for example a flaw in the ML-DSA-65 usage, in the build/packaging path, or a
+secret or personal identifier that survived sanitization. That last category is
+the one to report privately and promptly.
 
 ---
 
@@ -85,12 +103,14 @@ This is a research project maintained by a small team. We respond on a best-effo
 
 ## Security Architecture
 
-### Design Principles
+> **These are design principles, not achieved properties.** Two of them are
+> contradicted by the code in this artifact; see the support boundary in
+> `STATUS.md`. Kept here because they state the intent, corrected inline.
 
-1. **Local sovereignty**: No data leaves the local environment unless explicitly authorized
-2. **Immutable audit trail**: All governance actions are logged irreversibly (append-only JSONL with SHA-256 integrity hashes)
-3. **Fail-closed**: The governance kernel halts on ethical constraint violations rather than continuing in a degraded state
-4. **Post-quantum readiness**: ML-DSA-65 (FIPS 204) signatures protect against quantum threats
+1. **Local sovereignty**: no external service is required to run. Not otherwise verified.
+2. **Immutable audit trail** — **NOT ACHIEVED.** The Rust `StandardAuditLogger` writes governance events to **stdout**. There is no durable or tamper-evident ledger behind it.
+3. **Fail-closed** — **NOT ACHIEVED.** Fail-*open* paths exist: the Python fallback denies three fixed strings and allows everything else, and hardened evaluation accepts an intent carrying no signature.
+4. **Post-quantum readiness**: the ML-DSA-65 primitive is real and its roundtrip runs. It is not applied to every decision — the SDK signing path is unreachable.
 
 ### Key Security Controls
 
@@ -98,9 +118,9 @@ This is a research project maintained by a small team. We respond on a best-effo
 - **vHSM key detection**: Simulated keys are prefixed with `WARM-KEY-SIM-` and rejected in production paths
 - **Slashing penalties**: StateLock, EconomicBurn, and IdentityIsolation for Byzantine behavior
 - **Dependency pinning**: All dependencies pinned to specific versions in `requirements.txt` and `Cargo.lock`
-- **Kani verification**: 12 formal verification harnesses for safety invariants
-- **Hybrid PQC**: ML-KEM-768 + X25519 key exchange with Noise Protocol patterns
-- **PKCS#11 integration**: Hardware key storage via TPM 2.0 / HSM
+- **Kani harnesses**: 12 exist in the tree. **No job runs them** — they are not executed verification.
+- **Hybrid PQC**: ML-KEM-768 + X25519 with Noise Protocol patterns (tested locally)
+- **PKCS#11 / TPM** — **NOT ACHIEVED as hardware-rooted trust.** The seed is derived from host identifiers (CPU UUID, disk id) through a non-cryptographic hasher, with fixed `UNKNOWN_*` fallbacks. Call it a host-identifier-derived demonstration seal, not TPM-backed sealing.
 
 ### Known Limitations
 

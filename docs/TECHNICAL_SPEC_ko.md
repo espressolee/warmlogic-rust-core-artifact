@@ -969,7 +969,7 @@ Python 3.12+
 Rust 1.75+ (cargo 포함)
 
 # 클론 및 빌드
-git clone https://github.com/espressolee/WarmLogic
+git clone https://github.com/espressolee/warmlogic-rust-core-artifact
 cd warmlogic
 pip install -r requirements.txt
 pip install maturin

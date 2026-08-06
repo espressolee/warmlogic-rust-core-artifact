@@ -80,7 +80,7 @@ Read that file before relying on any row here.
 
 | Feature | Description | Status |
 | --- | --- | --- |
-| **Post-Quantum Signatures** | ML-DSA-65 (FIPS 204), via the `fips204` crate | verified in CI |
+| **Post-Quantum Signatures** | ML-DSA-65 (FIPS 204), via the `fips204` crate | tested locally — **not** "verified in CI": there is no green public CI run yet |
 | **Authenticated Encryption** | AES-256-GCM | tested locally |
 | **Post-Quantum KEM** | ML-KEM-768 (FIPS 203), via `fips203` | tested locally |
 | **Noise Protocol Framework** | Hybrid PQC key exchange | tested locally |
@@ -170,6 +170,10 @@ print(f"Proof Hash: {decision.proof_hash}")
 ---
 
 ## Benchmarks
+
+> **Not bound to this artifact.** The numbers below were measured on an
+> unrecorded host with no raw data committed here, and no CI job reproduces
+> them. Treat them as historical figures, not as a claim about this snapshot.
 
 | Metric                  | Value   | Notes                  |
 | ----------------------- | ------- | ---------------------- |
@@ -301,8 +305,8 @@ Found a vulnerability? See [SECURITY.md](SECURITY.md) for responsible disclosure
 
 ## Community
 
-- [GitHub Discussions](https://github.com/espressolee/WarmLogic/discussions)
-- [Issue Tracker](https://github.com/espressolee/WarmLogic/issues)
+- [GitHub Discussions](https://github.com/espressolee/warmlogic-rust-core-artifact/discussions)
+- [Issue Tracker](https://github.com/espressolee/warmlogic-rust-core-artifact/issues)
 
 ---
 

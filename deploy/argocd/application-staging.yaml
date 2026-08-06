@@ -11,7 +11,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/espressolee/WarmLogic.git
+    repoURL: https://github.com/espressolee/warmlogic-rust-core-artifact.git
     targetRevision: develop
     path: deploy/helm/warmlogic
     helm:
