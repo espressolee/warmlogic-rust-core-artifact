@@ -48,7 +48,17 @@ build: rust-build ## Build Rust Core (alias)
 
 rust-build: ## Build Rust Core with maturin
 	@echo "🛠 Building Rust Core ($(RUST_CORE))..."
-	cd $(RUST_CORE) && $(MATURIN) develop --release --features '$(RUST_FEATURES)'
+	@# `maturin develop` requires an ACTIVE virtualenv and fails without one,
+	@# so the documented `make setup` used to work only for readers who
+	@# happened to already be inside a venv. `build` + `pip install` is
+	@# explicit about the interpreter and works either way. Same fix as
+	@# scripts/ci_core.sh.
+	@$(PIP) install -q maturin
+	cd $(RUST_CORE) && $(PYTHON) -m maturin build --release \
+	  --features '$(RUST_FEATURES)' \
+	  --interpreter "$$($(PYTHON) -c 'import sys; print(sys.executable)')" \
+	  --out ../dist
+	$(PIP) install --force-reinstall --no-deps dist/warm_logic_rs-*.whl
 	@echo "✅ Rust Core built successfully"
 
 # ==================== Testing ====================

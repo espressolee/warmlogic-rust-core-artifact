@@ -1,9 +1,28 @@
 # WarmLogic: 검증 가능한 AI 거버넌스를 위한 양자내성 암호 런타임
 
+> ## ⚠️ NON-AUTHORITATIVE — HISTORICAL DESIGN DOCUMENT
+>
+> This file describes **design intent**, not the measured state of this
+> artifact. It predates the publication audit and its claims were **not**
+> re-verified. Several are known to be contradicted by measurement — see
+> `KNOWN_LIMITATIONS.md` and `docs/CLAIM_EVIDENCE.md`, which are authoritative.
+>
+> Known contradictions include: multi-node/BFT deployment (never executed),
+> zero-knowledge proofs (the `zk` feature does not compile), formal
+> verification (Kani harnesses exist but no CI runs them; TLA+ specs are design
+> documents, not checked models), and performance figures (no raw data is bound
+> to this artifact).
+>
+> **Do not cite this file for current status.** Authoritative files:
+> `README.md`, `STATUS.md`, `KNOWN_LIMITATIONS.md`, `docs/CLAIM_EVIDENCE.md`,
+> `SECURITY.md`, `PUBLIC_PROVENANCE.json`, `SBOM.json`, `AUDIT_PROFILE.json`,
+> `LICENSE`, `NOTICE`.
+
 > **Authors**: espressolee
 > **버전**: 1.0 (2026년 2월)
 > **상태**: 릴리스 후보 (experimental)
-> **라이선스**: MIT (커널) + Elastic License v2 (엔터프라이즈)
+> **License**: Apache-2.0 (entire repository; the MIT/Elastic split in older
+> drafts was never applied to this artifact)
 
 ---
 

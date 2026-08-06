@@ -14,7 +14,7 @@ executing check does not get credit for intention.
 
 | Claim | Grade | Evidence / how to re-check |
 |---|---|---|
-| ML-DSA-65 (FIPS 204) keygen, sign, verify | `VERIFIED_IN_CI` | `fips204` crate (real lattice implementation, not a wrapper stub). CI Core "Verify Rust Core exports" + integration suite run a sign/verify roundtrip on every push. Re-check: `cargo test --features 'std,persistence' crypto` |
+| ML-DSA-65 (FIPS 204) keygen, sign, verify | `TESTED_LOCAL` — **downgraded from `VERIFIED_IN_CI`** | `fips204` crate (real lattice implementation, not a wrapper stub). The roundtrip runs as the last step of `scripts/ci_core.sh`, verified on a clean checkout with `VIRTUAL_ENV` unset and `maturin` absent. It is **not** `VERIFIED_IN_CI`: by the grade's own definition that needs a *green* run, and this repository has no green Core CI run yet. The previous text also cited a job — CI Core "Verify Rust Core exports" — that exists only in the private 54-workflow repo, not here. Upgrades to `VERIFIED_IN_CI` when Core CI is green on the exact commit. Re-check: `bash scripts/ci_core.sh` |
 | ML-KEM-768 (FIPS 203) encapsulation | `TESTED_LOCAL` | `fips203` crate, `MLKEM` class exported to Python. Unit-tested; no dedicated CI job asserts KEM roundtrips. |
 | AES-256-GCM authenticated encryption | `TESTED_LOCAL` | `aes-gcm` crate (real AEAD). Exercised inside crypto unit tests; no dedicated CI assertion. |
 | BFT consensus | `TESTED_LOCAL`, single-host only | 34 unit tests in `consensus/bft.rs` pass. No multi-node deployment has ever been exercised by a currently-enabled CI job (the multinode E2E gate is deliberately disabled — see below). |

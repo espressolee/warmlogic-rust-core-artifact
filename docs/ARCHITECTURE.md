@@ -1,5 +1,23 @@
 # WarmLogic System Architecture v2.0
 
+> ## ⚠️ NON-AUTHORITATIVE — HISTORICAL DESIGN DOCUMENT
+>
+> This file describes **design intent**, not the measured state of this
+> artifact. It predates the publication audit and its claims were **not**
+> re-verified. Several are known to be contradicted by measurement — see
+> `KNOWN_LIMITATIONS.md` and `docs/CLAIM_EVIDENCE.md`, which are authoritative.
+>
+> Known contradictions include: multi-node/BFT deployment (never executed),
+> zero-knowledge proofs (the `zk` feature does not compile), formal
+> verification (Kani harnesses exist but no CI runs them; TLA+ specs are design
+> documents, not checked models), and performance figures (no raw data is bound
+> to this artifact).
+>
+> **Do not cite this file for current status.** Authoritative files:
+> `README.md`, `STATUS.md`, `KNOWN_LIMITATIONS.md`, `docs/CLAIM_EVIDENCE.md`,
+> `SECURITY.md`, `PUBLIC_PROVENANCE.json`, `SBOM.json`, `AUDIT_PROFILE.json`,
+> `LICENSE`, `NOTICE`.
+
 > **Version**: 2.0
 > **Last Updated**: 2026-02-07
 > **Status**: research prototype; see docs/CLAIM_EVIDENCE.md

@@ -116,7 +116,7 @@ class TestSDKExamples:
 
         assert health["status"] == "ok"
         assert health["endpoint"] == "local"
-        assert health["trl"] == 7
+        assert "trl" not in health, "TRL readiness level is not a claim this artifact makes"
         assert "rust_core" in health
 
 

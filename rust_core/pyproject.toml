@@ -4,7 +4,9 @@ build-backend = "maturin"
 
 [project]
 name = "warm_logic_rs"
-version = "0.4.0+kinetic"
+# Was 0.4.0+kinetic while Cargo.toml said 1.1.0 — the extension and the crate
+# it is built from disagreed about their own version. Single-valued now.
+version = "1.1.0"
 dependencies = []
 
 [tool.maturin]

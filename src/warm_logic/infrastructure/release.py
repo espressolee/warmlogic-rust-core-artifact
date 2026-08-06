@@ -87,7 +87,6 @@ class ValidationGate(Enum):
     PERFORMANCE_BENCHMARK = "performance_benchmark"
     CODE_COVERAGE = "code_coverage"
     DOCUMENTATION = "documentation"
-    TRL_CERTIFICATION = "trl_certification"
     COMPLIANCE_CHECK = "compliance_check"
     DEPENDENCY_AUDIT = "dependency_audit"
     LICENSE_CHECK = "license_check"

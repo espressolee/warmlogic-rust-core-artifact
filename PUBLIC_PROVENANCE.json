@@ -2,12 +2,12 @@
   "artifact": "warmlogic",
   "kind": "sanitized versioned research artifact (no private history)",
   "source_remote": "github.com/espressolee/WarmLogic (private)",
-  "note_source_main_commit": "recorded in the export commit message at publish time",
+  "note_source_main_commit": "The private source commit is deliberately NOT published as a full SHA. It is recorded in the initial export commit message. This is a disclosure choice, not an omission.",
   "release_date": "2026-08-06",
   "license": "Apache-2.0",
   "audit_profile": "v1 (see AUDIT_PROFILE.json)",
   "reproduction": {
-    "clean_checkout": "PASS (author host)",
+    "clean_checkout": "PASS on the author host, re-verified with VIRTUAL_ENV unset and maturin absent (the earlier PASS was recorded from inside a virtualenv, which silently satisfied a requirement the published procedure did not state)",
     "environment": {
       "os": "macOS 26.6",
       "python": "3.12.13",
@@ -29,5 +29,36 @@
   },
   "public_repository": "espressolee/warmlogic-rust-core-artifact",
   "public_url": "https://github.com/espressolee/warmlogic-rust-core-artifact",
-  "description": "Sanitized, versioned Rust research artifact for bounded post-quantum signing and governance experiments; not the current WarmLogic canonical."
+  "description": "Sanitized, versioned Rust research artifact for bounded post-quantum signing and governance experiments; not the current WarmLogic canonical.",
+  "content_identity": {
+    "method": "sha256 over sorted records of \"path\\0mode\\0sha256(file bytes)\" for every tracked file, EXCLUDING PUBLIC_PROVENANCE.json itself",
+    "why_self_excluded": "A file cannot contain its own hash. The excluded file is bound instead by the signed release tag.",
+    "content_manifest_root_excluding_self": "4f10d4eb510242c02f2570be984c4ad35ca77fe8e8c3143cb151bb454f7bdb58",
+    "file_count_hashed": 1791,
+    "recompute": "python3 - <<'EOF'  (see docs; algorithm is fully specified above)",
+    "warning": "A digest over file NAMES alone does not bind content and must not be used. An earlier revision of this lane made exactly that error."
+  },
+  "component_digests": {
+    "AUDIT_PROFILE.json": "21fc46a539aa155237a79039378013ae86ba1833a33d27de0f8891ce63c6b715",
+    "SBOM.json": "ba4b14eaf3b77ff5a705c4ef13580d6c444e755c19ae37daa814f136ca08bccb",
+    "scripts/ci_core.sh": "162052e772909d1ac18a5cec740b10b3f768bfab86c0766806f43f12df6d97cf",
+    ".github/workflows/core-ci.yml": "8c44319c842a53272ee3c3ac811759086d5db51901b2ee6cbfd81026cb4f4a31",
+    ".github/workflows/publication-audit.yml": "8d50f7d474369bf5a10b10c21e5a9f6d8e97d36bf537804e4f7f354dd0f34b5c",
+    "docs/CLAIM_EVIDENCE.md": "14b7335a821360370ecb82e7d6841492469b9ae77a9928001a35a982e30e294c",
+    "KNOWN_LIMITATIONS.md": "c541ce02f98b6d9582b82f62e069215edbeb5a142410e0e924183604703f74f6",
+    "STATUS.md": "395abdd727383323856f1bc9169f8c45d9889baf7b9de4107bee0232bfd5f4e8",
+    "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+  },
+  "commit_binding": {
+    "public_commit": "NOT_BOUND_HERE",
+    "public_tree": "NOT_BOUND_HERE",
+    "rationale": "This file is inside the tree it describes, so it cannot state the commit or tree id of the commit that contains it without regress. The commit/tree binding is provided by the SIGNED RELEASE TAG, which is created only after the release gate passes. Until a signed tag exists, treat the commit binding as ABSENT, not as implied.",
+    "signed_tag": "NONE_YET",
+    "initial_public_commit": "c885faca",
+    "known_successors": [
+      "f169a23b (audit self-match fix)",
+      "7c8ee084 (maturin install fix)",
+      "d6569bf6 (maturin venv fix + zk feature drop)"
+    ]
+  }
 }

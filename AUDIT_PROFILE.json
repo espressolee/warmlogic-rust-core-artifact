@@ -18,13 +18,21 @@
     "default",
     "--features python (lib+bins)"
   ],
-  "runtime_smokes": [
-    "clean-checkout make setup",
-    "rust-core sanity (exports/ReflectiveLoop/PQC)",
-    "README first example runs without crashing",
-    "ML-DSA-65 sign+verify roundtrip"
-  ],
-  "negative_fixtures": "6 injected violations (abs-path, symlink target, TRL, hype, self-score) all BLOCKED",
+  "runtime_smokes": {
+    "checked": [
+      "clean-checkout `make setup`",
+      "rust-core sanity (exports/ReflectiveLoop/PQC)",
+      "ML-DSA-65 sign+verify roundtrip",
+      "scripts/ci_core.sh on a checkout with maturin absent and VIRTUAL_ENV unset"
+    ],
+    "correction": "The first three were originally recorded as passing while the author's shell was inside a virtualenv. `maturin develop` requires one and fails without it, so `make setup` and ci_core.sh were broken for any reader outside a venv - which public CI then proved. Both now use `maturin build` + `pip install`, and are re-verified with VIRTUAL_ENV unset. The README first example was separately found to crash and the README was corrected; it is not claimed as a passing smoke."
+  },
+  "negative_fixtures": {
+    "qualified_by_injected_violation": 32,
+    "wired": 35,
+    "not_individually_qualified": 3,
+    "note": "An earlier value of this field read '6 injected violations'. That was the first round only and contradicted check_qualification in this same file; 32 is the measured count. See check_qualification."
+  },
   "NOT_checked": [
     "open-set over-claim phrasing (blacklist, not exhaustive)",
     "third-party code similarity / undeclared-origin",
@@ -43,7 +51,7 @@
     "covers": [
       "cargo fmt --check",
       "cargo check --lib --features python",
-      "maturin develop --release --features python",
+      "maturin build --release --features python + pip install the wheel",
       "pytest tests/ci tests/docs",
       "ML-DSA-65 sign/verify roundtrip"
     ],
@@ -91,18 +99,38 @@
       "private-key-file",
       "NOTICE-present",
       "LICENSE-apache",
-      "single-commit"
+      "single-squash-root"
     ],
     "not_individually_qualified": [
       "scrub-artifact",
       "phantom-name",
       "self-mit"
     ],
-    "not_qualified_rationale": "These three are non-blocking hygiene checks (stale scrub artifacts, one phantom name form, self-declared MIT). Every check that gates a hard blocker \u2014 secrets, PII, machine identity, private keys, licence, identity \u2014 is fixture-qualified.",
+    "not_qualified_rationale": "These three are non-blocking hygiene checks (stale scrub artifacts, one phantom name form, self-declared MIT). Every check that gates a hard blocker — secrets, PII, machine identity, private keys, licence, identity — is fixture-qualified.",
     "bypass_fixtures": {
       "F1": "checker-owned pattern data allowed",
       "F3": "AWS key inside the exempt checker file still BLOCKS",
       "F5": "over-claim in any other file still BLOCKS"
+    }
+  },
+  "execution": {
+    "public_workflow": {
+      "file": ".github/workflows/publication-audit.yml",
+      "name": "Publication Surface Sanity",
+      "verdict_string": "PASS_SURFACE_SANITY",
+      "checks_run": [
+        "required-files-present",
+        "tracked-symlinks",
+        "over-claim-vocabulary (narrow grep)",
+        "workflow-self-audit (2 read-only hosted)"
+      ],
+      "is_audit_profile_v1": false
+    },
+    "full_profile": {
+      "runner": "private pre-publication lane (audit_export.sh)",
+      "published_in_this_repo": false,
+      "re_executable_by_third_party": false,
+      "why": "This artifact is maintenance-only. Publishing and maintaining the checker here would add a second active codebase to a frozen artifact. The public claim was sized down instead."
     }
   }
 }

@@ -281,4 +281,4 @@ Nightly builds run the full test suite, coverage reports, and dashboard audits.
 
 ## License
 
-By contributing to WarmLogic, you agree that your contributions will be licensed under the MIT License (kernel) or Elastic License v2 (enterprise components), matching the existing project license.
+By contributing to WarmLogic, you agree that your contributions will be licensed under the **Apache License 2.0**, matching this repository's `LICENSE` file. That is the only licence this repository is offered under; if you find any other licence named anywhere in this tree, it is an error — please report it.

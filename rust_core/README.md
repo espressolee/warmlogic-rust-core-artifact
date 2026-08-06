@@ -242,7 +242,7 @@ Found a vulnerability? See [SECURITY.md](SECURITY.md) for responsible disclosure
 
 ## License
 
-MIT License. Free for everyone.
+Apache License 2.0 — see the LICENSE file at the repository root.
 
 ---
 

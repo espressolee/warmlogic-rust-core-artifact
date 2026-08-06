@@ -55,7 +55,7 @@ Returns the health status of the kernel connection.
 
 ```python
 status = client.health_check()
-# {'status': 'ok', 'endpoint': 'local', 'rust_core': True, 'trl': 7, ...}
+# {'status': 'ok', 'endpoint': 'local', 'rust_core': True, ...}
 ```
 
 ---

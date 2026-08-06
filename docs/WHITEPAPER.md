@@ -1,9 +1,28 @@
 # WarmLogic: A Post-Quantum Cryptographic Runtime for Verifiable AI Governance
 
+> ## ⚠️ NON-AUTHORITATIVE — HISTORICAL DESIGN DOCUMENT
+>
+> This file describes **design intent**, not the measured state of this
+> artifact. It predates the publication audit and its claims were **not**
+> re-verified. Several are known to be contradicted by measurement — see
+> `KNOWN_LIMITATIONS.md` and `docs/CLAIM_EVIDENCE.md`, which are authoritative.
+>
+> Known contradictions include: multi-node/BFT deployment (never executed),
+> zero-knowledge proofs (the `zk` feature does not compile), formal
+> verification (Kani harnesses exist but no CI runs them; TLA+ specs are design
+> documents, not checked models), and performance figures (no raw data is bound
+> to this artifact).
+>
+> **Do not cite this file for current status.** Authoritative files:
+> `README.md`, `STATUS.md`, `KNOWN_LIMITATIONS.md`, `docs/CLAIM_EVIDENCE.md`,
+> `SECURITY.md`, `PUBLIC_PROVENANCE.json`, `SBOM.json`, `AUDIT_PROFILE.json`,
+> `LICENSE`, `NOTICE`.
+
 > **Authors**: espressolee
 > **Version**: 1.0 (February 2026)
 > **Status**: Release Candidate (experimental)
-> **License**: MIT (kernel) + Elastic License v2 (enterprise)
+> **License**: Apache-2.0 (whole repository; the MIT/Elastic split described
+> in older drafts was never applied to this artifact)
 
 ---
 
@@ -689,7 +708,7 @@ WarmLogic embeds value judgments in its architecture:
 
 - **Slashing as deterrence raises proportionality questions.** An automatic 100-unit economic penalty for severity > 0.80 may be appropriate in some contexts and draconian in others. The slashing parameters must be governed, not hardcoded — who decides the thresholds is as important as what the thresholds are.
 
-- **Open-source as accountability.** By releasing the kernel under MIT license, we ensure that the governance logic is inspectable. The code is the specification; claims about system behavior can be verified against the implementation.
+- **Open-source as accountability.** By releasing the kernel under an OSI-approved licence (Apache-2.0), we intend that the governance logic is inspectable. The code is the specification; claims about system behavior can be verified against the implementation.
 
 ### 7.5 Future Work
 
@@ -715,7 +734,7 @@ Two core safety properties — MethodologicalIntegrity and LedgerImmutable — a
 
 **WarmLogic is a research prototype at research prototype.** It is approaching production readiness. Critical gaps remain: no third-party security audit, incomplete P2P block propagation, and simulated hardware security module. The test suite is exercised on both x86_64 and RISC-V (Milk-V Duo) architectures. The system should not be used for sensitive workloads without addressing these gaps and completing security audit.
 
-We release the system as open source (MIT license for the kernel) to invite community contribution, independent security audit, and collaborative improvement. The EU AI Act takes effect for high-risk systems in August 2026. NIST PQC migration targets 2030. The window for building the evidence infrastructure these regulations require is closing. WarmLogic provides a starting point — not a finished product, but a working, formally verified foundation for verifiable AI governance.
+We release the system as open source (Apache-2.0) to invite community contribution, independent security audit, and collaborative improvement. The EU AI Act takes effect for high-risk systems in August 2026. NIST PQC migration targets 2030. The window for building the evidence infrastructure these regulations require is closing. WarmLogic provides a starting point — not a finished product, but a working, formally verified foundation for verifiable AI governance.
 
 ---
 

@@ -270,8 +270,6 @@ All cryptographic operations use ML-DSA-65 (FIPS 204) for quantum resistance.
         """Basic health check."""
         return {
             "status": "healthy",
-            "version": "0.1.0",
-            "trl": 7,
         }
 
     @app.get("/health/live", tags=["health"])

@@ -287,6 +287,5 @@ class SovereignClient:
             "status": "ok",
             "endpoint": self.endpoint,
             "rust_core": self._rust_available,
-            "trl": 7,
             "warning": "Experimental - not production ready",
         }

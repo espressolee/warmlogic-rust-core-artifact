@@ -51,7 +51,7 @@ research prototype status means "System Prototype Demonstration". The system wor
 
 ### Is WarmLogic open source?
 
-Yes. The kernel is MIT licensed. See [LICENSE](../LICENSE).
+Yes. The repository is licensed under Apache-2.0. See [LICENSE](../LICENSE).
 
 ---
 

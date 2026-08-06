@@ -56,7 +56,7 @@ decision = client.propose_action(
 
 ```python
 status = client.health_check()
-# {'status': 'ok', 'endpoint': 'local', 'rust_core': True, 'trl': 7, ...}
+# {'status': 'ok', 'endpoint': 'local', 'rust_core': True, ...}
 ```
 
 ---

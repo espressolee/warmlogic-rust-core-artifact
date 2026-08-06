@@ -26,15 +26,26 @@
 
 AI agents are "black boxes". You can't prove **why** they did something, or **if** they followed the rules.
 
-WarmLogic solves this by wrapping AI reasoning in a **cryptographic kernel** that creates unforgeable evidence for every decision.
+WarmLogic **explores** whether wrapping AI reasoning in a cryptographic kernel
+can produce durable evidence about decisions. It does not solve the problem
+above, and this artifact does not demonstrate that it does.
 
-| Problem                          | WarmLogic Solution                                         |
-| -------------------------------- | ---------------------------------------------------------- |
-| AI decisions are unverifiable    | Every decision signed with ML-DSA-65 (Post-Quantum)        |
-| Single points of failure         | BFT consensus across node swarm                            |
-| Privacy vs. compliance trade-off | Zero-knowledge proofs for compliance without data exposure |
-| Regulatory uncertainty           | Signed, versioned policy documents checked at runtime      |
-| Trust in centralized AI          | Local-first, sovereign data ownership                      |
+A note on what a signature can and cannot do, since the earlier wording blurred
+it: a signature can show that a particular key signed particular bytes and that
+the record was not altered afterwards. It cannot show *why* a decision was
+made, that the stated reasoning was the actual reasoning, that a policy was
+semantically obeyed, or that the decision was correct. Authenticity is not
+justification.
+
+| Intended design | Status **in this artifact** |
+| --- | --- |
+| Sign every decision with ML-DSA-65 | The ML-DSA-65 primitive is real (`fips204`) and its roundtrip runs. Decisions are **not** signed end-to-end: the SDK signing path is unreachable. |
+| BFT consensus across a node swarm | Single host only. 34 in-process unit tests; **no multi-node deployment has ever been run.** |
+| Zero-knowledge proofs for compliance | **Does not build** — `cargo check --features zk` fails. Off in default builds and in the wheel. |
+| Signed policy documents checked at runtime | **Demonstration stub** — amendment checks that a signature string is non-empty; no cryptographic verification. |
+| Local-first data ownership | Runs locally. No sovereignty property is verified.|
+
+The right-hand column is the claim. The left-hand column is not.
 
 ---
 
@@ -101,16 +112,24 @@ cd warmlogic-rust-core-artifact
 make setup
 ```
 
-This installs dependencies, compiles the Rust core, and verifies system integrity.
+This installs dependencies, compiles the Rust core, and checks that the
+extension imports. It does not verify system integrity in any security sense.
 
-### Run the Sovereign Kernel
+### Run it
 
 ```bash
-# Start the CLI interface
-warmlogic
+# The console script is `wlctl` (there is no `warmlogic` command)
+wlctl --help
 
-# Or start with the web dashboard
+# Or the web dashboard
 python -m warm_logic.ui.server
+```
+
+The supported, CI-exercised surface is narrower than either of those. If you
+only want the part that is actually verified, run the core path directly:
+
+```bash
+bash scripts/ci_core.sh
 ```
 
 ### Docker (Alternative)
@@ -184,7 +203,11 @@ See [docs/BENCHMARKS.md](docs/BENCHMARKS.md).*
 
 ## Docker Deployment
 
-Deploy a 3-node mesh network with a single command:
+> **UNVERIFIED CONFIGURATION.** The compose file below exists in the tree, but
+> a multi-node mesh has **never been deployed or exercised** — not locally, not
+> in CI, not by anyone. The commands are recorded as historical intent. Do not
+> read them as a supported or tested path, and do not report success from them
+> as evidence that BFT consensus works across hosts.
 
 ```bash
 # Build and start multi-node cluster

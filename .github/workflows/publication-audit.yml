@@ -1,7 +1,17 @@
-name: Publication Audit
+name: Publication Surface Sanity
 
-# Checks the artifact against AuditProfile v1 (AUDIT_PROFILE.json). Emits
-# PASS_UNDER_AUDIT_PROFILE_V1 or BLOCKED_<reason> - never "clean"/"safe".
+# NAME CORRECTED. This was called "Publication Audit" and printed
+# PASS_UNDER_AUDIT_PROFILE_V1, which claimed an execution it does not perform:
+# it runs four structural checks, while AuditProfile v1 (AUDIT_PROFILE.json)
+# declares 35. The full profile runs privately against the export before
+# publication and is not re-executable from this repository.
+#
+# The alternative was to publish the full checker so this job could really run
+# it. Rejected deliberately: this artifact is maintenance-only, and growing an
+# audit runtime inside it to defend a claim is the same error as the claim.
+# The claim was sized down to the evidence instead.
+#
+# Emits PASS_SURFACE_SANITY or BLOCKED_<reason> - never "clean"/"safe".
 
 on:
   push:
@@ -43,8 +53,13 @@ jobs:
           # \bTRL avoids matching CTRL; the checker excludes itself because it
           # necessarily contains the forbidden words as pattern data. Both
           # exemptions match audit_export.sh. Every other file is checked.
-          if git grep -InE "\\bTRL[ -]?[0-9]|God[- ]?Tier|Singularity|Mothership|100/100|Production Ready" \
-               -- ':!*.lock' ':!.github/workflows/publication-audit.yml'; then
+          # Both the prose form (TRL 7) and the data form ("trl": 7) are
+          # checked: the case-sensitive prose pattern alone missed two health
+          # endpoints that literally emitted a readiness level, plus the test
+          # that asserted it.
+          if git grep -InE "\\bTRL[ -]?[0-9]|[\"']trl[\"']?[[:space:]]*[:=][[:space:]]*[0-9]|God[- ]?Tier|Singularity|Mothership|100/100|Production Ready" \
+               -- ':!*.lock' ':!.github/workflows/publication-audit.yml' \
+               | grep -v 'not in health'; then
             echo "BLOCKED_OVERCLAIM"; exit 1; fi
       - name: Workflow self-audit (two read-only workflows)
         run: |
@@ -54,4 +69,17 @@ jobs:
             grep -q "contents: read" "$f" || { echo "BLOCKED_NO_READONLY: $f"; exit 1; }
             grep -q "runs-on: ubuntu-latest" "$f" || { echo "BLOCKED_NOT_HOSTED: $f"; exit 1; }
           done
-          echo "PASS_UNDER_AUDIT_PROFILE_V1"
+          echo "PASS_SURFACE_SANITY"
+          echo
+          echo "This job ran FOUR structural checks: required files present,"
+          echo "zero tracked symlinks, a narrow over-claim vocabulary grep,"
+          echo "and two read-only hosted workflows."
+          echo
+          echo "It is NOT an execution of AuditProfile v1. That profile (35"
+          echo "checks: secrets, PII, machine identity, hardware UUIDs, dead"
+          echo "links, root and .github allowlists, vacuous schemas, ...) runs"
+          echo "privately against the export before publication and is NOT"
+          echo "re-executable from this repository. See AUDIT_PROFILE.json,"
+          echo "field \"execution\", for who runs what."
+          echo
+          echo "Do not read this PASS as 'the tree is clean'."
