@@ -18,7 +18,14 @@ echo "== build+install the extension (maturin links against this interpreter) ==
 # maturin is installed here, not assumed: this script is the single source of
 # truth for the supported path, so it must work on a bare checkout.
 $PY -m pip install -q maturin
-( cd rust_core && "$PY" -m maturin develop --release --features python )
+# `maturin develop` requires an ACTIVE virtualenv and fails without one. A
+# hosted CI runner and a plain system interpreter both have none, so `develop`
+# only ever worked because the author's shell happened to be inside a venv.
+# `build` + `pip install` is interpreter-explicit and works in both, which is
+# the point: this script must be the procedure, not a procedure.
+( cd rust_core && "$PY" -m maturin build --release --features python \
+    --interpreter "$PY" --out ../dist )
+$PY -m pip install --force-reinstall --no-deps dist/warm_logic_rs-*.whl
 
 echo "== core tests (the supported subset, not the full legacy suite) =="
 $PY -m pytest -q tests/ci tests/docs

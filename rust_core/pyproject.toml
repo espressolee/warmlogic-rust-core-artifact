@@ -8,6 +8,10 @@ version = "0.4.0+kinetic"
 dependencies = []
 
 [tool.maturin]
-features = ["python", "zk"]
+# "zk" is NOT listed: that feature does not compile (22 errors, unresolved
+# `crate::zk::plonk_engine` / unlinked `dusk_plonk`). Declaring it here made
+# `pip install ./rust_core` attempt a build that cannot succeed. See
+# docs/CLAIM_EVIDENCE.md — ZK is IMPLEMENTED_NOT_BUILDABLE.
+features = ["python"]
 module-name = "warm_logic_rs"
 binding = "pyo3"
