@@ -1,0 +1,28 @@
+# WarmLogic Federation Service
+# Headless service for stable pod DNS names
+apiVersion: v1
+kind: Service
+metadata:
+  name: warmlogic-federation-headless
+  namespace: warmlogic-production
+  labels:
+    app: warmlogic
+    component: federation
+spec:
+  clusterIP: None
+  selector:
+    app: warmlogic
+    component: federation
+  ports:
+    - name: federation
+      port: 17300
+      targetPort: 17300
+      protocol: TCP
+    - name: discovery
+      port: 17301
+      targetPort: 17301
+      protocol: UDP
+    - name: metrics
+      port: 8001
+      targetPort: 8001
+      protocol: TCP

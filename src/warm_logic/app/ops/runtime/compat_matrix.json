@@ -1,0 +1,10 @@
+{
+  "allowed": {
+    "v1|run_manifest_v3|v1": "baseline",
+    "v2|run_manifest_v4|v2": "v2_required_fields",
+    "v3|run_manifest_v4|v3": "signed_tamper_evident"
+  },
+  "requires_migration": {
+    "v2|run_manifest_v3|v1": "migrate_manifest_v3_to_v4 + migrate_bundle_v1_to_v2"
+  }
+}

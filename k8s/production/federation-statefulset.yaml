@@ -1,0 +1,146 @@
+# WarmLogic Federation StatefulSet
+# Sovereign Federation Nodes with PQC
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: warmlogic-federation
+  namespace: warmlogic-production
+  labels:
+    app: warmlogic
+    component: federation
+    era: "3000"
+spec:
+  serviceName: warmlogic-federation-headless
+  replicas: 3
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: warmlogic
+      component: federation
+  template:
+    metadata:
+      labels:
+        app: warmlogic
+        component: federation
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8001"
+        prometheus.io/path: "/metrics"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: warmlogic
+              component: federation
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: federation
+          image: ghcr.io/espressolee/warmlogic:v1.0.0
+          imagePullPolicy: Always
+          command: ["python", "-m", "warm_logic.federation.node"]
+          args:
+            - "--node-id=$(POD_NAME)"
+            - "--listen=0.0.0.0:17300"
+            - "--metrics-port=8001"
+          ports:
+            - containerPort: 17300
+              name: federation
+              protocol: TCP
+            - containerPort: 17301
+              name: discovery
+              protocol: UDP
+            - containerPort: 8001
+              name: metrics
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: WARMLOGIC_ENV
+              value: "production"
+            - name: WARMLOGIC_FEDERATION_ENABLED
+              value: "true"
+            - name: WARMLOGIC_FEDERATION_QUORUM_THRESHOLD
+              value: "0.67"
+            - name: WARMLOGIC_PQC_ALGORITHM
+              value: "ML-KEM-768"
+          envFrom:
+            - secretRef:
+                name: warmlogic-federation-secrets
+            - configMapRef:
+                name: warmlogic-federation-config
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "2000m"
+          livenessProbe:
+            tcpSocket:
+              port: federation
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - "python -c 'import requests; r=requests.get(\"http://localhost:8001/health\"); exit(0 if r.status_code==200 else 1)'"
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            failureThreshold: 3
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: federation-data
+              mountPath: /data
+            - name: pqc-keys
+              mountPath: /keys
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: pqc-keys
+          secret:
+            secretName: warmlogic-pqc-keys
+        - name: tmp
+          emptyDir:
+            sizeLimit: 100Mi
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: warmlogic
+                  component: federation
+              topologyKey: kubernetes.io/hostname
+  volumeClaimTemplates:
+    - metadata:
+        name: federation-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: fast-ssd
+        resources:
+          requests:
+            storage: 10Gi

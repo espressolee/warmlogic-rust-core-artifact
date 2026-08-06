@@ -1,0 +1,33 @@
+{
+  "artifact": "warmlogic",
+  "kind": "sanitized versioned research artifact (no private history)",
+  "source_remote": "github.com/espressolee/WarmLogic (private)",
+  "note_source_main_commit": "recorded in the export commit message at publish time",
+  "release_date": "2026-08-06",
+  "license": "Apache-2.0",
+  "audit_profile": "v1 (see AUDIT_PROFILE.json)",
+  "reproduction": {
+    "clean_checkout": "PASS (author host)",
+    "environment": {
+      "os": "macOS 26.6",
+      "python": "3.12.13",
+      "rustc": "1.93.0"
+    },
+    "independent_external": "NOT_YET_TESTED"
+  },
+  "excluded_from_export": [
+    "private git history",
+    "vendored dependency sources (referenced via Cargo.lock)",
+    "runtime state / databases",
+    "internal documentation dump",
+    "cloud/hardware/personal identifiers"
+  ],
+  "gates": {
+    "G1_chain_of_title": "owner declaration (see CHAIN_OF_TITLE.md)",
+    "G5_third_party": "PASS_WITH_RESIDUAL (cargo deny ok; undeclared-origin residual normal)",
+    "G12_reproduction": "internal clean-checkout PASS; external not yet done"
+  },
+  "public_repository": "espressolee/warmlogic-rust-core-artifact",
+  "public_url": "https://github.com/espressolee/warmlogic-rust-core-artifact",
+  "description": "Sanitized, versioned Rust research artifact for bounded post-quantum signing and governance experiments; not the current WarmLogic canonical."
+}

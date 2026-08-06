@@ -1,0 +1,7 @@
+case_id,stage,indicator,claim_ref,evidence_id,label,comment
+# label ∈ {PASS, FAIL, INDET}; comment optional (≤200 chars)
+# stage ∈ {node, aggregation}; indicator ∈ {A,E,T,C or TR-T/TR-E/TR-C}
+# example rows (remove before use):
+# F1,node,A,P6.C1,E-P6-001,,
+# F1,node,E,P6.C2,E-P6-002,,
+# F1,aggregation,A,P6.C7,E-P6-007,,

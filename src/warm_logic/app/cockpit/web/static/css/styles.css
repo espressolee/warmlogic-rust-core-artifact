@@ -1,0 +1,125 @@
+/* Sovereign Cockpit Unified Styles */
+:root {
+    --primary-green: #0df20d;
+    --primary-cyan: #0df2f2;
+    --primary-emerald: #0df280;
+    --accent-amber: #f59e0b;
+    --bg-dark: #080c08;
+    --surface-dark: #102222;
+    --glass-bg: rgba(16, 34, 16, 0.7);
+}
+
+.glass-panel {
+    background: rgba(16, 32, 16, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 0 20px rgba(13, 242, 13, 0.02);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-panel:hover {
+    box-shadow: inset 0 0 30px rgba(13, 242, 13, 0.05);
+}
+
+.matrix-bg {
+    background: linear-gradient(rgba(16, 34, 16, 0.95), rgba(16, 34, 16, 0.95)), url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+}
+
+.glow-green {
+    box-shadow: 0 0 15px rgba(13, 242, 13, 0.3);
+}
+
+.glow-amber {
+    box-shadow: 0 0 15px rgba(255, 179, 0, 0.3);
+}
+
+.glow-cyan {
+    box-shadow: 0 0 15px rgba(13, 242, 242, 0.3);
+}
+
+.glow-text {
+    text-shadow: 0 0 10px rgba(13, 242, 242, 0.5);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #224922, #0df20d);
+    border-radius: 10px;
+}
+
+/* Premium Row Hover */
+tr.group:hover td {
+    background: linear-gradient(90deg, rgba(13, 242, 13, 0.05) 0%, transparent 100%);
+    color: white;
+}
+
+.shimmer {
+    position: relative;
+    overflow: hidden;
+}
+
+.shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    100% {
+        left: 100%;
+    }
+}
+
+/* Animations */
+@keyframes slideDown {
+    from {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse-emerald {
+    0% {
+        box-shadow: 0 0 0 0 rgba(13, 242, 128, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 15px rgba(13, 242, 128, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(13, 242, 128, 0);
+    }
+}
+
+.animate-pulse-emerald {
+    animation: pulse-emerald 2s infinite;
+}
+
+/* Tab/View handling */
+.app-view {
+    display: none;
+}
+
+.app-view.active {
+    display: flex;
+}

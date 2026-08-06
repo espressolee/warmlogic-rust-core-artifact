@@ -1,0 +1,43 @@
+# Sovereign Enclave Container (Phase 7.2)
+# Target: AWS Nitro Enclaves / SGX
+# Constraint: NO SHELL ACCESS, RO FILESYSTEM, SIGNED KERNEL
+
+FROM python:3.11-alpine as builder
+
+# 1. Build Layer: Install Dependencies
+WORKDIR /app
+COPY requirements.txt .
+# Minimal deps only
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 2. Sovereign Layer: The Final Image
+FROM python:3.11-alpine
+WORKDIR /app
+
+# Harden the OS
+RUN apk add --no-cache libffi openssl && \
+    rm -rf /var/cache/apk/*
+
+# Create unprivileged user
+RUN addgroup -S sovereign && adduser -S sovereign -G sovereign
+
+# Copy Artifacts (Only valid, signed code)
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY warm_logic /app/warm_logic
+RUN mkdir -p /app/ledger
+COPY ledger/refusal_spine.jsonl /app/ledger/refusal_spine.jsonl
+
+# Enforce Sovereignty: Filesystem must be Read-Only at runtime
+# We set ownership to root so 'sovereign' user cannot modify code
+RUN chown -R root:root /app && \
+    chmod -R 555 /app && \
+    rm -rf /bin/sh /bin/ash # Remove shell LAST to prevent interactive access
+
+# Switch to constrained user
+USER sovereign
+
+# The ONLY Entrypoint
+# No arguments, no shell.
+# The Kernel starts and listens.
+ENV PYTHONPATH=/app
+ENTRYPOINT ["python3", "-m", "warm_logic.kernel_loop"]

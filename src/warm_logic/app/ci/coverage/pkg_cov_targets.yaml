@@ -1,0 +1,8 @@
+warm_logic:
+  floor: 80
+warm_logic/base:
+  floor: 80
+warm_logic/kernel:
+  floor: 80
+warm_logic/logic:
+  floor: 80

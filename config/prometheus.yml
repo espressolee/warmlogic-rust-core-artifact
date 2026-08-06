@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: "warm_logic_kernel"
+    static_configs:
+      - targets: ["kernel-node:8000"]

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "warm_logic_sdk"
+version = "0.1.0"
+description = "Sovereign SDK for the WarmLogic AI Kernel"
+authors = [{name = "espressolee", email = "70549809+espressolee@users.noreply.github.com"}]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "requests>=2.0.0",
+    "warm_logic_rs>=0.5.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "isort",
+    "mypy"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["warm_logic_sdk*"]

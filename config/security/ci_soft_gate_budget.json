@@ -1,0 +1,18 @@
+{
+  "max_total": 33,
+  "max_by_pattern": {
+    "|| true": 26,
+    "continue-on-error: true": 7,
+    "--exit-zero": 0
+  },
+  "allowlist": {
+    "continue-on-error: true": [
+      ".github/workflows/ci-governance.yml",
+      ".github/workflows/ci-load-test.yml",
+      ".github/workflows/ci-main-tests.yml",
+      ".github/workflows/ci-policy.yml",
+      ".github/workflows/console_v2_e2e.yml",
+      ".github/workflows/paper-package.yml"
+    ]
+  }
+}

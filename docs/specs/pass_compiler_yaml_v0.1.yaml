@@ -1,0 +1,21 @@
+{
+  "pass_compiler": {
+    "version": "0.1",
+    "trust_assumption": "forbidden",
+    "triggers": {
+      "map": {
+        "override_no_window": "BLOCK",
+        "evidence_window_missing": "BLOCK",
+        "cost_unknown": "BLOCK"
+      }
+    }
+  },
+  "examples": [
+    {
+      "ce_id": "CE-0007",
+      "compile": {
+        "expected": "compile_error"
+      }
+    }
+  ]
+}

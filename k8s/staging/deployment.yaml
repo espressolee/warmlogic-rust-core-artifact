@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: warmlogic-gateway
+  namespace: warmlogic-staging
+  labels:
+    app: warmlogic
+    component: gateway
+    era: "4000"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: warmlogic
+      component: gateway
+  template:
+    metadata:
+      labels:
+        app: warmlogic
+        component: gateway
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: gateway
+          image: warmlogic:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+          env:
+            - name: WARMLOGIC_ENV
+              value: "staging"
+            - name: WARMLOGIC_LOG_LEVEL
+              value: "DEBUG"
+            - name: WARMLOGIC_GATEWAY_PORT
+              value: "8000"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+        - name: tmp
+          emptyDir: {}

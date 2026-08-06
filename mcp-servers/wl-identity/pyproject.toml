@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wl-identity-mcp"
+version = "1.0.0"
+description = "WarmLogic Identity MCP Server"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "mcp>=1.0.0",
+]
+
+[project.scripts]
+wl-identity-mcp = "server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]

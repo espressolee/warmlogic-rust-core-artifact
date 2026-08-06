@@ -1,0 +1,24 @@
+{
+  "plugins": [
+    {
+      "name": "demo_dashboard",
+      "package": "warm-logic-plugin-demo-dashboard",
+      "entry_point": "demo_dashboard",
+      "min_version": "0.1.0",
+      "editions_allowed": ["advanced", "enterprise"],
+      "modules_required": ["observability"],
+      "signature": "SHA256:05cd2e068b13e2aa26fb98c7250daa76c447874e39e4b60710af76938a02c7f0",
+      "signature_path": "signatures/demo_dashboard.sig"
+    },
+    {
+      "name": "audit_export",
+      "package": "warm-logic-plugin-audit-export",
+      "entry_point": "audit_export",
+      "min_version": "0.2.0",
+      "editions_allowed": ["enterprise"],
+      "modules_required": ["audit_bundle", "managed_mode"],
+      "signature": "SHA256:bf050391aef74d1f380f34778e1076df41dc2d68a80605ed45868ede38f93d06",
+      "signature_path": "signatures/audit_export.sig"
+    }
+  ]
+}

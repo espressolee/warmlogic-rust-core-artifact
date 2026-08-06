@@ -1,0 +1,28 @@
+[run]
+omit =
+    model/commons_heatmap_legacy.py
+    model/commons_sync.py
+    model/commons_sync_legacy.py
+    model/commons_sync_ws_legacy.py
+    model/generate_academic_paper.py
+    model/tests/helpers/mock_artifacts.py
+    model/tests/helpers/fake_os_state.py
+    model/ct/mdp_model.py
+    model/governance/vm.py
+    model/memory/governance_engine.py
+    model/os/attention_flow.py
+    model/os/meta_governance_behavior.py
+    model/os/scheduler.py
+    model/os/os_behavior.py
+    model/os/stability_envelope.py
+    model/os/update_os_state_from_agent.py
+    model/os/temporal_coherence.py
+    # Legacy benchmark harnesses are opt-in and not exercised by the quick
+    # pytest -m "not slow" target, so exclude them from default coverage.
+    benchmarks/v1_5/*
+    benchmarks/v1_6/*
+    */tests/*
+    */test_*
+    benchmarks/tests/*
+    model/tests/*
+    warm_logic_core/tests/*

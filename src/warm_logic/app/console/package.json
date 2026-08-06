@@ -1,0 +1,25 @@
+{
+    "name": "sovereign-console",
+    "version": "0.9.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start"
+    },
+    "dependencies": {
+        "next": "latest",
+        "react": "latest",
+        "react-dom": "latest",
+        "lucide-react": "latest",
+        "date-fns": "latest"
+    },
+    "devDependencies": {
+        "@types/node": "latest",
+        "@types/react": "latest",
+        "typescript": "latest",
+        "autoprefixer": "latest",
+        "postcss": "^8.4.31",
+        "tailwindcss": "latest"
+    }
+}

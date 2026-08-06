@@ -1,0 +1,11 @@
+{
+  "schema": "warmlogic.verify_report.v1",
+  "run_id": "OSV2_PUBLIC_SANITY_V1",
+  "result": "pass",
+  "checks": {
+    "integrity": "pass",
+    "governance": "pass",
+    "consistency": "pass"
+  }
+}
+

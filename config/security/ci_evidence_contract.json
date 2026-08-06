@@ -1,0 +1,34 @@
+{
+  "schema_id": "warmlogic.ci.evidence.contract.v1",
+  "expected_schema": "warmlogic.ci.evidence.v1",
+  "required_top_level_fields": [
+    "schema",
+    "generated_at_utc",
+    "gate",
+    "workflow",
+    "run_id",
+    "run_attempt",
+    "event_name",
+    "ref",
+    "sha",
+    "job_status",
+    "job_results"
+  ],
+  "required_non_empty_string_fields": [
+    "schema",
+    "generated_at_utc",
+    "gate",
+    "workflow",
+    "run_id",
+    "run_attempt",
+    "event_name",
+    "ref",
+    "sha",
+    "job_status"
+  ],
+  "allowed_job_status": [
+    "pass",
+    "fail"
+  ],
+  "min_job_results": 1
+}

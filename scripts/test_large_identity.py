@@ -1,0 +1,30 @@
+import hashlib
+from secrets import randbelow
+
+
+def test_large_schnorr():
+    # RFC 3526 Group 5: 1536-bit MODP Group (Actually 2096 bits in my string)
+    P = 0xFFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD129024E088A67CC74020BBEA63B139B22514A08798E3404DDEF9519B3CD3A431B302B0A6DF25F14374FE1356D6D51C245E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7EDEE386BFB5A899FA5AE9F24117C4B1FE649286651ECE45B3DC2007CB8A163BF0598DA48361C55D39A69163FA8FD24CF5F83655D23DCA3AD961C62F356208552BB9ED529077096966D670C354E4ABC9804F1746C08CA18217C32905E462E36CE3BE39E772C180E86039B2783A2EC07A28FB5C55DF06F4C52C9DE2BCBF6955817183995497C1B8E9940566677AD1D6903BB485D13B650BDCF4615029E6912603C98E00C4AB1FD0D
+    G = 2
+    Q = P - 1
+
+    x = randbelow(Q)
+    y = pow(G, x, P)
+
+    k = randbelow(Q)
+    R = pow(G, k, P)
+
+    c = 123456789  # Fixed test challenge
+    s = (k + c * x) % Q
+
+    lhs = pow(G, s, P)
+    rhs = (R * pow(y, c, P)) % P
+
+    print(f"Large P (bits={P.bit_length()})")
+    print(f"lhs == rhs: {lhs == rhs}")
+    if lhs != rhs:
+        print("Wait! The large prime identity failed!")
+
+
+if __name__ == "__main__":
+    test_large_schnorr()

@@ -1,0 +1,236 @@
+# Default values for warmlogic
+replicaCount: 2
+
+image:
+  repository: warmlogic/core
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8080"
+  prometheus.io/path: "/metrics"
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: warmlogic.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 4Gi
+  requests:
+    cpu: 500m
+    memory: 1Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# WarmLogic specific config
+warmlogic:
+  env: production
+  logLevel: INFO
+  airgapMode: false
+
+  # Security
+  security:
+    fipsMode: false
+    tlsEnabled: true
+    auditEnabled: true
+
+  # Performance
+  performance:
+    workerCount: 4
+    maxConnections: 1000
+    timeoutSeconds: 30
+
+# Persistence
+persistence:
+  enabled: true
+  size: 10Gi
+  accessMode: ReadWriteOnce
+  storageClass: ""  # Use default storage class
+
+# Network Policy
+networkPolicy:
+  enabled: true
+
+# Mesh Networking
+mesh:
+  enabled: true
+  port: 9000
+  protocol: UDP
+  bootstrapNodes: []  # List of seed node addresses
+
+# Monitoring
+monitoring:
+  enabled: true
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      interval: 30s
+      scrapeTimeout: 10s
+      labels: {}
+    rules:
+      enabled: true
+      alertRules:
+        - alert: WarmLogicHighLatency
+          expr: histogram_quantile(0.99, warmlogic_request_duration_seconds_bucket) > 1
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: High latency detected
+  grafana:
+    enabled: true
+    dashboards:
+      enabled: true
+
+# ==============================================================================
+# Sovereign Scale Configuration
+# ==============================================================================
+
+# Cloud HSM Integration
+hsm:
+  enabled: false
+  provider: ""  # aws, azure, gcp, software
+  # AWS CloudHSM
+  aws:
+    clusterId: ""
+    region: "us-east-1"
+    customKeyStore: false
+  # Azure Key Vault
+  azure:
+    vaultUrl: ""
+    managedIdentity: true
+    tenantId: ""
+  # GCP Cloud KMS
+  gcp:
+    projectId: ""
+    location: "global"
+    keyRing: "warmlogic-keys"
+
+# Federation Configuration
+federation:
+  enabled: true
+  replicas: 3
+  # BFT consensus settings
+  consensus:
+    protocol: "ml-dsa-bft"
+    minQuorum: 2
+    maxLatencyMs: 500
+  # Multi-region mesh
+  regions: []
+  # Example:
+  # - name: us-east-1
+  #   endpoint: wss://us-east-1.warmlogic.example.com
+  # - name: eu-west-1
+  #   endpoint: wss://eu-west-1.warmlogic.example.com
+  pdb:
+    enabled: true
+    minAvailable: 2
+
+# Enterprise SSO (P1 - Future)
+sso:
+  enabled: false
+  provider: ""  # oidc, saml
+  oidc:
+    issuerUrl: ""
+    clientId: ""
+    clientSecretRef: ""
+  saml:
+    metadataUrl: ""
+    entityId: ""
+
+# SIEM Integration (P1 - Future)
+siem:
+  enabled: false
+  provider: ""  # splunk, datadog, elastic
+  splunk:
+    hecEndpoint: ""
+    hecTokenRef: ""
+  datadog:
+    apiKeyRef: ""
+    site: "datadoghq.com"
+
+# SLA Configuration
+sla:
+  target: "99.9"
+  alerting:
+    enabled: true
+    errorBudget: 0.1  # 0.1% error budget
+
+# Pod Disruption Budget
+pdb:
+  enabled: true
+  minAvailable: 1
+  # maxUnavailable: 1  # Alternative to minAvailable
+
+# Priority Class
+priorityClassName: ""
+
+# Topology Spread Constraints
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: warmlogic
+
+# Extra environment variables
+extraEnv: []
+# - name: EXTRA_VAR
+#   value: "value"
+
+# Extra volumes
+extraVolumes: []
+# - name: extra-config
+#   configMap:
+#     name: extra-configmap
+
+# Extra volume mounts
+extraVolumeMounts: []
+# - name: extra-config
+#   mountPath: /etc/extra

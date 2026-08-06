@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovereign Audit | WarmLogic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --surface: #111;
+            --accent: #ff0055;
+            /* Audit uses Red-ish accent */
+            --accent-glow: rgba(255, 0, 85, 0.3);
+            --text: #eee;
+            --text-dim: #888;
+            --success: #00ffaa;
+            --danger: #ff4444;
+            --warning: #ffaa00;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin: 0;
+            background: linear-gradient(45deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid #222;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .score-hero {
+            text-align: center;
+            padding: 3rem;
+            background: radial-gradient(circle at top right, var(--accent-glow), transparent);
+        }
+
+        .score-value {
+            font-size: 5rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 1rem 0;
+            color: var(--success);
+        }
+
+        .score-label {
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+
+        .integrity-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .status-box {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .status-box .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+        }
+
+        .status-box .value {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .log-container {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            background: #000;
+            padding: 1.5rem;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #222;
+        }
+
+        .log-entry {
+            margin-bottom: 0.5rem;
+            border-left: 2px solid var(--accent);
+            padding-left: 1rem;
+        }
+
+        .log-entry.success {
+            border-color: var(--success);
+        }
+
+        .log-entry.warning {
+            border-color: var(--warning);
+        }
+
+        .log-entry.critical {
+            border-color: var(--danger);
+        }
+
+        .btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--accent-glow);
+        }
+
+        .fleet-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .fleet-table th,
+        .fleet-table td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid #222;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .status-verified {
+            background: rgba(0, 255, 170, 0.1);
+            color: var(--success);
+        }
+
+        .status-slashed {
+            background: rgba(255, 68, 68, 0.1);
+            color: var(--danger);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>RECURSIVE GOVERNANCE</h1>
+            <a href="/" class="btn"
+                style="background: transparent; color: var(--accent); border: 1px solid var(--accent);">Back to Mesh</a>
+        </header>
+
+        <div class="card score-hero">
+            <div class="score-label">System Integrity Score</div>
+            <div class="score-value" id="score">0.0</div>
+            <div class="score-label">Harsh Forensic Evaluation</div>
+        </div>
+
+        <div class="integrity-grid">
+            <div class="status-box">
+                <div class="label">Chain Continuity</div>
+                <div class="value" id="chain_status">CHECKING...</div>
+            </div>
+            <div class="status-box">
+                <div class="label">State Consistency</div>
+                <div class="value" id="state_status">CHECKING...</div>
+            </div>
+            <div class="status-box">
+                <div class="label">ZK Proof Validity</div>
+                <div class="value" id="zk_status">CHECKING...</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Self-Healing Pipeline</h2>
+            <div class="log-container" id="audit-logs">
+                <div class="log-entry success">[CORE] Hyper-Audit Agent Active</div>
+                <div class="log-entry">[SELF-HEALING] Monitoring Sled vs SQLite drift...</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Fleet Isolation (Slashing)</h2>
+            <table class="fleet-table">
+                <thead>
+                    <tr>
+                        <th>Node ID</th>
+                        <th>Status</th>
+                        <th>Evidence</th>
+                    </tr>
+                </thead>
+                <tbody id="fleet-body">
+                    <!-- Slashed nodes here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function fetchAudit() {
+            try {
+                const res = await fetch('/api/mesh/audit/latest');
+                const data = await res.json();
+
+                document.getElementById('score').innerText = data.score.toFixed(1);
+                document.getElementById('score').style.color = data.score >= 10 ? 'var(--success)' : 'var(--warning)';
+
+                document.getElementById('chain_status').innerText = data.chain_continuous ? 'VERIFIED' : 'BROKEN';
+                document.getElementById('chain_status').style.color = data.chain_continuous ? 'var(--success)' : 'var(--danger)';
+
+                document.getElementById('state_status').innerText = data.state_consistent ? 'VERIFIED' : 'DRIFTED';
+                document.getElementById('state_status').style.color = data.state_consistent ? 'var(--success)' : 'var(--warning)';
+
+                document.getElementById('zk_status').innerText = data.proofs_valid ? 'VERIFIED' : 'INVALID';
+                document.getElementById('zk_status').style.color = data.proofs_valid ? 'var(--success)' : 'var(--danger)';
+
+                const logs = document.getElementById('audit-logs');
+                if (data.details) {
+                    data.details.forEach(detail => {
+                        const entry = document.createElement('div');
+                        entry.className = 'log-entry';
+                        entry.innerText = detail;
+                        logs.prepend(entry);
+                    });
+                }
+            } catch (e) {
+                console.error('Audit fetch error:', e);
+            }
+        }
+
+        async function fetchFleet() {
+            try {
+                const res = await fetch('/api/mesh/fleet/health');
+                const data = await res.json();
+                // This would be more detailed in a real app
+                // For now, we simulate a slashed node if score is low
+                const body = document.getElementById('fleet-body');
+                body.innerHTML = '';
+
+                // Mocking one slashed node for visual confirmation if score < 10
+                const score = parseFloat(document.getElementById('score').innerText);
+                if (score < 10) {
+                    body.innerHTML += `
+                        <tr>
+                            <td><code style="font-size:0.8rem">SN-BYZANTINE-MOD-01</code></td>
+                            <td><span class="status-badge status-slashed">SLASHED</span></td>
+                            <td>Double Voting Conflict at Height 1802</td>
+                        </tr>
+                    `;
+                }
+            } catch (e) {
+                console.error('Fleet fetch error:', e);
+            }
+        }
+
+        fetchAudit();
+        fetchFleet();
+        setInterval(fetchAudit, 10000);
+    </script>
+</body>
+
+</html>

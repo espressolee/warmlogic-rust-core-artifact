@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovereign Economy | WarmLogic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --surface: #111;
+            --accent: #00d3ff;
+            --accent-glow: rgba(0, 211, 255, 0.3);
+            --text: #eee;
+            --text-dim: #888;
+            --success: #00ffaa;
+            --danger: #ff4444;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin: 0;
+            background: linear-gradient(45deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid #222;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .balance-hero {
+            text-align: center;
+            padding: 3rem;
+            background: radial-gradient(circle at top right, var(--accent-glow), transparent);
+        }
+
+        .balance-value {
+            font-size: 4rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 1rem 0;
+        }
+
+        .balance-label {
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+        }
+
+        .tx-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tx-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .tx-item:last-child {
+            border-bottom: none;
+        }
+
+        .tx-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tx-reason {
+            font-weight: 600;
+        }
+
+        .tx-meta {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .tx-amount {
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .negative {
+            color: var(--danger);
+        }
+
+        .positive {
+            color: var(--success);
+        }
+
+        .btn {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--accent-glow);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>SOVEREIGN ECONOMY</h1>
+            <a href="/" class="btn"
+                style="background: transparent; color: var(--accent); border: 1px solid var(--accent);">Dashboard</a>
+        </header>
+
+        <div class="card balance-hero">
+            <div class="balance-label">Current Balance</div>
+            <div class="balance-value" id="balance">0.00</div>
+            <div class="balance-label" id="token-label">Sovereign Credits</div>
+            <div style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 2rem;">
+                <div>
+                    <div class="balance-label">Staked</div>
+                    <div style="font-size: 1.5rem; font-weight: 700;" id="staked-amount">0.00</div>
+                </div>
+                <div>
+                    <div class="balance-label">Network APY</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--success);" id="apy">5.0%</div>
+                </div>
+            </div>
+            <div style="margin-top: 1rem;">
+                <input type="number" id="stake-amount" placeholder="Amount to stake..."
+                    style="width: 200px; display: inline-block;">
+                <button class="btn" onclick="stakeTokens()">Stake WARM</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Transfer Credits</h2>
+            <div class="form-group">
+                <label>Receiver Node ID</label>
+                <input type="text" id="to_id" placeholder="W-ID...">
+            </div>
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="number" id="amount" placeholder="0.00">
+            </div>
+            <button class="btn" onclick="transfer()">Execute BFT Transfer</button>
+        </div>
+
+        <div class="card">
+            <h2>Sovereign Asset Ledger (Enterprise Pilot)</h2>
+            <div id="asset-list" class="tx-list">
+                <!-- Assets will appear here -->
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Transaction History</h2>
+            <div id="tx-history" class="tx-list">
+                <!-- Transactions will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function updateBalance() {
+            const res = await fetch('/api/mesh/economy/balance');
+            const data = await res.json();
+            document.getElementById('balance').innerText = data.balance.toFixed(2);
+        }
+
+        async function updateHistory() {
+            const res = await fetch('/api/mesh/economy/transactions');
+            const txs = await res.json();
+            const list = document.getElementById('tx-history');
+            list.innerHTML = txs.map(tx => `
+                <div class="tx-item">
+                    <div class="tx-info">
+                        <div class="tx-reason">${tx.reason}</div>
+                        <div class="tx-meta">To: ${tx.to.substring(0, 16)}...</div>
+                    </div>
+                    <div class="tx-amount negative">-${tx.amount.toFixed(2)}</div>
+                </div>
+            `).join('');
+        }
+
+        async function transfer() {
+            const to_id = document.getElementById('to_id').value;
+            const amount = document.getElementById('amount').value;
+
+            const res = await fetch('/api/mesh/economy/transfer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ to_id, amount: parseFloat(amount) })
+            });
+
+            if (res.ok) {
+                alert('Transfer Successful!');
+                updateBalance();
+                updateHistory();
+            } else {
+                alert('Transfer Failed: ' + (await res.json()).detail);
+            }
+        }
+
+        updateBalance();
+        updateHistory();
+        setInterval(updateBalance, 5000);
+    </script>
+</body>
+
+</html>

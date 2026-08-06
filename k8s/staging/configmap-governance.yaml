@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: warmlogic-governance
+  namespace: warmlogic-staging
+  labels:
+    app: warmlogic
+data:
+  governance.yaml: |
+    version: "1.0"
+    era: 4000
+    bands:
+      P0xx: "Foundation & Identity"
+      P1xx: "Consensus & Ledger"
+      P2xx: "Mesh & Networking"
+      P3xx: "Governance & Sovereignty"
+      P4xx: "DevOps"
+    enforcement:
+      reality: true
+      p_series: true

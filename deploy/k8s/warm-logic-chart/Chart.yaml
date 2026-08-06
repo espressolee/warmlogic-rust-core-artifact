@@ -1,0 +1,6 @@
+apiVersion: v2
+name: warm-logic-swarm
+description: A Helm chart for deploying a sovereign WarmLogic swarm
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

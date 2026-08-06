@@ -1,0 +1,223 @@
+[package]
+name = "warm_logic_rs"
+version = "1.1.0"
+edition = "2021"
+rust-version = "1.85"  # MSRV - set by pyo3 0.29 (1.83) and getrandom 0.4 (1.85, edition2024)
+description = "Post-quantum governance kernel: Rust crypto/consensus core with Python bindings (Rust core)"
+license = "Apache-2.0"
+repository = "https://github.com/espressolee/WarmLogic"
+
+[lib]
+name = "warm_logic_rs"
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "hyper"
+path = "src/main.rs"
+required-features = ["cockpit"]
+
+[[bin]]
+name = "bootloader"
+path = "src/bin/bootloader.rs"
+required-features = ["bootloader"]
+
+[[bin]]
+name = "kernel"
+path = "src/bin/bare_metal.rs"
+test = false
+doc = false
+bench = false
+required-features = ["bare-metal"]
+
+[[bin]]
+name = "osctl"
+path = "src/bin/osctl.rs"
+required-features = ["cockpit"]
+
+[dependencies]
+# RUSTSEC-2025-0020 mitigation: keep pyo3 on a patched release line.
+pyo3 = { version = "0.29.1", optional = true, features = ["extension-module"] }
+indoc = { version = "2.0", optional = true }  # Required for pyo3 macro re-exports
+mavlink = { version = "0.17", default-features = false, features = ["common"], optional = true }
+sha3 = { version = "0.10.8", default-features = false }
+sha2 = { version = "0.10.9", default-features = false }
+crc32fast = { version = "1.5.0", default-features = false }
+tracing = { version = "0.1.44", default-features = false }
+libloading = { version = "0.8.9", optional = true }  # PKCS#11 dynamic loading (std-only)
+rand = { version = "0.8.5", default-features = false, features = ["small_rng"] }
+rand_chacha = { version = "0.3", default-features = false }
+zeroize = { version = "1.7", features = ["derive"] }
+subtle = { version = "2.5", default-features = false }  # Constant-time operations
+hex = { version = "0.4.3", default-features = false, features = ["alloc"] }
+serde = { version = "1.0", features = ["derive"], default-features = false }
+serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
+thiserror = { version = "2.0", default-features = false }
+redb = { version = "2.4.0", optional = true }
+aes-gcm = { version = "0.10.3", default-features = false, features = ["aes", "alloc"] }
+aead = { version = "0.5.2", default-features = false, features = ["alloc"] }
+borsh = { version = "1.3.1", features = ["derive"], default-features = false }
+chrono = { version = "0.4.31", default-features = false }
+hashbrown = { version = "0.16.1", default-features = false, features = ["alloc", "inline-more"] }
+panic-halt = { version = "0.2.0", optional = true }
+spin = "0.9.8"
+fips204 = { version = "0.4.6", default-features = false, features = ["ml-dsa-65"] }
+fips203 = { version = "0.4.3", default-features = false, features = ["ml-kem-768"] }
+dashmap = { version = "5.5", optional = true }
+curve25519-dalek = { version = "4.1.3", default-features = false, features = ["alloc", "rand_core", "digest"] }
+merlin = { version = "3.0.0", default-features = false }
+lazy_static = { version = "1.4.0", features = ["spin_no_std"] }
+rand_core = { version = "0.6.4", default-features = false, features = ["alloc"] }
+ratatui = { version = "0.29", optional = true }
+crossterm = { version = "0.27", optional = true }
+clap = { version = "4.4", features = ["derive"], optional = true }
+rayon = { version = "1.8", optional = true }
+# TPM 2.0 support (Linux only)
+tss-esapi = { version = "7.5", optional = true }
+tokio = { version = "1.35", features = ["full"], optional = true }
+
+# ============================================================================
+# Hardware Security Module dependencies (Phase A: Hardware Security)
+# ============================================================================
+# Apple Security.framework for Secure Enclave (macOS only)
+security-framework = { version = "2.9", optional = true }
+security-framework-sys = { version = "2.9", optional = true }
+# Core Foundation types for macOS
+core-foundation = { version = "0.9", optional = true }
+candle-core = { version = "0.8.2", features = [], optional = true }
+# candle-nn = { version = "0.8.2", optional = true }
+candle-transformers = { version = "0.8.2", optional = true }
+tokenizers = { version = "0.21.0", optional = true }
+anyhow = { version = "1.0", optional = true }
+regex = { version = "1.10", optional = true }
+nalgebra = { version = "0.32", default-features = false, features = ["libm"], optional = true }
+num-traits = { version = "0.2", default-features = false }
+linked_list_allocator = { version = "0.10", optional = true }
+getrandom = { version = "0.2.17", default-features = false, features = ["custom"], optional = true }
+
+# ============================================================================
+# arkworks ZK-SNARK dependencies (Phase B1: ZK Proofs)
+# ============================================================================
+# Core arkworks libraries for Groth16 proof system
+ark-std = { version = "0.4", default-features = false, optional = true }
+ark-ff = { version = "0.4", default-features = false, optional = true }
+ark-ec = { version = "0.4", default-features = false, optional = true }
+ark-relations = { version = "0.4", default-features = false, optional = true }
+ark-r1cs-std = { version = "0.4", default-features = false, optional = true }
+ark-snark = { version = "0.4", default-features = false, optional = true }
+ark-groth16 = { version = "0.4", default-features = false, optional = true }
+ark-serialize = { version = "0.4", default-features = false, optional = true }
+# BLS12-381 curve (industry standard for Groth16, same as Ethereum 2.0)
+ark-bls12-381 = { version = "0.4", default-features = false, features = ["curve"], optional = true }
+# BN254 curve (alternative, used by Ethereum ZK rollups)
+ark-bn254 = { version = "0.4", default-features = false, features = ["curve"], optional = true }
+
+[dev-dependencies]
+proptest = "1.0"
+uuid = { version = "1.0", features = ["v4"] }
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name = "crypto_bench"
+harness = false
+
+[[bench]]
+name = "consensus_bench"
+harness = false
+
+[[bench]]
+name = "drone_bench"
+harness = false
+
+[[bench]]
+name = "riscv_projection_bench"
+harness = false
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2"
+console_error_panic_hook = "0.1"
+getrandom = { version = "0.2", features = ["js"] } # Required for rand on WASM
+serde-wasm-bindgen = "0.6"
+
+[features]
+default = ["std"]
+python = ["dep:pyo3", "dep:indoc", "pyo3/extension-module", "persistence", "std"]
+persistence = ["dep:redb", "dep:dashmap", "std"]
+cockpit = ["std", "dep:ratatui", "dep:crossterm", "dep:clap", "persistence"]
+# TPM 2.0 hardware support (Linux only)
+tpm = ["dep:tss-esapi", "std"]
+# Apple Secure Enclave hardware support (macOS only)
+sep-hardware = ["dep:security-framework", "dep:security-framework-sys", "dep:core-foundation", "std"]
+bootloader = ["dep:pyo3", "std", "pyo3/auto-initialize"]
+wasm = [] # Marker feature for WASM builds
+mavlink = ["dep:mavlink", "mavlink/std", "nalgebra"]  # MAVLink protocol support (includes nalgebra for Vector3)
+nalgebra = ["dep:nalgebra"]  # Linear algebra support
+bare-metal = ["dep:linked_list_allocator", "dep:getrandom", "rand_core/getrandom", "fips204/default-rng", "fips203/default-rng"] # Required for bare-metal kernel binary
+ml = ["dep:candle-core", "dep:candle-transformers", "dep:tokenizers", "std"] # ML/Neural features
+
+# ============================================================================
+# ZK-SNARK feature (Phase B1: Groth16 proofs for governance)
+# ============================================================================
+zk = [
+    "dep:ark-std",
+    "dep:ark-ff",
+    "dep:ark-ec",
+    "dep:ark-relations",
+    "dep:ark-r1cs-std",
+    "dep:ark-snark",
+    "dep:ark-groth16",
+    "dep:ark-serialize",
+    "dep:ark-bls12-381",
+    "dep:ark-bn254",
+    "std",  # ZK requires std for now (parallel proving)
+]
+
+rvv = []  # RISC-V Vector acceleration
+neon = [] # ARM NEON acceleration
+
+std = [
+    "sha3/std",
+    "rand/std",
+    "rand/std_rng",
+    "hex/std",
+    "serde/std",
+    "chrono/std",
+    "fips204/default-rng",
+    "fips203/default-rng",
+    "dep:rayon",
+    "dep:tokio",
+    "dep:anyhow",
+    "dep:regex",
+    "rand_core/getrandom",
+    "aes-gcm/getrandom",
+    "aead/getrandom",
+    "dep:libloading",
+    "mavlink",
+    "nalgebra"
+]
+# NOTE: Keep mavlink/nalgebra wired into std because core drone paths are currently compiled in std builds.
+
+[lints.rust]
+# Allow cfg conditions for features that are planned but not yet fully implemented
+unexpected_cfgs = { level = "warn", check-cfg = ["cfg(feature, values(\"tpm\", \"cuda\", \"api\", \"telemetry\"))"] }
+
+[profile.dev]
+panic = "unwind"
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1
+
+# Optimized-but-unwindable profile for cargo bench: [profile.release] pins
+# panic="abort" (bare-metal), which cannot link the unwind-based bench
+# harness on a fresh build. Thin LTO keeps CI bench builds inside timeouts.
+[profile.bench-opt]
+inherits = "release"
+panic = "unwind"
+lto = "thin"
+codegen-units = 16
+
+
+
+# NOTE: Using official crates.io versions for Python 3.13+ compatibility
+# To re-enable vendoring for offline builds: cargo vendor vendor_deps

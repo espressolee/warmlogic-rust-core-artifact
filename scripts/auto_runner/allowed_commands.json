@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "commands": [
+    "mkdir",
+    "python",
+    "pytest",
+    "cp",
+    "ls"
+  ]
+}

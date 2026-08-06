@@ -1,0 +1,7 @@
+[
+  "mkdir",
+  "python",
+  "pytest",
+  "cp",
+  "ls"
+]

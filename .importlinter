@@ -1,0 +1,95 @@
+[importlinter]
+root_package = warm_logic_core
+
+[importlinter:contract:system_tier_isolation]
+name = System Tier Isolation (No imports from above)
+type = forbidden
+source_modules =
+    warm_logic_core.system.kernel
+    warm_logic_core.system.runtime
+    warm_logic_core.system.os
+    warm_logic_core.system.invariant
+    warm_logic_core.system.formal
+forbidden_modules =
+    warm_logic_core.services
+    warm_logic_core.app
+ignore_imports =
+    warm_logic_core.system.os.api -> warm_logic_core.app.dashboard.utils.paths
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.ct.ct_fsm
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.ct.ct_policy
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.ct.mdp
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.ct.rstar_hook
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.dashboard.utils.paths
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.ethics.evaluator
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.ethics.integration
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.governance.ct_safe_mdp
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.governance.gov_inputs
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.governance.gov_outputs
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.governance.gov_rstar_bridge
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.governance.gov_vm
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.governance.sat_binding
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.tr_operator
+    warm_logic_core.tr_operator -> warm_logic_core.app.ethics.evaluator
+    warm_logic_core.system.os.meta_governance_engine -> warm_logic_core.app.governance.meta_governance_engine
+    warm_logic_core.system.os.meta_kernel -> warm_logic_core.app.governance.sat_binding
+    warm_logic_core.system.os.scheduler -> warm_logic_core.app.dashboard.utils.loader_attention
+    warm_logic_core.system.kernel.t_operator -> warm_logic_core.services.observability.runtime_metrics
+
+[importlinter:contract:services_tier_bounds]
+name = Services Tier Bounds (Can import System, not App)
+type = forbidden
+source_modules =
+    warm_logic_core.services.ml
+    warm_logic_core.services.llm
+    warm_logic_core.services.metrics
+    warm_logic_core.services.observability
+forbidden_modules =
+    warm_logic_core.app
+ignore_imports =
+    warm_logic_core.services.ml.continuous_training_v2 -> warm_logic_core.app.ct.reward
+    warm_logic_core.services.ml.continuous_training_v2 -> warm_logic_core.app.governance.constraints
+    warm_logic_core.services.ml.continuous_training_v2 -> warm_logic_core.app.governance.solver
+    warm_logic_core.services.ml.continuous_training_v2 -> warm_logic_core.services.monitor.fsm_snapshot
+    warm_logic_core.services.monitor.fsm_snapshot -> warm_logic_core.app.governance.govsat
+    warm_logic_core.services.monitor.safety_snapshot_builder -> warm_logic_core.app.rstar.compute
+    warm_logic_core.services.monitor.safety_snapshot_builder -> warm_logic_core.app.ct.mdp
+    warm_logic_core.services.monitor.safety_snapshot_builder -> warm_logic_core.app.patch.metrics
+
+[importlinter:contract:app_orchestrates]
+name = App Tier Orchestrates (Can import all lower tiers)
+type = layers
+layers =
+    app
+    services
+    system
+containers =
+    warm_logic_core
+ignore_imports =
+    warm_logic_core.system.os.api -> warm_logic_core.app.dashboard.utils.paths
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.ct.ct_fsm
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.ct.ct_policy
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.ct.mdp
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.ct.rstar_hook
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.dashboard.utils.paths
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.ethics.evaluator
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.ethics.integration
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.governance.ct_safe_mdp
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.governance.gov_inputs
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.governance.gov_outputs
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.governance.gov_rstar_bridge
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.governance.gov_vm
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.app.governance.sat_binding
+    warm_logic_core.system.os.kernel_loop -> warm_logic_core.tr_operator
+    warm_logic_core.tr_operator -> warm_logic_core.app.ethics.evaluator
+    warm_logic_core.system.os.meta_governance_engine -> warm_logic_core.app.governance.meta_governance_engine
+    warm_logic_core.system.os.meta_kernel -> warm_logic_core.app.governance.sat_binding
+    warm_logic_core.system.os.scheduler -> warm_logic_core.app.dashboard.utils.loader_attention
+    warm_logic_core.services.ml.continuous_training_v2 -> warm_logic_core.app.ct.reward
+    warm_logic_core.services.ml.continuous_training_v2 -> warm_logic_core.app.governance.constraints
+    warm_logic_core.services.ml.continuous_training_v2 -> warm_logic_core.app.governance.solver
+    warm_logic_core.services.ml.continuous_training_v2 -> warm_logic_core.services.monitor.fsm_snapshot
+    warm_logic_core.services.monitor.fsm_snapshot -> warm_logic_core.app.governance.govsat
+    warm_logic_core.services.monitor.safety_snapshot_builder -> warm_logic_core.app.rstar.compute
+    warm_logic_core.services.monitor.safety_snapshot_builder -> warm_logic_core.app.ct.mdp
+    warm_logic_core.services.monitor.safety_snapshot_builder -> warm_logic_core.app.patch.metrics
+    warm_logic_core.system.kernel.t_operator -> warm_logic_core.services.observability.runtime_metrics

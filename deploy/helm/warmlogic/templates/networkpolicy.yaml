@@ -1,0 +1,60 @@
+{{- if .Values.networkPolicy.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "warmlogic.fullname" . }}
+  labels:
+    {{- include "warmlogic.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "warmlogic.selectorLabels" . | nindent 6 }}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow mesh traffic from other WarmLogic pods
+    - from:
+        - podSelector:
+            matchLabels:
+              {{- include "warmlogic.selectorLabels" . | nindent 14 }}
+      ports:
+        - protocol: UDP
+          port: 9000
+        - protocol: TCP
+          port: 8080
+    # Allow HTTP from ingress controller
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 8080
+    # Allow Prometheus scraping
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: monitoring
+      ports:
+        - protocol: TCP
+          port: 9090
+  egress:
+    # Allow mesh traffic to other WarmLogic pods
+    - to:
+        - podSelector:
+            matchLabels:
+              {{- include "warmlogic.selectorLabels" . | nindent 14 }}
+      ports:
+        - protocol: UDP
+          port: 9000
+    # Allow DNS
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+{{- end }}

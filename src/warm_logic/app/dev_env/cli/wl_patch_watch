@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# ==========================================================
+# File: wl_patch_watch
+# Author: espressolee
+# Project: Warm Logic — DevEnv
+# Description:
+#   Launcher for patch_history + OS/Scheduler diff watcher.
+#   Observes JSON artifacts and emits canonical EventBus events.
+# ==========================================================
+
+set -euo pipefail
+
+SOURCE="${BASH_SOURCE[0]:-$0}"
+while [ -h "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  TARGET="$(readlink "$SOURCE")"
+  [[ "$TARGET" != /* ]] && SOURCE="$DIR/$TARGET" || SOURCE="$TARGET"
+done
+
+SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+DEVENV_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+export PYTHONPATH="${DEVENV_ROOT}:${PYTHONPATH:-}"
+
+exec python3 -m dev_env.monitor.watcher "$@"

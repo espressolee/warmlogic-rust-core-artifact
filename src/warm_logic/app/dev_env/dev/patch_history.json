@@ -1,0 +1,18 @@
+[
+  {
+    "patch_id": "p-0001",
+    "parent_patches": [],
+    "patch_age_days": 2,
+    "semantic_score": 0.82,
+    "gradient_score": 0.9,
+    "lineage_age": 2
+  },
+  {
+    "patch_id": "p-0002",
+    "parent_patches": ["p-0001"],
+    "patch_age_days": 1,
+    "semantic_score": 0.78,
+    "gradient_score": 0.85,
+    "lineage_age": 1
+  }
+]

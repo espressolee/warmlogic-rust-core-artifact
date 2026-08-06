@@ -1,0 +1,7 @@
+schema: warmlogic.os_v2_config.v1
+run_id: OSV2_PUBLIC_SANITY_V1
+mode: public_sanity
+governance:
+  policy: ctsafe
+  autonomy_cap: semi
+

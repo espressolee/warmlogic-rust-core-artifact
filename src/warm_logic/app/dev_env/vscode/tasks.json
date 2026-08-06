@@ -1,0 +1,57 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "DevEnv: EventBus",
+      "type": "shell",
+      "command": "wl_eventbus",
+      "options": {
+        "cwd": "${workspaceFolder}/dev_env"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "DevEnv: Agent Stream",
+      "type": "shell",
+      "command": "wl_agent_stream",
+      "options": {
+        "cwd": "${workspaceFolder}/dev_env"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "DevEnv: Watcher",
+      "type": "shell",
+      "command": "python -m dev_env.monitor.watcher",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "DevEnv: Tests (fast)",
+      "type": "shell",
+      "command": "pytest dev_env/tests/test_paths.py dev_env/tests/test_eventbus_router.py dev_env/tests/test_eventbus_ws.py",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# ==========================================================
+# File: wl_eventbus
+# Author: espressolee
+# Project: Warm Logic — DevEnv
+# Description:
+#   Symlink-safe launcher for the EventBus server.
+#   Resolves DevEnv root, sets PYTHONPATH, and runs:
+#       python3 -m dev_env.eventbus.server
+# ==========================================================
+
+set -euo pipefail
+
+# Resolve symlink to actual script location
+SOURCE="${BASH_SOURCE[0]:-$0}"
+while [ -h "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  TARGET="$(readlink "$SOURCE")"
+  [[ "$TARGET" != /* ]] && SOURCE="$DIR/$TARGET" || SOURCE="$TARGET"
+done
+
+SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+DEVENV_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+export PYTHONPATH="${DEVENV_ROOT}:${PYTHONPATH:-}"
+
+exec python3 -m dev_env.eventbus.server "$@"

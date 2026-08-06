@@ -1,0 +1,27 @@
+schema_version: 1
+metadata:
+  name: Warm Logic DevEnv
+  description: Canonical DevEnv configuration for local profiles.
+  updated: 2025-03-01
+
+# EventBus endpoints used by DevEnv utilities and wlctl helpers.
+eventbus:
+  emit_url: http://127.0.0.1:8765/emit
+  health_url: http://127.0.0.1:8765/health
+
+# Relative paths (from repo root) for telemetry artifacts.
+paths:
+  agent_log: model/data/agent_reflection_log.jsonl
+  os_state: model/data/os_state.json
+  scheduler_status: model/data/scheduler_status.json
+  governance_status: model/data/governance_status.json
+  patch_engine_status: model/data/patch_engine_status.json
+  adp_metrics: model/data/adp_metrics.json
+  adp_hook: model/data/adp_hook.json
+
+# Default commands for DevEnv CI helpers / wlctl wrappers.
+tests:
+  default_command:
+    - bash
+    - model/run_all.sh
+    - test

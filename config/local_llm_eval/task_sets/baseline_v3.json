@@ -1,0 +1,106 @@
+{
+  "task_set_id": "baseline_v3",
+  "description": "Phase 40+/critical-path baseline covering CT demos, governance gates, and dashboard/RBAC checks.",
+  "tasks": [
+    {
+      "task_id": "p90_phase40_demo_loop",
+      "p_id": "P90",
+      "category": "T2",
+      "summary": "Run the Phase 40 end-to-end demo to capture governance_inputs and CT metrics.",
+      "commands": ["python -m pytest model/tests/test_e2e_phase40_demo.py"],
+      "tests": ["python -m pytest model/tests/test_e2e_phase40_demo.py"],
+      "invariants": ["I-4", "I-5"],
+      "governance": {"mode": "strict", "false_positive_rate": 0.04, "false_negative_rate": 0.02, "latency_seconds": [6, 18], "max_vetoes": 3}
+    },
+    {
+      "task_id": "p91_ct_guard_strict",
+      "p_id": "P91",
+      "category": "T2",
+      "summary": "Exercise CT guard strict mode with manual overrides to validate \u03b5 bounds.",
+      "commands": ["python -m pytest tests/core/test_ct_guard_strict_mode.py"],
+      "tests": ["python -m pytest tests/core/test_ct_guard_strict_mode.py"],
+      "invariants": ["I-5"],
+      "governance": {"mode": "lagged", "false_positive_rate": 0.05, "false_negative_rate": 0.08, "latency_seconds": [20, 60], "max_vetoes": 2}
+    },
+    {
+      "task_id": "p92_wlctl_autonomy_gate",
+      "p_id": "P92",
+      "category": "T3",
+      "summary": "Verify wlctl autonomy gate semantics under manual/local/remote blends.",
+      "commands": ["python -m pytest tests/core/test_wlctl_autonomy_modes.py"],
+      "tests": ["python -m pytest tests/core/test_wlctl_autonomy_modes.py"],
+      "invariants": ["I-3", "I-6"],
+      "governance": {"mode": "strict", "false_positive_rate": 0.03, "false_negative_rate": 0.05, "latency_seconds": [8, 25], "max_vetoes": 2}
+    },
+    {
+      "task_id": "p93_dashboard_files_rbac",
+      "p_id": "P93",
+      "category": "T4",
+      "summary": "Exercise dashboard files route RBAC and guard checks.",
+      "commands": ["python -m pytest tests/critical_path/test_dashboard_files_route.py"],
+      "tests": ["python -m pytest tests/critical_path/test_dashboard_files_route.py"],
+      "invariants": ["I-3", "I-4"],
+      "governance": {"mode": "strict", "false_positive_rate": 0.02, "false_negative_rate": 0.02, "latency_seconds": [5, 15], "max_vetoes": 1}
+    },
+    {
+      "task_id": "p94_llm_guard_critical",
+      "p_id": "P94",
+      "category": "T2",
+      "summary": "Run the LLM guard critical-path tests to ensure prefix gates forbid unsafe usage.",
+      "commands": ["python -m pytest tests/critical_path/test_llm_guard_critical.py"],
+      "tests": ["python -m pytest tests/critical_path/test_llm_guard_critical.py"],
+      "invariants": ["I-3"],
+      "governance": {"mode": "strict", "false_positive_rate": 0.06, "false_negative_rate": 0.01, "latency_seconds": [12, 40], "max_vetoes": 4}
+    },
+    {
+      "task_id": "p95_rbac_research_route",
+      "p_id": "P95",
+      "category": "T4",
+      "summary": "Validate RBAC for the research dashboard route with governance telemetry enabled.",
+      "commands": ["python -m pytest tests/critical_path/test_rbac_research_route.py"],
+      "tests": ["python -m pytest tests/critical_path/test_rbac_research_route.py"],
+      "invariants": ["I-3", "I-4"],
+      "governance": {"mode": "lagged", "false_positive_rate": 0.07, "false_negative_rate": 0.03, "latency_seconds": [25, 75], "max_vetoes": 4}
+    },
+    {
+      "task_id": "p96_prometheus_dq_topk",
+      "p_id": "P96",
+      "category": "T2",
+      "summary": "Run Prometheus DQ top-k filter tests to ensure metrics caps hold under load.",
+      "commands": ["python -m pytest tests/observability/test_prometheus_dq_topk_filters.py"],
+      "tests": ["python -m pytest tests/observability/test_prometheus_dq_topk_filters.py"],
+      "invariants": ["I-4"],
+      "governance": {"mode": "strict", "false_positive_rate": 0.03, "false_negative_rate": 0.04, "latency_seconds": [15, 45], "max_vetoes": 2}
+    },
+    {
+      "task_id": "p97_cluster_slo_wrapper",
+      "p_id": "P97",
+      "category": "T2",
+      "summary": "Exercise the cluster SLO wrapper to surface DQ incidents and approvals.",
+      "commands": ["python -m pytest tests/scripts/test_cluster_check_slo_wrapper.py"],
+      "tests": ["python -m pytest tests/scripts/test_cluster_check_slo_wrapper.py"],
+      "invariants": ["I-4", "I-5"],
+      "governance": {"mode": "lagged", "false_positive_rate": 0.08, "false_negative_rate": 0.05, "latency_seconds": [40, 120], "max_vetoes": 5}
+    },
+    {
+      "task_id": "p98_status_badges",
+      "p_id": "P98",
+      "category": "T3",
+      "summary": "Run status HTML badges regression with audit links and governance metadata.",
+      "commands": ["python -m pytest tests/scripts/test_status_html_badges.py"],
+      "tests": ["python -m pytest tests/scripts/test_status_html_badges.py"],
+      "invariants": ["I-3", "I-4"],
+      "governance": {"mode": "strict", "false_positive_rate": 0.02, "false_negative_rate": 0.02, "latency_seconds": [4, 14], "max_vetoes": 1}
+    },
+    {
+      "task_id": "p99_patch_engine_e2e_adp",
+      "p_id": "P99",
+      "category": "T2",
+      "summary": "Run the patch engine + ADP e2e test with metadata propagation and rollbacks.",
+      "commands": ["python -m pytest scripts/tests/test_patch_engine_e2e_adp.py"],
+      "tests": ["python -m pytest scripts/tests/test_patch_engine_e2e_adp.py"],
+      "invariants": ["I-2", "I-3", "I-6"],
+      "governance": {"mode": "offload", "false_positive_rate": 0.12, "false_negative_rate": 0.08, "latency_seconds": [30, 90], "max_vetoes": 6}
+    }
+  ]
+}

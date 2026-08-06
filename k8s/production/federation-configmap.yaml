@@ -1,0 +1,36 @@
+# WarmLogic Federation ConfigMap
+# Configuration for Sovereign Federation nodes
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: warmlogic-federation-config
+  namespace: warmlogic-production
+  labels:
+    app: warmlogic
+    component: federation
+data:
+  # Federation Protocol
+  WARMLOGIC_FEDERATION_PROTOCOL_VERSION: "1"
+  WARMLOGIC_FEDERATION_MAGIC_BYTES: "WLFED"
+
+  # Consensus
+  WARMLOGIC_QUORUM_THRESHOLD: "0.67"
+  WARMLOGIC_CONSENSUS_TIMEOUT_MS: "5000"
+
+  # PQC Settings
+  WARMLOGIC_KEM_ALGORITHM: "ML-KEM-768"
+  WARMLOGIC_DSA_ALGORITHM: "ML-DSA-65"
+  WARMLOGIC_SESSION_KEY_ROTATION_SEC: "3600"
+
+  # Network
+  WARMLOGIC_HEARTBEAT_INTERVAL_SEC: "30"
+  WARMLOGIC_CONNECTION_TIMEOUT_SEC: "10"
+  WARMLOGIC_MAX_PEER_CONNECTIONS: "64"
+
+  # Peer Discovery (DNS-based within cluster)
+  WARMLOGIC_PEER_DISCOVERY_MODE: "dns"
+  WARMLOGIC_PEER_DNS_PATTERN: "warmlogic-federation-{0..2}.warmlogic-federation-headless.warmlogic-production.svc.cluster.local"
+
+  # Logging
+  WARMLOGIC_LOG_FORMAT: "json"
+  WARMLOGIC_LOG_LEVEL: "INFO"

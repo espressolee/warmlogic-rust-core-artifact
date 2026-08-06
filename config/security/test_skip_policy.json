@@ -1,0 +1,34 @@
+{
+  "schema": "warmlogic.test_skip_policy.v1",
+  "max_allowlist_entries": 5,
+  "allowlist": [
+    {
+      "path": "tests/kernel/sys/test_persistence.py",
+      "line": 1408,
+      "kind": "skipif",
+      "reason": "test-design: rust core integration fixture is still optional in OSS CI runners",
+      "expires_on": "2026-12-31"
+    },
+    {
+      "path": "tests/mcp/test_tool_limits.py",
+      "line": 34,
+      "kind": "pytest.skip",
+      "reason": "env-dependent: warm_logic_core.mcp extension absent on minimal CI images",
+      "expires_on": "2026-12-31"
+    },
+    {
+      "path": "tests/mesh/test_dht_broadcast_real.py",
+      "line": 26,
+      "kind": "pytest.skip",
+      "reason": "env-dependent: some CI sandboxes deny UDP bind/broadcast",
+      "expires_on": "2026-12-31"
+    },
+    {
+      "path": "tests/network/test_wan_chaos.py",
+      "line": 55,
+      "kind": "pytest.skip",
+      "reason": "env-dependent: some CI sandboxes deny UDP bind in chaos transport tests",
+      "expires_on": "2026-12-31"
+    }
+  ]
+}

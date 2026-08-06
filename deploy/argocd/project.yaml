@@ -1,0 +1,79 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: warmlogic
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: WarmLogic Sovereign AI Governance Kernel
+
+  sourceRepos:
+    - https://github.com/espressolee/WarmLogic.git
+    - https://github.com/WarmLogic/*
+
+  destinations:
+    - namespace: warmlogic
+      server: https://kubernetes.default.svc
+    - namespace: warmlogic-staging
+      server: https://kubernetes.default.svc
+    - namespace: warmlogic-monitoring
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: ''
+      kind: Namespace
+    - group: networking.k8s.io
+      kind: Ingress
+    - group: policy
+      kind: PodDisruptionBudget
+
+  namespaceResourceBlacklist:
+    - group: ''
+      kind: ResourceQuota
+    - group: ''
+      kind: LimitRange
+
+  namespaceResourceWhitelist:
+    - group: ''
+      kind: '*'
+    - group: apps
+      kind: '*'
+    - group: batch
+      kind: '*'
+    - group: networking.k8s.io
+      kind: '*'
+    - group: monitoring.coreos.com
+      kind: '*'
+
+  roles:
+    - name: developer
+      description: Developer access to WarmLogic applications
+      policies:
+        - p, proj:warmlogic:developer, applications, get, warmlogic/*, allow
+        - p, proj:warmlogic:developer, applications, sync, warmlogic/*, allow
+      groups:
+        - warmlogic-developers
+
+    - name: admin
+      description: Admin access to WarmLogic applications
+      policies:
+        - p, proj:warmlogic:admin, applications, *, warmlogic/*, allow
+        - p, proj:warmlogic:admin, clusters, get, *, allow
+        - p, proj:warmlogic:admin, repositories, *, *, allow
+      groups:
+        - warmlogic-admins
+
+  syncWindows:
+    - kind: allow
+      schedule: '0 6-22 * * 1-5'
+      duration: 16h
+      applications:
+        - '*-staging'
+      manualSync: true
+    - kind: deny
+      schedule: '0 0 * * 0'
+      duration: 24h
+      applications:
+        - warmlogic
+      manualSync: false

@@ -1,0 +1,13 @@
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "warm_logic_rs"
+version = "0.4.0+kinetic"
+dependencies = []
+
+[tool.maturin]
+features = ["python", "zk"]
+module-name = "warm_logic_rs"
+binding = "pyo3"

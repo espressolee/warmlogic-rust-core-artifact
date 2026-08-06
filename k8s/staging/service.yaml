@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: warmlogic-gateway
+  namespace: warmlogic-staging
+  labels:
+    app: warmlogic
+    component: gateway
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: warmlogic
+    component: gateway

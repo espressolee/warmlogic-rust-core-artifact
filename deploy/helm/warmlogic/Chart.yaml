@@ -1,0 +1,27 @@
+apiVersion: v2
+name: warmlogic
+description: WarmLogic AI governance kernel - post-quantum crypto core with Python governance layer
+type: application
+version: 1.1.0
+appVersion: "1.1.0"
+keywords:
+  - ai-safety
+  - pqc
+  - hsm
+  - federation
+  - governance
+maintainers:
+  - name: espressolee
+    email: 70549809+espressolee@users.noreply.github.com
+home: https://github.com/espressolee/WarmLogic
+sources:
+  - https://github.com/espressolee/WarmLogic
+dependencies:
+  - name: prometheus
+    version: ">=25.0.0"
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: monitoring.prometheus.enabled
+  - name: grafana
+    version: ">=7.0.0"
+    repository: https://grafana.github.io/helm-charts
+    condition: monitoring.grafana.enabled

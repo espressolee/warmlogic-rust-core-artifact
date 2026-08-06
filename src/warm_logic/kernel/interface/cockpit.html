@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovereign Cockpit | WarmLogic</title>
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --surface: #121214;
+            --border: #242428;
+            --text-primary: #e1e1e6;
+            --text-secondary: #a1a1aa;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to right, #121214, #0a0a0c);
+        }
+
+        .logo {
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .status-badge {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.75rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            overflow: hidden;
+        }
+
+        #sidebar {
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            background: var(--surface);
+        }
+
+        .panel-title {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .metric-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        #feed-container {
+            padding: 2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .event-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            padding: 1.25rem;
+            border-radius: 4px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .event-card.ACCESS_GRANTED {
+            border-left-color: var(--success);
+        }
+
+        .event-card.REFUSAL {
+            border-left-color: var(--error);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .event-type {
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .event-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .proof-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            border-radius: 4px;
+            margin-top: 1rem;
+            word-break: break-all;
+            position: relative;
+        }
+
+        .proof-box::before {
+            content: "ZK-PROOF EVIDENCE";
+            position: absolute;
+            top: -7px;
+            left: 10px;
+            background: var(--surface);
+            padding: 0 5px;
+            font-size: 0.6rem;
+            color: var(--accent);
+        }
+
+        .verdict-tag {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+
+        .v-allow {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .v-block {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon"></div>
+            SOVEREIGN COCKPIT
+        </div>
+        <div id="connection-status" class="status-badge">Awaiting Sync...</div>
+    </header>
+
+    <main>
+        <section id="sidebar">
+            <div>
+                <div class="panel-title">System State</div>
+                <div class="metric-card">
+                    <div class="metric-label">TRUSTED EXECUTION</div>
+                    <div class="metric-value">AWS NITRO ENCLAVE</div>
+                </div>
+                <br>
+                <div class="metric-card">
+                    <div class="metric-label">POLICY ENGINE</div>
+                    <div class="metric-value">AWS CEDAR V1.0</div>
+                </div>
+            </div>
+
+            <div>
+                <div class="panel-title">Forensic Stats</div>
+                <div class="metric-card">
+                    <div class="metric-label">VERIFIED PROOFS</div>
+                    <div id="proof-count" class="metric-value">0</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="feed-container">
+            <!-- Events will appear here -->
+        </section>
+    </main>
+
+    <script>
+        const feed = document.getElementById('feed-container');
+        const status = document.getElementById('connection-status');
+        const proofCountElem = document.getElementById('proof-count');
+        let proofCount = 0;
+
+        const evtSource = new EventSource("/stream");
+
+        evtSource.onopen = () => {
+            status.textContent = "Sovereign Link Active";
+            status.style.color = "var(--success)";
+            status.style.borderColor = "rgba(16, 185, 129, 0.5)";
+        };
+
+        evtSource.onerror = () => {
+            status.textContent = "Link Suspended";
+            status.style.color = "var(--error)";
+            status.style.borderColor = "rgba(239, 68, 68, 0.5)";
+        };
+
+        evtSource.onmessage = (event) => {
+            const payload = JSON.parse(event.data);
+            addEventToFeed(payload);
+        };
+
+        function addEventToFeed(payload) {
+            const { event_type, data } = payload;
+            const card = document.createElement('div');
+            card.className = `event-card ${event_type}`;
+
+            const time = new Date().toLocaleTimeString();
+            const proof = data.sovereign_proof || "N/A";
+            const verdict = event_type === "ACCESS_GRANTED" ? "ALLOW" : "BLOCK";
+            const verdictClass = event_type === "ACCESS_GRANTED" ? "v-allow" : "v-block";
+
+            card.innerHTML = `
+                <div class="event-header">
+                    <span class="event-type">${event_type}</span>
+                    <span class="event-time">${time}</span>
+                </div>
+                <div style="font-size: 0.8rem; margin-bottom: 0.5rem;">
+                    Verdict: <span class="verdict-tag ${verdictClass}">${verdict}</span>
+                </div>
+                <div class="proof-box">
+                    ${proof}
+                </div>
+            `;
+
+            feed.prepend(card);
+
+            if (data.sovereign_proof) {
+                proofCount++;
+                proofCountElem.textContent = proofCount;
+            }
+
+            // Keep only last 50
+            if (feed.children.length > 50) {
+                feed.removeChild(feed.lastChild);
+            }
+        }
+    </script>
+</body>
+
+</html>

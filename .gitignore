@@ -1,0 +1,194 @@
+# Guardrails: Secrets & Sensitive Data
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials/
+config/master_keys.json
+
+# Workspace artifacts
+# macOS resource forks
+._*
+.DS_Store
+__MACOSX/
+
+# Hypothesis
+.hypothesis/
+
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+venv/
+.venv/
+warm_logic_rs/target/
+warm_logic_rs_crate/target/
+
+# Development symlink (editable install workaround)
+/warm_logic
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# protected Data (see docs/SACRED_DATA.md)
+# out/ is git-ignored but MUST NOT be deleted - contains 17GB benchmark evidence
+out/
+
+# === Repository Cleanup (2026-02-07) ===
+# Database files (test artifacts)
+sled_db*/
+sovereign_db*/
+sovereign*.sled/
+test.db.sled/
+*.sled/
+data/sled_db*/
+
+# Large directories (not source code)
+models/
+archives/
+warm-logic-public/
+
+# Test/benchmark artifacts
+omega_test_env/
+htmlcov*/
+.chromadb/
+.bench_venv/
+bridge_eval/
+redb_:memory:_*/
+redb_dummy_*/
+redb_test_replication_*/
+rust_core/redb_:memory:_*/
+rust_core/redb_dummy_*/
+rust_core/redb_test_replication_*/
+
+# MagicMock SQLite leak (from Path mock in tests)
+<MagicMock*
+
+# Simulation & benchmark result artifacts
+harsh_simulation_*.json
+simulation_*.json
+simulation_*.log
+benchmark_*.json
+benchmark_*.log
+defense_drone_demo_*.json
+demo_result_*.json
+report_early_termination.*
+sim_*.log
+knowledge_graph.json
+findings.md
+dummy.db
+*.db.sled/
+
+# Rust build artifacts
+rust_core/target/
+rust_core/.target_local*/
+rust_core/.cargo_local*/
+rust_core/tmp/
+rust_core/target_junk/
+rust_core/vendor/
+
+# Temporary
+tmp/
+*.tmp
+
+# Duplicate hidden directories
+.sovereign/
+.local/
+.obsidian/
+.snapshots/
+.warm_logic/
+.wheels/
+.trash/
+
+# Data directory caches
+data/sled/
+data/sovereign/
+data/logs/
+data/local/
+
+# === Cleanup 2026-02-13 ===
+# Development environment artifacts
+.agent/
+.cargo_local/
+.gemini/
+.git-templates/
+.git_corrupted_backup/
+.rust_venv/
+.venv_*/
+MagicMock/
+bin_riscv/
+
+# IDE/Tool config
+.continue/
+.cursorrules
+.editorconfig
+.clocignore
+
+# === Cleanup 2026-02-13 (Phase D) ===
+# Large toolchain archives
+rust-*.tar.gz
+zig-*.tgz
+zig-*.tar.xz
+zig-macos-*/
+zig-linux-*/
+
+# Duplicate symlink directories (macOS artifacts)
+model/
+
+# Phase D Cleanup - Development artifacts
+warm_logic_core/
+spec/
+examples/
+meta/
+warmlogic_*.zip
+wlctl
+
+# Never commit private keys or local build trees
+data/provenance/*_priv*
+rust_core/boot_builder/target/
+*.fls
+rust_core/kernel/target/
+rust_core/kernel/builder/target/
+
+# runtime state / build / vendor trees are never tracked
+data/*.db
+data/*.redb
+data/memory/
+data/audit/
+rust_core/vendor_deps/
+rust_core/.cargo_home/
+rust_core/data/
+.lake/
+coverage.json
+data/provenance/zanzibar.db
+
+ledger/
+
+
+# data/: nothing tracked except the demo constitution + its pubkey
+data/*
+!data/provenance/
+data/provenance/*
+!data/provenance/constitution.signed.yaml
+!data/provenance/owner_pub.dat
+
+# compiled extensions are build artifacts (maturin/setup.py regenerate them)
+*.so
+*.pyd
+*.dylib
+
+# Cython/build generated sources
+scripts/eval/**/cython_case.cpp
+*.log

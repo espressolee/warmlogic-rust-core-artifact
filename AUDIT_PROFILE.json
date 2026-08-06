@@ -1,0 +1,108 @@
+{
+  "profile_version": "v1",
+  "static_checks": [
+    "history-shape",
+    "personal-pii",
+    "machine-paths",
+    "hardware-uuid",
+    "credentials",
+    "phantom-identity",
+    "tracked-symlinks",
+    "trl-claims",
+    "hype-vocabulary",
+    "self-score",
+    "dependency-licenses",
+    "license-notice-coherence"
+  ],
+  "build_configs_checked": [
+    "default",
+    "--features python (lib+bins)"
+  ],
+  "runtime_smokes": [
+    "clean-checkout make setup",
+    "rust-core sanity (exports/ReflectiveLoop/PQC)",
+    "README first example runs without crashing",
+    "ML-DSA-65 sign+verify roundtrip"
+  ],
+  "negative_fixtures": "6 injected violations (abs-path, symlink target, TRL, hype, self-score) all BLOCKED",
+  "NOT_checked": [
+    "open-set over-claim phrasing (blacklist, not exhaustive)",
+    "third-party code similarity / undeclared-origin",
+    "full build matrix across OSes",
+    "independent external reproduction",
+    "freedom-to-operate"
+  ],
+  "meaning": "PASS means no release-blocking finding under this named profile, NOT global cleanliness.",
+  "content_identity": {
+    "method": "full git commit id + full git tree id + content manifest root",
+    "manifest_root": "sha256 over sorted records of \"path\\0mode\\0sha256(file bytes | symlink target)\"",
+    "note": "A digest over file NAMES alone does not bind content and must not be used."
+  },
+  "supported_ci_surface": {
+    "entrypoint": "scripts/ci_core.sh (shared by local checkout, CI, external reproducers)",
+    "covers": [
+      "cargo fmt --check",
+      "cargo check --lib --features python",
+      "maturin develop --release --features python",
+      "pytest tests/ci tests/docs",
+      "ML-DSA-65 sign/verify roundtrip"
+    ],
+    "does_not_cover": [
+      "full legacy test suite (22 known collection errors)",
+      "TPM-dependent execution",
+      "zk feature (does not build)",
+      "formal verification",
+      "multi-node / production deployment"
+    ]
+  },
+  "check_qualification": {
+    "note": "\"Wired\" means the check exists. \"Qualified\" means a fixture injecting the violation was proven to BLOCK. An earlier report said \"17 classes\"; the real count is 24 check() calls plus ~11 inline checks.",
+    "wired": 35,
+    "qualified_by_injected_violation": 32,
+    "qualified_list": [
+      "personal-pii",
+      "user-abs-path",
+      "any-abs-user",
+      "volume-paths",
+      "hardware-uuid",
+      "seoul-gps",
+      "gcp-project",
+      "internal-prog",
+      "machine-path",
+      "aws-arn",
+      "home-lan",
+      "kr-defense",
+      "private-key-pem",
+      "aws-key",
+      "openai-key",
+      "gh-token",
+      "phantom-org",
+      "phantom-domain",
+      "trl-claim",
+      "hype-vocab",
+      "self-score",
+      "tracked-symlinks",
+      "compiled-binaries",
+      "trailing-space-filename",
+      "vacuous-schema",
+      "root-allowlist",
+      "github-allowlist",
+      "dead-links",
+      "private-key-file",
+      "NOTICE-present",
+      "LICENSE-apache",
+      "single-commit"
+    ],
+    "not_individually_qualified": [
+      "scrub-artifact",
+      "phantom-name",
+      "self-mit"
+    ],
+    "not_qualified_rationale": "These three are non-blocking hygiene checks (stale scrub artifacts, one phantom name form, self-declared MIT). Every check that gates a hard blocker \u2014 secrets, PII, machine identity, private keys, licence, identity \u2014 is fixture-qualified.",
+    "bypass_fixtures": {
+      "F1": "checker-owned pattern data allowed",
+      "F3": "AWS key inside the exempt checker file still BLOCKS",
+      "F5": "over-claim in any other file still BLOCKS"
+    }
+  }
+}

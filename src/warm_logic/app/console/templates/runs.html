@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Runs</h2>
+<table>
+  <thead>
+    <tr>
+      <th>run_id</th>
+      <th>status</th>
+      <th>created_at</th>
+      <th>tag</th>
+      <th>cohort</th>
+      <th>p95 latency (ms)</th>
+      <th>p95 evidence lag (min)</th>
+      <th>CE open</th>
+      <th>verify fail %</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for run in runs %}
+    <tr>
+      <td>{{ run.run_id or run["run_id"] }}</td>
+      <td>
+        {% set st = run.status or run["status"] %}
+        <span class="status-{{ 'pass' if st == 'PASS' else 'fail' if st == 'FAIL' else 'warn' }}">{{ st }}</span>
+        {% if run.sli_warning or run["sli_warning"] %}
+          <span class="badge warning">SLI missing</span>
+        {% endif %}
+      </td>
+      <td>{{ run.created_at or run["created_at"] }}</td>
+      <td>{{ run.tag or run["tag"] }}</td>
+      <td>{{ run.cohort_id or run["cohort_id"] }}</td>
+      {% set sli = run.sli or run["sli"] %}
+      <td>
+        {% if sli and sli.decision_latency_p95_ms is not none %}
+          {{ sli.decision_latency_p95_ms | round(1) }}
+        {% elif sli and sli["decision_latency_p95_ms"] is not none %}
+          {{ sli["decision_latency_p95_ms"] | round(1) }}
+        {% else %}N/A{% endif %}
+      </td>
+      <td>
+        {% if sli and sli.evidence_lag_p95_min is not none %}
+          {{ sli.evidence_lag_p95_min | round(1) }}
+        {% elif sli and sli["evidence_lag_p95_min"] is not none %}
+          {{ sli["evidence_lag_p95_min"] | round(1) }}
+        {% else %}N/A{% endif %}
+      </td>
+      <td>
+        {% if sli and sli.ce_open_count is not none %}
+          {{ sli.ce_open_count }}
+        {% elif sli and sli["ce_open_count"] is not none %}
+          {{ sli["ce_open_count"] }}
+        {% else %}N/A{% endif %}
+      </td>
+      <td>
+        {% if sli and sli.verify_fail_rate is not none %}
+          {{ (sli.verify_fail_rate * 100) | round(1) }}
+        {% elif sli and sli["verify_fail_rate"] is not none %}
+          {{ (sli["verify_fail_rate"] * 100) | round(1) }}
+        {% else %}N/A{% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

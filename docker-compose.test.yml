@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  audit-spine:
+    image: redis:alpine
+    container_name: warm-audit-spine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  runtime-node-a:
+    build: .
+    container_name: warm-node-a
+    depends_on:
+      audit-spine:
+        condition: service_healthy
+    environment:
+      - NODE_ID=NODE_A
+      - AUDIT_HOST=audit-spine
+    entrypoint: [ "python3", "-u", "scripts/test_runtime_core.py" ]
+
+  runtime-node-b:
+    build: .
+    container_name: warm-node-b
+    depends_on:
+      audit-spine:
+        condition: service_healthy
+    environment:
+      - NODE_ID=NODE_B
+      - AUDIT_HOST=audit-spine
+    entrypoint: [ "python3", "-u", "scripts/test_runtime_core.py" ]

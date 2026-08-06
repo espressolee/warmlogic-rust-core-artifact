@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["witness_path"],
+  "properties": {
+    "witness_path": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "trace_id": { "type": "string" }
+  },
+  "additionalProperties": true
+}

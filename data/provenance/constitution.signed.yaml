@@ -1,0 +1,9 @@
+data:
+  sensitive_keywords:
+  - BANANA
+  - TOP_SECRET_X
+  - MALWARE_MD5
+  defense_level: 100
+  owner_pubkey: 1bc8544816c2a6d91d67e12304a8d96150d7ed298be426cebf77eaea1a6b8900
+  entropy_threshold: 5.5
+signature: 4678ad8ac40afa6dc8fd9b0f75d081371c0ea3234c82389e4e887fe15161449a55b8e23582bfb3c739813092828bcecadf8d2313fe9497ceab5d42c14be3a50b

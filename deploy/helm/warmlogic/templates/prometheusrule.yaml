@@ -1,0 +1,112 @@
+{{- if and .Values.monitoring.enabled .Values.monitoring.prometheus.enabled .Values.monitoring.prometheus.rules.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ include "warmlogic.fullname" . }}
+  labels:
+    {{- include "warmlogic.labels" . | nindent 4 }}
+    {{- with .Values.monitoring.prometheus.serviceMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  groups:
+    - name: warmlogic.rules
+      rules:
+        # SLA Error Budget
+        - alert: WarmLogicErrorBudgetBurning
+          expr: |
+            (
+              1 - (
+                sum(rate(warmlogic_request_total{status=~"2.."}[1h]))
+                /
+                sum(rate(warmlogic_request_total[1h]))
+              )
+            ) > {{ .Values.sla.alerting.errorBudget }}
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "WarmLogic error budget burning fast"
+            description: "Error rate exceeds {{ .Values.sla.alerting.errorBudget }}% threshold"
+
+        # High Latency P99
+        - alert: WarmLogicHighLatencyP99
+          expr: histogram_quantile(0.99, sum(rate(warmlogic_request_duration_seconds_bucket[5m])) by (le)) > 1
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "WarmLogic P99 latency is high"
+            description: "P99 latency is above 1 second"
+
+        # Federation Quorum Loss
+        {{- if .Values.federation.enabled }}
+        - alert: WarmLogicFederationQuorumLost
+          expr: warmlogic_federation_active_nodes < {{ .Values.federation.consensus.minQuorum }}
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Federation quorum lost"
+            description: "Active federation nodes ({{ "{{" }} $value {{ "}}" }}) below minimum quorum ({{ .Values.federation.consensus.minQuorum }})"
+
+        - alert: WarmLogicFederationConsensusLatency
+          expr: warmlogic_federation_consensus_latency_ms > {{ .Values.federation.consensus.maxLatencyMs }}
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Federation consensus latency high"
+            description: "Consensus latency ({{ "{{" }} $value {{ "}}" }}ms) exceeds threshold ({{ .Values.federation.consensus.maxLatencyMs }}ms)"
+        {{- end }}
+
+        # HSM Health
+        {{- if .Values.hsm.enabled }}
+        - alert: WarmLogicHSMUnavailable
+          expr: warmlogic_hsm_healthy == 0
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "HSM is unavailable"
+            description: "HSM provider {{ .Values.hsm.provider }} is not responding"
+
+        - alert: WarmLogicHSMSigningLatency
+          expr: warmlogic_hsm_sign_latency_seconds > 0.5
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "HSM signing latency high"
+            description: "HSM signing operations taking longer than 500ms"
+        {{- end }}
+
+        # Pod Health
+        - alert: WarmLogicPodCrashLooping
+          expr: increase(kube_pod_container_status_restarts_total{namespace="{{ .Release.Namespace }}", pod=~"{{ include "warmlogic.fullname" . }}.*"}[1h]) > 3
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "WarmLogic pod is crash looping"
+            description: "Pod {{ "{{" }} $labels.pod {{ "}}" }} has restarted more than 3 times in the last hour"
+
+        # Memory Pressure
+        - alert: WarmLogicHighMemoryUsage
+          expr: |
+            (
+              container_memory_working_set_bytes{namespace="{{ .Release.Namespace }}", pod=~"{{ include "warmlogic.fullname" . }}.*"}
+              /
+              container_spec_memory_limit_bytes{namespace="{{ .Release.Namespace }}", pod=~"{{ include "warmlogic.fullname" . }}.*"}
+            ) > 0.9
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "WarmLogic memory usage is high"
+            description: "Memory usage is above 90% of limit"
+
+        {{- with .Values.monitoring.prometheus.rules.alertRules }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+{{- end }}

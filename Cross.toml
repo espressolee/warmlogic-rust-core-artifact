@@ -1,0 +1,2 @@
+[target.riscv64gc-unknown-linux-musl]
+image = "messense/rust-musl-cross:riscv64gc-musl"

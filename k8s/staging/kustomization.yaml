@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: warmlogic-staging
+
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - configmap-governance.yaml
+  - deployment.yaml
+  - service.yaml
+  - service-headless.yaml
+
+commonLabels:
+  app: warmlogic
+  environment: staging
+  era: "4000"
+
+images:
+  - name: warmlogic
+    newTag: latest

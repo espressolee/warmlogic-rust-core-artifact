@@ -1,0 +1,14 @@
+language = "C"
+header = "/* WarmLogic Sovereign SDK - Universal Kernel Headers */"
+# autogen_members = true
+include_guard = "WARM_LOGIC_RS_H"
+# No namespaces in C
+# Ensure all types used in public FFI functions are exported
+
+[export]
+include = [
+    "PQCKeypair",
+]
+
+[fn]
+rename_args = "snake_case"

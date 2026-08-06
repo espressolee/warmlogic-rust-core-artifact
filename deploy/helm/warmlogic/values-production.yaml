@@ -1,0 +1,144 @@
+# Production values for WarmLogic
+# Usage: helm install warmlogic ./warmlogic -f values-production.yaml
+
+replicaCount: 3
+
+image:
+  repository: warmlogic/core
+  pullPolicy: Always
+  tag: "v1.1.0"
+
+resources:
+  limits:
+    cpu: 4000m
+    memory: 8Gi
+  requests:
+    cpu: 2000m
+    memory: 4Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 60
+  targetMemoryUtilizationPercentage: 70
+
+warmlogic:
+  env: production
+  logLevel: WARN
+  airgapMode: false
+  security:
+    fipsMode: true
+    tlsEnabled: true
+    auditEnabled: true
+  performance:
+    workerCount: 8
+    maxConnections: 5000
+    timeoutSeconds: 30
+
+persistence:
+  enabled: true
+  size: 100Gi
+  accessMode: ReadWriteOnce
+  storageClass: "gp3"  # AWS EBS gp3
+
+# Cloud HSM (choose one provider)
+hsm:
+  enabled: true
+  provider: "aws"  # aws, azure, gcp
+  aws:
+    clusterId: ""  # Set via --set hsm.aws.clusterId=...
+    region: "us-east-1"
+    customKeyStore: true
+
+# Federation
+federation:
+  enabled: true
+  replicas: 5
+  consensus:
+    protocol: "ml-dsa-bft"
+    minQuorum: 3
+    maxLatencyMs: 200
+  regions:
+    - name: us-east-1
+      endpoint: wss://us-east-1.warmlogic.example.com
+    - name: eu-west-1
+      endpoint: wss://eu-west-1.warmlogic.example.com
+    - name: ap-northeast-1
+      endpoint: wss://ap-northeast-1.warmlogic.example.com
+  pdb:
+    enabled: true
+    minAvailable: 3
+
+# SLA Configuration
+sla:
+  target: "99.9"
+  alerting:
+    enabled: true
+    errorBudget: 0.1
+
+# Pod Disruption Budget
+pdb:
+  enabled: true
+  minAvailable: 2
+
+# Priority Class
+priorityClassName: "system-cluster-critical"
+
+# Topology Spread (multi-AZ)
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: warmlogic
+
+# Anti-affinity for HA
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: warmlogic
+        topologyKey: kubernetes.io/hostname
+
+# Monitoring
+monitoring:
+  enabled: true
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      interval: 15s
+      scrapeTimeout: 10s
+      labels:
+        release: prometheus
+    rules:
+      enabled: true
+  grafana:
+    enabled: true
+    dashboards:
+      enabled: true
+
+# Network Policy
+networkPolicy:
+  enabled: true
+
+# Ingress (production)
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: api.warmlogic.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: warmlogic-tls
+      hosts:
+        - api.warmlogic.example.com

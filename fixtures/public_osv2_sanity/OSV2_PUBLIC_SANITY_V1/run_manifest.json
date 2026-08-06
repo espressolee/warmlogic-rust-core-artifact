@@ -1,0 +1,12 @@
+{
+  "schema": "warmlogic.run_manifest.v1",
+  "run_id": "OSV2_PUBLIC_SANITY_V1",
+  "status": "ok",
+  "created_at": "2026-02-14T00:00:00Z",
+  "artifacts": [
+    "run_manifest_v2.json",
+    "verify_report.json",
+    "govdec.json"
+  ]
+}
+

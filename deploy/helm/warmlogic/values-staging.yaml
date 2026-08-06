@@ -1,0 +1,47 @@
+# Staging environment overrides
+# Usage: helm install warmlogic ./deploy/helm/warmlogic -f values.yaml -f values-staging.yaml
+
+replicaCount: 1
+
+image:
+  tag: develop
+  pullPolicy: Always
+
+warmlogic:
+  env: staging
+  debug: true
+  logLevel: debug
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  enabled: false
+
+monitoring:
+  enabled: true
+  prometheus:
+    enabled: true
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  hosts:
+    - host: warmlogic-staging.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+persistence:
+  enabled: false
+
+mesh:
+  enabled: false

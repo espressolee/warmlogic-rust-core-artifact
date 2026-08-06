@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  warmlogic:
+    build: .
+    container_name: warmlogic-core
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - WARMLOGIC_ENV=production
+      - WARMLOGIC_LOG_LEVEL=INFO
+      - WARMLOGIC_GATEWAY_PORT=8000
+    volumes:
+      - warmlogic-data:/app/data
+      - warmlogic-logs:/app/logs
+    networks:
+      - warmlogic-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: warmlogic-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./deploy/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+    networks:
+      - warmlogic-net
+
+  grafana:
+    image: grafana/grafana:10.0.0
+    container_name: warmlogic-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=warmlogic_admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./deploy/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./deploy/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+      - grafana-data:/var/lib/grafana
+    networks:
+      - warmlogic-net
+    depends_on:
+      - prometheus
+
+  # Audit log collector
+  fluent-bit:
+    image: fluent/fluent-bit:2.1
+    container_name: warmlogic-fluentbit
+    restart: unless-stopped
+    volumes:
+      - ./deploy/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - warmlogic-logs:/var/log/warmlogic:ro
+      - audit-logs:/audit
+    networks:
+      - warmlogic-net
+
+volumes:
+  warmlogic-data:
+  warmlogic-logs:
+  prometheus-data:
+  grafana-data:
+  audit-logs:
+
+networks:
+  warmlogic-net:
+    driver: bridge

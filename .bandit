@@ -1,0 +1,17 @@
+# Bandit Security Configuration for WarmLogic
+# See: https://bandit.readthedocs.io/en/latest/config.html
+
+[bandit]
+# Skip these tests (intentional for containerized environments)
+skips: B104
+
+# Exclude test directories
+exclude_dirs: tests,benchmarks,examples
+
+# Target directories
+targets: src/warm_logic
+
+# Note on skipped tests:
+# - B104 (hardcoded_bind_all_interfaces): Intentional for Docker/K8s environments
+#   Gateway and mesh services bind to 0.0.0.0 to be accessible within containers
+#   Production deployments use network policies for access control

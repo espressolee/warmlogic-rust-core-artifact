@@ -1,0 +1,5 @@
+{
+  "schema": "warmlogic.parallel_git_exceptions.v1",
+  "max_allowlist_entries": 0,
+  "allowlist": []
+}

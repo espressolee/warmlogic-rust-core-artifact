@@ -1,0 +1,78 @@
+{
+  "task_set_id": "baseline_v1",
+  "description": "Seed tasks derived from historical P entries (docs, schema, tooling).",
+  "tasks": [
+    {
+      "task_id": "p23_docs_banner",
+      "p_id": "P23",
+      "category": "T1",
+      "summary": "Refresh protocol banner text + status wiring.",
+      "commands": ["python -m pytest scripts/tests/test_spec_spine_coherence.py"],
+      "tests": ["python -m pytest scripts/tests/test_spec_spine_coherence.py"],
+      "invariants": ["I-1", "I-3"]
+    },
+    {
+      "task_id": "p45_devloop_schema",
+      "p_id": "P45",
+      "category": "T3",
+      "summary": "Adjust DevLoop schema wiring + smoke tests.",
+      "commands": ["python -m pytest model/tests/test_devloop_smoke.py"],
+      "tests": ["python -m pytest model/tests/test_devloop_smoke.py"],
+      "invariants": ["I-2", "I-3"]
+    },
+    {
+      "task_id": "p72_dashboard_patch",
+      "p_id": "P72",
+      "category": "T2",
+      "summary": "Dashboard patch pipeline regression wiring.",
+      "commands": ["python -m pytest model/memory/dashboard/tests/test_dashboard_personal_smoke.py"],
+      "tests": ["python -m pytest model/memory/dashboard/tests/test_dashboard_personal_smoke.py"],
+      "invariants": ["I-4"]
+    },
+    {
+      "task_id": "p10_protocol_status",
+      "p_id": "P10",
+      "category": "T1",
+      "summary": "Update Master Spec status banners / protocol references for Phase 10.",
+      "commands": ["python -m pytest scripts/tests/test_spec_spine_coherence.py"],
+      "tests": ["python -m pytest scripts/tests/test_spec_spine_coherence.py"],
+      "invariants": ["I-1", "I-3"]
+    },
+    {
+      "task_id": "p63_run_log_contract",
+      "p_id": "P63",
+      "category": "T4",
+      "summary": "Ensure DevLoop run log entries capture patch metadata.",
+      "commands": ["python -m pytest tests/meta/test_dev_loop_run_log_entry.py"],
+      "tests": ["python -m pytest tests/meta/test_dev_loop_run_log_entry.py"],
+      "invariants": ["I-2", "I-3"]
+    },
+    {
+      "task_id": "p77_patch_plan_schema",
+      "p_id": "P77",
+      "category": "T3",
+      "summary": "Align patch_plan_v1 schema + enforcement tests.",
+      "commands": ["python -m pytest tests/meta/test_meta_patch_plan_schema.py"],
+      "tests": ["python -m pytest tests/meta/test_meta_patch_plan_schema.py"],
+      "invariants": ["I-2", "I-3"]
+    },
+    {
+      "task_id": "p88_dashboard_metrics",
+      "p_id": "P88",
+      "category": "T2",
+      "summary": "Exercise dashboard IO cards + metrics wiring.",
+      "commands": ["python -m pytest model/tests/test_dashboard_io_views.py"],
+      "tests": ["python -m pytest model/tests/test_dashboard_io_views.py"],
+      "invariants": ["I-4"]
+    },
+    {
+      "task_id": "p90_kernel_loop",
+      "p_id": "P90",
+      "category": "T2",
+      "summary": "Kernel loop regression suite for oscillation guards.",
+      "commands": ["python -m pytest model/tests/test_kernel_loop_integration.py"],
+      "tests": ["python -m pytest model/tests/test_kernel_loop_integration.py"],
+      "invariants": ["I-2", "I-5"]
+    }
+  ]
+}

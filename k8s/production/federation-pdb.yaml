@@ -1,0 +1,18 @@
+# WarmLogic Federation PodDisruptionBudget
+# Maintain quorum during cluster operations
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: warmlogic-federation-pdb
+  namespace: warmlogic-production
+  labels:
+    app: warmlogic
+    component: federation
+spec:
+  # With 3 replicas and 0.67 quorum, we need at least 2 pods
+  # So we can only tolerate 1 unavailable at a time
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: warmlogic
+      component: federation

@@ -1,0 +1,15 @@
+# Gitleaks configuration for WarmLogic
+# https://github.com/gitleaks/gitleaks
+
+[allowlist]
+# Allow .secrets.baseline file - this is detect-secrets' baseline file
+# which contains hashed fingerprints, not actual secrets
+paths = [
+    '''.secrets.baseline''',
+    '''.*\.secrets\.baseline''',
+]
+
+# Ignore hashed_secret fields (these are SHA1 hashes, not actual secrets)
+regexes = [
+    '''"hashed_secret":\s*"[a-f0-9]{40}"''',
+]

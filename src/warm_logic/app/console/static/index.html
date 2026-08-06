@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WarmLogic Console (Viewer)</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #111a2c;
+      --accent: #5ad1ff;
+      --text: #e8edf7;
+      --muted: #9fb2d0;
+      --fail: #ff7b7b;
+      --pass: #6ad48b;
+      --warn: #ffb347;
+      --border: #22324f;
+      --code-bg: #0d1e33;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 18, 32, 0.95);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text);
+    }
+    .badge {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge.demo { background: rgba(90,209,255,0.1); color: var(--accent); border: 1px solid rgba(90,209,255,0.3); }
+
+    /* Layout */
+    .container {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 1px;
+      background: var(--border); /* Grid lines */
+      height: calc(100vh - 54px);
+      overflow: hidden;
+    }
+    .sidebar {
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .main-view {
+      background: var(--bg);
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Sidebar List */
+    .run-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .run-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: background 0.1s;
+    }
+    .run-item:hover { background: rgba(255,255,255,0.03); }
+    .run-item.active {
+      background: rgba(90,209,255,0.05);
+      border-left-color: var(--accent);
+    }
+    .run-item-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      font-family: monospace;
+      font-size: 13px;
+    }
+    .run-item-meta {
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Panels */
+    .panel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 24px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0,0,0,0.2);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .panel-body {
+      padding: 16px;
+      overflow-y: auto;
+      max-height: 400px;
+    }
+
+    /* Data Display */
+    .kv-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 13px;
+    }
+    .kv-row:last-child { border-bottom: none; }
+    .label { color: var(--muted); }
+    .value { font-family: monospace; text-align: right; }
+
+    /* Status Colors */
+    .status-pass { color: var(--pass); }
+    .status-fail { color: var(--fail); }
+    .status-warn { color: var(--warn); }
+
+    /* Tree View (Proof) */
+    .tree-node {
+      font-family: monospace;
+      font-size: 12px;
+      margin-left: 12px;
+      padding: 2px 0;
+      position: relative;
+    }
+    .tree-node::before {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    .tree-leaf { color: var(--accent); }
+    .ssot-link {
+      font-size: 10px;
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 8px;
+      opacity: 0.5;
+      cursor: copy;
+    }
+    .ssot-link:hover { opacity: 1; text-decoration: underline; }
+
+    /* Timeline (CE) */
+    .timeline-item {
+      display: flex;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .timestamp { color: var(--muted); font-family: monospace; font-size: 11px; width: 130px; flex-shrink: 0; }
+    .event-content { flex: 1; }
+    .event-type { font-weight: 600; font-size: 12px; margin-bottom: 2px; }
+
+    /* Empty State */
+    .empty-state {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>WarmLogic Console</h1>
+  <span class="badge demo">Viewer Read-Only</span>
+  <div style="flex:1"></div>
+  <a href="/governance" style="color:var(--muted); text-decoration:none; font-size:13px">Governance</a>
+</header>
+
+<div class="container">
+  <!-- Sidebar runs list -->
+  <div class="sidebar">
+    <div style="padding:12px; font-size:12px; border-bottom:1px solid var(--border); color:var(--muted)">
+      RUNS HISTORY
+    </div>
+    <div class="run-list" id="run-list">
+      <!-- Generated by JS -->
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-view" id="main-view">
+    <div class="empty-state">Select a run from the sidebar to view evidence.</div>
+  </div>
+</div>
+
+<script>
+  let currentRunId = null;
+
+  async function fetchJSON(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }
+
+  function renderStatus(status) {
+    const s = (status || "UNKNOWN").toUpperCase();
+    const cls = s === 'PASS' || s === 'PASSED' ? 'status-pass' :
+                s === 'FAIL' || s === 'FAILED' ? 'status-fail' : 'status-warn';
+    return `<span class="${cls}">${s}</span>`;
+  }
+
+  // Initial Load
+  async function init() {
+    try {
+      const data = await fetchJSON("/api/v1/runs?limit=50");
+      const listEl = document.getElementById("run-list");
+      listEl.innerHTML = (data.items || []).map(run => `
+        <div class="run-item" onclick="loadRun('${run.run_id}')" id="item-${run.run_id}">
+          <div class="run-item-header">
+            <span>${run.run_id.substring(0, 16)}...</span>
+            ${renderStatus(run.status)}
+          </div>
+          <div class="run-item-meta">
+            <span>${run.created_at || "—"}</span>
+          </div>
+        </div>
+      `).join("");
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function loadRun(runId) {
+    // Update active state
+    if (currentRunId) document.getElementById(`item-${currentRunId}`)?.classList.remove("active");
+    currentRunId = runId;
+    document.getElementById(`item-${runId}`)?.classList.add("active");
+
+    const view = document.getElementById("main-view");
+    view.innerHTML = '<div class="empty-state">Loading Audit Spine...</div>';
+
+    try {
+      const data = await fetchJSON(`/api/v1/runs/${runId}/detail`);
+      renderDetail(data);
+    } catch (e) {
+      view.innerHTML = `<div class="empty-state" style="color:var(--fail)">Error loading run: ${e.message}</div>`;
+    }
+  }
+
+  function renderDetail(data) {
+    const view = document.getElementById("main-view");
+    const meta = data.meta || {};
+    const slis = data.legitimacy_metrics || {};
+    const gov = data.governance_context || {};
+    const ce = data.ce_timeline || [];
+
+    view.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+        <div>
+           <h2 style="margin:0 0 4px 0">${data.run_id}</h2>
+           <div style="font-size:12px; color:var(--muted); font-family:monospace">
+             SSOT: ${meta.spine_path || "Unknown"}
+           </div>
+        </div>
+        ${renderStatus(data.run_manifest?.decision?.verdict || data.verify_report?.overall_status)}
+      </div>
+
+      <div class="panel-grid">
+        <!-- 1. Run Summary -->
+        <div class="panel">
+          <div class="panel-header">Run Context</div>
+          <div class="panel-body">
+            ${kv("Org ID", meta.org_id)}
+            ${kv("Tenant ID", meta.tenant_id)}
+            ${kv("Edition", meta.edition)}
+            ${kv("Timestamp", meta.timestamp)}
+            ${kv("Attempt", data.run_manifest?.attempt)}
+          </div>
+        </div>
+
+        <!-- 2. Governance Context -->
+        <div class="panel">
+          <div class="panel-header">Governance & P_Status</div>
+          <div class="panel-body">
+            ${kv("Edition", gov.p_status?.edition)}
+            ${kv("Hard Max P", gov.p_status?.hard_max_p)}
+            ${kv("Soft Max P", gov.p_status?.soft_max_p)}
+            ${kv("Autonomy Cap", gov.p_status?.autonomy_cap)}
+            <div style="margin-top:12px; font-size:11px; color:var(--muted);">
+              Applicable GOVDECs: <span style="color:var(--text)">${(gov.p_status?.governance_basis || "Unknown").split("/").pop()}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Legitimacy Metrics -->
+        <div class="panel">
+          <div class="panel-header">Legitimacy Snapshot</div>
+          <div class="panel-body">
+            ${kv("Fail Open Rate", slis.fail_open?.rate)}
+            ${kv("Appeal Pending", slis.appeals?.pending_count)}
+            ${kv("Sandbox Promo", slis.sandbox?.promotion_rate)}
+            ${kv("Witness T2", slis.witness?.t2_count)}
+            ${kv("Process Steps", slis.process?.avg_steps)}
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-grid">
+         <!-- 4. CE Timeline -->
+         <div class="panel">
+           <div class="panel-header">CE Ledger Timeline <span class="badge demo">${ce.length}</span></div>
+           <div class="panel-body" style="padding:0">
+             ${ce.length ? ce.map(renderCEItem).join("") : '<div style="padding:16px; color:var(--muted); font-size:12px">No Counterexamples (Clean Run)</div>'}
+           </div>
+         </div>
+
+         <!-- 5. Evidence Chain -->
+         <div class="panel">
+           <div class="panel-header">Evidence Chain (Proof Manifest)</div>
+           <div class="panel-body">
+             ${renderEvidenceTree(data.proof_manifest)}
+           </div>
+         </div>
+      </div>
+    `;
+  }
+
+  function kv(label, val) {
+    if (val === undefined || val === null) val = "—";
+    return `
+      <div class="kv-row">
+        <span class="label">${label}</span>
+        <span class="value">${val}</span>
+      </div>
+    `;
+  }
+
+  function renderCEItem(item) {
+    return `
+      <div class="timeline-item" style="padding:8px 16px;">
+        <div class="timestamp">${item.ts || item.timestamp || "Unknown"}</div>
+        <div class="event-content">
+          <div class="event-type" style="color:${item.kind?.includes('FAIL') ? 'var(--fail)' : 'var(--warn)'}">
+            ${item.kind || item.type || "UNKNOWN_EVENT"}
+          </div>
+          <div style="font-size:12px; color:var(--muted)">${item.reason || item.description || ""}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderEvidenceTree(root) {
+    if (!root || !root.artifacts) return '<div class="label">No Evidence Graph</div>';
+
+    // Simple flattener for preview
+    let html = '';
+    for (const [key, val] of Object.entries(root.artifacts)) {
+      html += `
+        <div class="tree-node">
+          <span class="tree-leaf">${key}</span>
+          <span class="ssot-link" title="Copy Path" onclick="navigator.clipboard.writeText('${val.path || val}')">
+            ${val.hash ? val.hash.substring(0,8) : 'nocontent'}
+          </span>
+        </div>
+      `;
+    }
+    return html;
+  }
+
+  init();
+</script>
+</body>
+</html>

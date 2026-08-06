@@ -1,0 +1,11 @@
+{
+  "schema": "warmlogic.proof_manifest.v1",
+  "run_id": "OSV2_PUBLIC_SANITY_V1",
+  "proofs": [
+    {
+      "name": "consistency_proof",
+      "status": "pass"
+    }
+  ]
+}
+

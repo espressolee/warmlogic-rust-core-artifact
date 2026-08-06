@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# ==========================================================
+# File: wl_agent_stream
+# Author: espressolee
+# Project: Warm Logic — DevEnv
+# Description:
+#   Launcher for the Reflective Agent stream follower.
+#   Tail-reads agent_reflection_log.jsonl and emits events.
+# ==========================================================
+
+set -euo pipefail
+
+SOURCE="${BASH_SOURCE[0]:-$0}"
+while [ -h "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  TARGET="$(readlink "$SOURCE")"
+  [[ "$TARGET" != /* ]] && SOURCE="$DIR/$TARGET" || SOURCE="$TARGET"
+done
+
+SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+DEVENV_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+export PYTHONPATH="${DEVENV_ROOT}:${PYTHONPATH:-}"
+
+exec python3 -m dev_env.agent.stream "$@"

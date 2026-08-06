@@ -1,0 +1,9 @@
+{
+  "schema": "warmlogic.govdec.v1",
+  "decision_id": "GOVDEC-OSV2-PUBLIC-SANITY",
+  "mode": "general",
+  "autonomy_cap": "semi",
+  "env_scope": "public-sanity",
+  "verdict": "allow"
+}
+

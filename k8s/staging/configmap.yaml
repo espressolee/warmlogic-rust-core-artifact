@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: warmlogic-config
+  namespace: warmlogic-staging
+  labels:
+    app: warmlogic
+data:
+  WARMLOGIC_ENV: "staging"
+  WARMLOGIC_LOG_LEVEL: "DEBUG"
+  WARMLOGIC_GATEWAY_PORT: "8000"
+  ERA: "4000"
+  ERA_NAME: "Kinetic Fusion"

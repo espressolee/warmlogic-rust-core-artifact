@@ -1,0 +1,162 @@
+{{- if .Values.federation.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "warmlogic.fullname" . }}-federation
+  labels:
+    {{- include "warmlogic.labels" . | nindent 4 }}
+    app.kubernetes.io/component: federation
+spec:
+  serviceName: {{ include "warmlogic.fullname" . }}-federation-headless
+  replicas: {{ .Values.federation.replicas }}
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      {{- include "warmlogic.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: federation
+  template:
+    metadata:
+      annotations:
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      labels:
+        {{- include "warmlogic.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: federation
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "warmlogic.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
+      containers:
+        - name: federation
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - federation
+            - --node-id=$(POD_NAME)
+            - --consensus={{ .Values.federation.consensus.protocol }}
+            - --quorum={{ .Values.federation.consensus.minQuorum }}
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: WARMLOGIC_ENV
+              value: {{ .Values.warmlogic.env }}
+            - name: WARMLOGIC_LOG_LEVEL
+              value: {{ .Values.warmlogic.logLevel }}
+            {{- if .Values.hsm.enabled }}
+            - name: HSM_PROVIDER
+              value: {{ .Values.hsm.provider }}
+            {{- if eq .Values.hsm.provider "aws" }}
+            - name: AWS_CLOUDHSM_CLUSTER_ID
+              value: {{ .Values.hsm.aws.clusterId }}
+            - name: AWS_DEFAULT_REGION
+              value: {{ .Values.hsm.aws.region }}
+            {{- end }}
+            {{- if eq .Values.hsm.provider "azure" }}
+            - name: AZURE_KEYVAULT_URL
+              value: {{ .Values.hsm.azure.vaultUrl }}
+            {{- end }}
+            {{- if eq .Values.hsm.provider "gcp" }}
+            - name: GCP_PROJECT_ID
+              value: {{ .Values.hsm.gcp.projectId }}
+            - name: GCP_KMS_KEY_RING
+              value: {{ .Values.hsm.gcp.keyRing }}
+            - name: GCP_KMS_LOCATION
+              value: {{ .Values.hsm.gcp.location }}
+            {{- end }}
+            {{- end }}
+            {{- with .Values.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: mesh
+              containerPort: {{ .Values.mesh.port }}
+              protocol: {{ .Values.mesh.protocol }}
+            - name: bft
+              containerPort: 9001
+              protocol: TCP
+            - name: metrics
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: metrics
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/warmlogic
+            - name: config
+              mountPath: /etc/warmlogic
+              readOnly: true
+            {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "warmlogic.fullname" . }}
+        {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        {{- if .Values.persistence.storageClass }}
+        storageClassName: {{ .Values.persistence.storageClass }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+{{- end }}

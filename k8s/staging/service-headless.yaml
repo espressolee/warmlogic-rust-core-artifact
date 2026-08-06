@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: warmlogic-gateway-headless
+  namespace: warmlogic-staging
+  labels:
+    app: warmlogic
+    component: gateway
+spec:
+  clusterIP: None
+  ports:
+    - port: 8000
+      targetPort: http
+      name: http
+  selector:
+    app: warmlogic
+    component: gateway

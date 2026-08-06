@@ -1,0 +1,87 @@
+# WarmLogic Federation NetworkPolicy
+# Zero-trust network policy for sovereign nodes
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: warmlogic-federation
+  namespace: warmlogic-production
+  labels:
+    app: warmlogic
+    component: federation
+spec:
+  podSelector:
+    matchLabels:
+      app: warmlogic
+      component: federation
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow peer-to-peer federation traffic within the namespace
+    - from:
+        - podSelector:
+            matchLabels:
+              app: warmlogic
+              component: federation
+      ports:
+        - protocol: TCP
+          port: 17300
+        - protocol: UDP
+          port: 17301
+
+    # Allow traffic from gateway for governance commands
+    - from:
+        - podSelector:
+            matchLabels:
+              app: warmlogic
+              component: gateway
+      ports:
+        - protocol: TCP
+          port: 17300
+
+    # Allow Prometheus scraping
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: monitoring
+      ports:
+        - protocol: TCP
+          port: 8001
+
+    # Allow cross-cluster federation (from internal LB range)
+    - from:
+        - ipBlock:
+            cidr: 10.0.0.0/8
+      ports:
+        - protocol: TCP
+          port: 17300
+
+  egress:
+    # Allow DNS resolution
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+
+    # Allow peer-to-peer federation traffic
+    - to:
+        - podSelector:
+            matchLabels:
+              app: warmlogic
+              component: federation
+      ports:
+        - protocol: TCP
+          port: 17300
+        - protocol: UDP
+          port: 17301
+
+    # Allow cross-cluster federation (internal network only)
+    - to:
+        - ipBlock:
+            cidr: 10.0.0.0/8
+      ports:
+        - protocol: TCP
+          port: 17300

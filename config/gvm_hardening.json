@@ -1,0 +1,13 @@
+{
+    "pii_sensitivity": 0.5,
+    "ip_guard": true,
+    "quorum_threshold": 3,
+    "quorum_total": 5,
+    "burn_multiplier": 102000,
+    "domains": {
+        "EXPERIMENTAL_RESEARCH": false,
+        "FINANCE_PROTECT": true,
+        "SAFETY_CORE": true
+    },
+    "autonomy_mode": "Gated Automatic"
+}

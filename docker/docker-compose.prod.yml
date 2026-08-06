@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  warmlogic-kernel:
+    image: warmlogic/kernel:v0.4.0-kinetic
+    container_name: warmlogic_kernel_prod
+    restart: always
+    environment:
+      - SOVEREIGN_MODE=PRODUCTION
+      - KINETIC_BFT_NODES=5
+      - PROMETHEUS_METRICS_ENABLED=true
+    volumes:
+      - warmlogic_data:/var/lib/warmlogic
+      - /dev/hwrng:/dev/hwrng:ro  # Pass hardware entropy pool
+    networks:
+      - sovereign_mesh
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  monitoring:
+    image: prom/prometheus:latest
+    container_name: warmlogic_monitor
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      - sovereign_mesh
+
+networks:
+  sovereign_mesh:
+    driver: overlay
+    attachable: true
+
+volumes:
+  warmlogic_data:
+    driver: local

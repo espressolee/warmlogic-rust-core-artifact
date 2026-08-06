@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Counterexamples</h2>
+<table>
+  <thead>
+    <tr>
+      <th>ce_id</th>
+      <th>status</th>
+      <th>run_id</th>
+      <th>description</th>
+      <th>last_updated</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for ce in entries %}
+    <tr>
+      <td>{{ ce.ce_id or ce["ce_id"] }}</td>
+      <td>{{ ce.status or ce["status"] }}</td>
+      <td>{{ ce.related_run_id or ce["related_run_id"] or ce.run_id or ce["run_id"] }}</td>
+      <td>{{ ce.description or ce["description"] }}</td>
+      <td>{{ ce.last_updated or ce["last_updated"] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

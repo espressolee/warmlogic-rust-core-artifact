@@ -1,0 +1,13 @@
+# cargo-audit configuration.
+# Waivers below are user-approved (2026-08-05) for advisories with no
+# patched upstream release; keep in sync with deny.toml [advisories].ignore.
+
+[advisories]
+ignore = [
+    # quick-xml 0.39 DoS advisories: build-dependency only (mavlink-bindgen
+    # pins ^0.39) parsing local MAVLink XML definitions at build time; no
+    # attacker-controlled input. Re-evaluate when rust-mavlink adopts
+    # quick-xml >=0.41.
+    "RUSTSEC-2026-0194",
+    "RUSTSEC-2026-0195",
+]

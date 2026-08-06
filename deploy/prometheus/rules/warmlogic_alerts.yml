@@ -1,0 +1,180 @@
+# WarmLogic Alert Rules
+# Phase C: Infrastructure Expansion
+
+groups:
+  - name: warmlogic.kernel
+    interval: 15s
+    rules:
+      # Kernel Health
+      - alert: KernelDown
+        expr: up{job="warmlogic-kernel"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: kernel
+        annotations:
+          summary: "WarmLogic Kernel is down"
+          description: "Kernel instance {{ $labels.instance }} has been down for more than 1 minute."
+          runbook: "docs/runbooks/KERNEL_DOWN.md"
+
+      - alert: KernelHighLatency
+        expr: histogram_quantile(0.99, rate(warm_logic_request_duration_seconds_bucket[5m])) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+          component: kernel
+        annotations:
+          summary: "High latency detected in kernel operations"
+          description: "P99 latency is {{ $value | humanizeDuration }} on {{ $labels.instance }}"
+
+      - alert: KernelMemoryHigh
+        expr: process_resident_memory_bytes{job="warmlogic-kernel"} > 2147483648
+        for: 10m
+        labels:
+          severity: warning
+          component: kernel
+        annotations:
+          summary: "Kernel memory usage exceeds 2GB"
+          description: "Memory usage: {{ $value | humanize1024 }}B"
+
+  - name: warmlogic.consensus
+    interval: 10s
+    rules:
+      # BFT Consensus Alerts
+      - alert: ConsensusStalled
+        expr: increase(warm_logic_bft_rounds_total[5m]) == 0
+        for: 5m
+        labels:
+          severity: critical
+          component: consensus
+        annotations:
+          summary: "BFT consensus has stalled"
+          description: "No consensus rounds completed in the last 5 minutes."
+          runbook: "docs/runbooks/CONSENSUS_STALLED.md"
+
+      - alert: ConsensusLowPeerCount
+        expr: warm_logic_mesh_peer_count < 3
+        for: 2m
+        labels:
+          severity: warning
+          component: consensus
+        annotations:
+          summary: "Low peer count for consensus"
+          description: "Only {{ $value }} peers available, minimum 3 required for BFT."
+
+      - alert: ConsensusHighRoundTime
+        expr: warm_logic_bft_round_duration_seconds > 30
+        for: 3m
+        labels:
+          severity: warning
+          component: consensus
+        annotations:
+          summary: "Consensus rounds taking too long"
+          description: "Round duration: {{ $value | humanizeDuration }}"
+
+  - name: warmlogic.security
+    interval: 30s
+    rules:
+      # Security (Aegis) Alerts
+      - alert: SecurityViolationDetected
+        expr: increase(warm_logic_aegis_violations_total[5m]) > 0
+        for: 0s
+        labels:
+          severity: critical
+          component: security
+        annotations:
+          summary: "Security violation detected by Aegis"
+          description: "{{ $value }} violations in the last 5 minutes on {{ $labels.instance }}"
+          runbook: "docs/runbooks/SECURITY_VIOLATION.md"
+
+      - alert: HighFailedAuthAttempts
+        expr: increase(warm_logic_auth_failures_total[15m]) > 10
+        for: 1m
+        labels:
+          severity: warning
+          component: security
+        annotations:
+          summary: "High number of failed authentication attempts"
+          description: "{{ $value }} failed attempts in 15 minutes"
+
+      - alert: CryptoOperationFailure
+        expr: increase(warm_logic_crypto_errors_total[5m]) > 0
+        for: 0s
+        labels:
+          severity: critical
+          component: crypto
+        annotations:
+          summary: "Cryptographic operation failure"
+          description: "Error in {{ $labels.operation }} on {{ $labels.instance }}"
+
+  - name: warmlogic.governance
+    interval: 60s
+    rules:
+      # Governance Engine Alerts
+      - alert: GovernanceVetoTriggered
+        expr: increase(warm_logic_governance_veto_total[5m]) > 0
+        for: 0s
+        labels:
+          severity: warning
+          component: governance
+        annotations:
+          summary: "Governance veto triggered"
+          description: "A governance veto was triggered on {{ $labels.instance }}"
+
+      - alert: PolicyViolation
+        expr: increase(warm_logic_policy_violations_total[5m]) > 0
+        for: 0s
+        labels:
+          severity: critical
+          component: governance
+        annotations:
+          summary: "Policy violation detected"
+          description: "Policy {{ $labels.policy }} violated on {{ $labels.instance }}"
+
+  - name: warmlogic.zkp
+    interval: 30s
+    rules:
+      # ZK Proof Alerts
+      - alert: ZKProofGenerationSlow
+        expr: warm_logic_zkp_generation_seconds > 5
+        for: 5m
+        labels:
+          severity: warning
+          component: zkp
+        annotations:
+          summary: "ZK proof generation is slow"
+          description: "Generation time: {{ $value | humanizeDuration }}"
+
+      - alert: ZKProofVerificationFailure
+        expr: increase(warm_logic_zkp_verification_failures_total[5m]) > 0
+        for: 0s
+        labels:
+          severity: critical
+          component: zkp
+        annotations:
+          summary: "ZK proof verification failed"
+          description: "Verification failures detected on {{ $labels.instance }}"
+
+  - name: warmlogic.mesh
+    interval: 30s
+    rules:
+      # Mesh Network Alerts
+      - alert: MeshNetworkDegraded
+        expr: warm_logic_mesh_peer_count < warm_logic_mesh_expected_peers * 0.5
+        for: 5m
+        labels:
+          severity: warning
+          component: mesh
+        annotations:
+          summary: "Mesh network is degraded"
+          description: "Only {{ $value }} of expected peers connected"
+
+      - alert: FederationSyncLag
+        expr: warm_logic_federation_sync_lag_seconds > 60
+        for: 3m
+        labels:
+          severity: warning
+          component: federation
+        annotations:
+          summary: "Federation sync is lagging"
+          description: "Sync lag: {{ $value | humanizeDuration }}"

@@ -1,0 +1,1 @@
+{"timestamp": 1769466926.1488981, "focused_channel": "kernel", "channel_scores": {"kernel": 0.0, "policy": 0.0, "io": 0.0, "memory": 0.0}, "entropy_drift": 0.0, "reason": "Focus=kernel | scores: kernel=0.00, policy=0.00, io=0.00, memory=0.00 | drift=0.00, policy_status=ok"}

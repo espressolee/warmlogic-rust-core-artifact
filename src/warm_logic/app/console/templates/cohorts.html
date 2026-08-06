@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Cohorts</h2>
+<table>
+  <thead>
+    <tr>
+      <th>id/team</th>
+      <th>mode</th>
+      <th>status</th>
+      <th>last_run_id</th>
+      <th>bundle_sha256</th>
+      <th>verify_status</th>
+      <th>last_updated</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for c in cohorts %}
+    <tr>
+      <td>{{ c.id or c.team or c["id"] or c["team"] }}</td>
+      <td>{{ c.mode or c["mode"] }}</td>
+      <td>{{ c.status or c["status"] }}</td>
+      <td>{{ c.last_run_id or c["last_run_id"] }}</td>
+      <td>{{ c.bundle_sha256 or c["bundle_sha256"] }}</td>
+      <td>{{ c.verify_status or c["verify_status"] }}</td>
+      <td>{{ c.last_updated or c["last_updated"] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

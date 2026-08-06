@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: warmlogic-config
+  namespace: warmlogic-production
+  labels:
+    app: warmlogic
+data:
+  WARMLOGIC_CORS_ORIGINS: "https://warmlogic.example.com"
+  WARMLOGIC_DEBUG: "0"
+  WARMLOGIC_METRICS_ENABLED: "true"
+  WARMLOGIC_TRACING_ENABLED: "true"
+  WARMLOGIC_LOG_FORMAT: "json"

@@ -1,0 +1,13 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: warmlogic-gateway
+  namespace: warmlogic-production
+  labels:
+    app: warmlogic
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: warmlogic
+      component: gateway

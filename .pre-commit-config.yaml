@@ -1,0 +1,23 @@
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.1
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=1000"]
+      - id: check-yaml
+        exclude: ^deploy/helm/.*/templates/.*\.yaml$
+      - id: check-json
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: local
+    hooks:
+      - id: sacred-data-check
+        name: protected Data Protection
+        entry: scripts/ci/check_sacred_data.sh
+        language: script
+        files: (justfile|Makefile)$
+        pass_filenames: false

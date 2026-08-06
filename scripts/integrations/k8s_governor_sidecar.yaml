@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: agent-with-warmlogic-governor
+spec:
+  containers:
+  - name: primary-agent
+    image: my-agent:latest
+    ports:
+    - containerPort: 8080
+  - name: warmlogic-governor
+    image: warmlogic/governor-sidecar:v3.2
+    env:
+    - name: WL_MODE
+      value: "FAIL_CLOSED"
+    - name: WL_AUDIT_SPINE_PATH
+      value: "/var/log/warmlogic/audit.jsonl"
+    volumeMounts:
+    - name: audit-logs
+      mountPath: /var/log/warmlogic
+  volumes:
+  - name: audit-logs
+    emptyDir: {}
+# This YAML outlines the 'Diplomacy Layer' where WarmLogic intercepts
+# and governs containerized traffic before it reaches the primary agent.

@@ -1,0 +1,96 @@
+{
+  "metrics": {
+    "health_tick": 5,
+    "channel_signals": {
+      "kernel": {
+        "activity": 0.0,
+        "anomaly": false
+      },
+      "policy": {
+        "pressure": 0.0,
+        "anomaly": false
+      },
+      "io": {
+        "load": 0.0,
+        "anomaly": false
+      },
+      "memory": {
+        "salience": 0.0,
+        "anomaly": false
+      }
+    },
+    "attention_flow": {
+      "focused_channel": "memory",
+      "channel_scores": {
+        "kernel": 0.0,
+        "policy": 0.4,
+        "io": 0.0,
+        "memory": 0.6
+      },
+      "entropy_drift": 1.0,
+      "reason": "Focus=memory | scores: kernel=0.00, policy=0.40, io=0.00, memory=0.60 | drift=1.00, policy_status=ok"
+    },
+    "meta_kernel": {
+      "status": "ok",
+      "policy_shift": false,
+      "entropy_drift": 0.0,
+      "health_sequence_ok": true,
+      "channels": {
+        "kernel": null,
+        "policy": null,
+        "io": null,
+        "memory": null,
+        "scheduler_joint": {
+          "entropy_forecast": "rising",
+          "switching_rate": 0.0,
+          "risk_score": 0.0,
+          "status": "unknown",
+          "high_drift_prob": 1.0,
+          "drift": 0.0,
+          "governance_pressure": 0.0,
+          "attention_load": 0.0
+        }
+      },
+      "last_entropy": null,
+      "drift_direction": "flat",
+      "reason_change": false,
+      "tau_epsilon": {
+        "norm_radius": null,
+        "status": "unknown",
+        "count": null
+      }
+    },
+    "policy_sensitivity": 1.0,
+    "self_refinement": {
+      "policy_sensitivity": 1.0,
+      "delta_sensitivity": 0.0,
+      "health_tick": 5,
+      "mode": "warmup"
+    },
+    "scheduler_joint": {
+      "entropy_forecast": "rising",
+      "switching_rate": 0.0,
+      "risk_score": 0.0,
+      "status": "unknown",
+      "high_drift_prob": 1.0,
+      "drift": 0.0,
+      "governance_pressure": 0.0,
+      "attention_load": 0.0
+    },
+    "stability_envelope": {
+      "entropy_forecast": "rising",
+      "lower": 0.25,
+      "upper": 0.9,
+      "sj_switch": 0.0,
+      "sj_risk": 0.0,
+      "sj_drift": 1.0,
+      "mg_risk": 0.0,
+      "risk_total": 0.0
+    }
+  },
+  "last_updated": 1769340235.4536011,
+  "kernel_state": {
+    "mode": "CT",
+    "govSAT": "Unavailable"
+  }
+}

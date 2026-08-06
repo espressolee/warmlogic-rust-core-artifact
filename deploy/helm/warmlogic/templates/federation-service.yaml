@@ -1,0 +1,50 @@
+{{- if .Values.federation.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "warmlogic.fullname" . }}-federation
+  labels:
+    {{- include "warmlogic.labels" . | nindent 4 }}
+    app.kubernetes.io/component: federation
+spec:
+  type: ClusterIP
+  ports:
+    - name: mesh
+      port: {{ .Values.mesh.port }}
+      targetPort: mesh
+      protocol: {{ .Values.mesh.protocol }}
+    - name: bft
+      port: 9001
+      targetPort: bft
+      protocol: TCP
+    - name: metrics
+      port: 8080
+      targetPort: metrics
+      protocol: TCP
+  selector:
+    {{- include "warmlogic.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: federation
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "warmlogic.fullname" . }}-federation-headless
+  labels:
+    {{- include "warmlogic.labels" . | nindent 4 }}
+    app.kubernetes.io/component: federation
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: mesh
+      port: {{ .Values.mesh.port }}
+      targetPort: mesh
+      protocol: {{ .Values.mesh.protocol }}
+    - name: bft
+      port: 9001
+      targetPort: bft
+      protocol: TCP
+  selector:
+    {{- include "warmlogic.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: federation
+{{- end }}

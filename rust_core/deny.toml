@@ -1,0 +1,91 @@
+# cargo-deny configuration for WarmLogic Rust Core
+# https://embarkstudios.github.io/cargo-deny/
+
+[graph]
+targets = [
+    "x86_64-unknown-linux-gnu",
+    "aarch64-apple-darwin",
+    "wasm32-unknown-unknown",
+]
+all-features = false
+no-default-features = false
+
+# ============================================================================
+# Advisories - Vulnerability scanning via RustSec
+# ============================================================================
+[advisories]
+db-path = "~/.cargo/advisory-db"
+db-urls = ["https://github.com/rustsec/advisory-db"]
+yanked = "deny"
+
+ignore = [
+    # Transitive from nalgebra/simba; no patched release available yet.
+    # Track replacement path before removing this waiver.
+    "RUSTSEC-2024-0436",
+    # quick-xml 0.39 DoS advisories (user-approved waiver 2026-08-05).
+    # Build-dependency only: mavlink-bindgen (pinned ^0.39 even at mavlink
+    # 0.18) parses local MAVLink XML definitions at build time; no
+    # attacker-controlled input reaches it. Re-evaluate when rust-mavlink
+    # moves to quick-xml >=0.41.
+    "RUSTSEC-2026-0194",
+    "RUSTSEC-2026-0195",
+    # rand unsound with a custom logger during unwind (user-approved waiver
+    # 2026-08-05). Affects both the 0.8 and 0.9 lines — no patched release
+    # exists. Re-evaluate when a fixed rand line ships.
+    "RUSTSEC-2026-0097",
+]
+
+# ============================================================================
+# Licenses - Permissive only (no copyleft contagion)
+# ============================================================================
+[licenses]
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "CC0-1.0",
+    "Unlicense",
+    "Zlib",
+    "MPL-2.0",  # Weak copyleft, file-level only
+    "Unicode-3.0",
+]
+confidence-threshold = 0.8
+
+# Crates with unusual/dual licenses
+exceptions = [
+    { allow = ["Unicode-DFS-2016"], name = "unicode-ident", version = "*" },
+]
+
+[licenses.private]
+ignore = false
+registries = []
+
+# ============================================================================
+# Bans - Prevent problematic crates
+# ============================================================================
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+highlight = "all"
+workspace-default-features = "allow"
+external-default-features = "allow"
+
+deny = [
+    # Deprecated or unmaintained
+    { name = "openssl", wrappers = [] },  # Prefer rustls
+]
+
+skip = []
+skip-tree = []
+
+# ============================================================================
+# Sources - Crate provenance
+# ============================================================================
+[sources]
+unknown-registry = "deny"
+unknown-git = "warn"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

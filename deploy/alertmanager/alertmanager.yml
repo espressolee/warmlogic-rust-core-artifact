@@ -1,0 +1,142 @@
+# WarmLogic AlertManager Configuration
+# Phase C: Infrastructure Expansion
+
+global:
+  resolve_timeout: 5m
+  smtp_smarthost: 'smtp.example.com:587'
+  smtp_from: 'warmlogic-alerts@example.com'
+  smtp_require_tls: true
+
+# Inhibition rules - suppress lower severity alerts when higher severity fires
+inhibit_rules:
+  - source_matchers:
+      - severity="critical"
+    target_matchers:
+      - severity="warning"
+    equal: ['alertname', 'component', 'instance']
+
+  - source_matchers:
+      - alertname="KernelDown"
+    target_matchers:
+      - component="kernel"
+    equal: ['instance']
+
+# Routing tree
+route:
+  receiver: 'default-receiver'
+  group_by: ['alertname', 'component', 'severity']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+
+  routes:
+    # Critical security alerts - immediate notification
+    - matchers:
+        - severity="critical"
+        - component="security"
+      receiver: 'security-critical'
+      group_wait: 0s
+      repeat_interval: 30m
+      continue: false
+
+    # Critical consensus/governance alerts
+    - matchers:
+        - severity="critical"
+        - component=~"consensus|governance"
+      receiver: 'consensus-critical'
+      group_wait: 10s
+      repeat_interval: 1h
+
+    # All other critical alerts
+    - matchers:
+        - severity="critical"
+      receiver: 'critical-alerts'
+      group_wait: 30s
+      repeat_interval: 2h
+
+    # Warning alerts
+    - matchers:
+        - severity="warning"
+      receiver: 'warning-alerts'
+      group_wait: 5m
+      repeat_interval: 12h
+
+# Receivers
+receivers:
+  - name: 'default-receiver'
+    webhook_configs:
+      - url: 'http://warmlogic:8080/webhooks/alerts'
+        send_resolved: true
+
+  - name: 'security-critical'
+    slack_configs:
+      - api_url_file: '/etc/alertmanager/secrets/slack_url'
+        channel: '#warmlogic-security-alerts'
+        title: '[SECURITY CRITICAL] {{ .CommonAnnotations.summary }}'
+        text: |
+          *Alert:* {{ .CommonAnnotations.summary }}
+          *Description:* {{ .CommonAnnotations.description }}
+          *Runbook:* {{ .CommonAnnotations.runbook }}
+          *Instance:* {{ .CommonLabels.instance }}
+          *Severity:* {{ .CommonLabels.severity }}
+        color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
+        send_resolved: true
+    pagerduty_configs:
+      - service_key_file: '/etc/alertmanager/secrets/pagerduty_key'
+        severity: critical
+        description: '{{ .CommonAnnotations.summary }}'
+        details:
+          firing: '{{ template "pagerduty.default.description" . }}'
+        send_resolved: true
+
+  - name: 'consensus-critical'
+    slack_configs:
+      - api_url_file: '/etc/alertmanager/secrets/slack_url'
+        channel: '#warmlogic-ops-alerts'
+        title: '[CONSENSUS] {{ .CommonAnnotations.summary }}'
+        text: |
+          *Alert:* {{ .CommonAnnotations.summary }}
+          *Description:* {{ .CommonAnnotations.description }}
+          *Runbook:* {{ .CommonAnnotations.runbook }}
+          *Component:* {{ .CommonLabels.component }}
+        color: 'danger'
+        send_resolved: true
+    webhook_configs:
+      - url: 'http://warmlogic:8080/webhooks/consensus-alert'
+        send_resolved: true
+
+  - name: 'critical-alerts'
+    slack_configs:
+      - api_url_file: '/etc/alertmanager/secrets/slack_url'
+        channel: '#warmlogic-ops-alerts'
+        title: '[CRITICAL] {{ .CommonAnnotations.summary }}'
+        text: |
+          *Alert:* {{ .CommonAnnotations.summary }}
+          *Description:* {{ .CommonAnnotations.description }}
+          *Runbook:* {{ .CommonAnnotations.runbook }}
+        color: 'danger'
+        send_resolved: true
+    email_configs:
+      - to: 'ops@example.com'
+        headers:
+          Subject: '[WarmLogic CRITICAL] {{ .CommonAnnotations.summary }}'
+        html: |
+          <h2>Critical Alert: {{ .CommonAnnotations.summary }}</h2>
+          <p><strong>Description:</strong> {{ .CommonAnnotations.description }}</p>
+          <p><strong>Component:</strong> {{ .CommonLabels.component }}</p>
+          <p><strong>Instance:</strong> {{ .CommonLabels.instance }}</p>
+          <p><strong>Runbook:</strong> <a href="{{ .CommonAnnotations.runbook }}">{{ .CommonAnnotations.runbook }}</a></p>
+        send_resolved: true
+
+  - name: 'warning-alerts'
+    slack_configs:
+      - api_url_file: '/etc/alertmanager/secrets/slack_url'
+        channel: '#warmlogic-ops-alerts'
+        title: '[WARNING] {{ .CommonAnnotations.summary }}'
+        text: '{{ .CommonAnnotations.description }}'
+        color: 'warning'
+        send_resolved: true
+
+# Templates
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'

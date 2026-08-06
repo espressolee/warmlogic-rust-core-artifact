@@ -1,0 +1,49 @@
+name: Publication Audit
+
+# Checks the artifact against AuditProfile v1 (AUDIT_PROFILE.json). Emits
+# PASS_UNDER_AUDIT_PROFILE_V1 or BLOCKED_<reason> - never "clean"/"safe".
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Required package files present
+        run: |
+          for f in STATUS.md KNOWN_LIMITATIONS.md CHAIN_OF_TITLE.md PUBLIC_PROVENANCE.json SBOM.json AUDIT_PROFILE.json LICENSE NOTICE docs/CLAIM_EVIDENCE.md; do
+            test -f "$f" || { echo "BLOCKED_MISSING_FILE: $f"; exit 1; }
+          done
+      - name: No tracked symlinks
+        run: |
+          n=$(git ls-files -s | awk '$1=="120000"' | wc -l)
+          test "$n" -eq 0 || { echo "BLOCKED_TRACKED_SYMLINK: $n"; exit 1; }
+      - name: No over-claim vocabulary
+        run: |
+          if git grep -InE "TRL[ -]?[0-9]|God[- ]?Tier|Singularity|Mothership|100/100|Production Ready" -- ':!*.lock'; then echo "BLOCKED_OVERCLAIM"; exit 1; fi
+      - name: Workflow self-audit (two read-only workflows)
+        run: |
+          wf=$(ls .github/workflows/*.yml)
+          test "$(echo "$wf" | wc -l)" -eq 2 || { echo "BLOCKED_WORKFLOW_COUNT"; exit 1; }
+          for f in $wf; do
+            grep -q "contents: read" "$f" || { echo "BLOCKED_NO_READONLY: $f"; exit 1; }
+            grep -q "runs-on: ubuntu-latest" "$f" || { echo "BLOCKED_NOT_HOSTED: $f"; exit 1; }
+          done
+          echo "PASS_UNDER_AUDIT_PROFILE_V1"

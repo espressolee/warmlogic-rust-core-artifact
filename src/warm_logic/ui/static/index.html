@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WarmLogic | Glass Browser</title>
+    <link rel="stylesheet" href="glass.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="glass-container">
+        <h1>Glass Browser</h1>
+        <p class="subtitle">Verifiable UI Portal to Silicon Truth</p>
+        <div style="margin-bottom: 1rem;">
+            <a href="economy.html"
+                style="color: var(--accent); text-decoration: none; font-weight: 700; border: 1px solid var(--accent); padding: 0.4rem 1rem; border-radius: 8px;">Sovereign
+                Economy</a>
+        </div>
+
+        <div class="identity-badge" id="identity-display">
+            Connecting to Kernel...
+        </div>
+
+        <div class="input-group">
+            <textarea id="message-input" rows="4" placeholder="Enter logic to sign..."></textarea>
+        </div>
+
+        <button id="sign-button">Sign for Silicon Truth</button>
+
+        <div class="result-card" id="result-card">
+            <div class="status-row">
+                <div class="status-indicator" id="status-light"></div>
+                <strong id="status-text">Awaiting Signature</strong>
+            </div>
+            <div class="sig-box" id="signature-display"></div>
+        </div>
+
+        <!-- Network Status Widget -->
+        <div class="network-status" id="network-status">
+            <div class="network-header">
+                <span class="network-icon">📡</span>
+                <span id="peer-count">0 Peers</span>
+                <span class="sync-indicator" id="sync-indicator"></span>
+            </div>
+            <canvas id="network-graph" width="280" height="150"></canvas>
+        </div>
+
+        <div class="social-section">
+            <div class="section-header">
+                <h2>Logic Society Feed</h2>
+                <span class="viewers" id="viewer-count">Verification Active</span>
+            </div>
+            <div class="feed-container" id="social-feed">
+                <!-- Messages injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Proof Inspector Modal -->
+    <div id="proof-modal" class="modal">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3>Silicon Proof Evidence</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="proof-body">
+                <div class="proof-field">
+                    <label>Kinetic ID</label>
+                    <code id="proof-id"></code>
+                </div>
+                <div class="proof-field">
+                    <label>Hardware Signature</label>
+                    <code id="proof-sig"></code>
+                </div>
+                <div class="proof-field">
+                    <label>Verification Status</label>
+                    <span class="status-badge valid">Passed</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

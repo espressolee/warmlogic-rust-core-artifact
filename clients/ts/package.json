@@ -1,0 +1,23 @@
+{
+    "name": "@warmlogic/sdk",
+    "version": "0.1.0",
+    "description": "Sovereign SDK for TypeScript - Polyglot Mesh Support",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "test": "jest",
+        "example:hello": "ts-node examples/01_hello_mesh.ts"
+    },
+    "dependencies": {
+        "axios": "^1.6.0",
+        "tweetnacl": "^1.0.3"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0",
+        "ts-node": "^10.9.1",
+        "@types/node": "^20.0.0",
+        "jest": "^29.5.0",
+        "ts-jest": "^29.1.0"
+    }
+}

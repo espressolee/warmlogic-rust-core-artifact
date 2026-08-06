@@ -1,0 +1,46 @@
+# WarmLogic Regional Swarm Compose
+# Civilizational Fleet Scaling
+
+services:
+  bootstrap:
+    build: 
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: wl_bootstrap
+    environment:
+      - SOVEREIGN_NODE_ID=BOOTSTRAP
+      - SOVEREIGN_PORT=20000
+    ports:
+      - "20000:20000/udp"
+      - "20000:20000/tcp"
+    volumes:
+      - wl_data_bootstrap:/app/data
+
+  node_alpha:
+    build: 
+      context: ..
+      dockerfile: deploy/Dockerfile
+    environment:
+      - SOVEREIGN_NODE_ID=ALPHA
+      - BOOTSTRAP_PEERS=bootstrap:20000
+    depends_on:
+      - bootstrap
+    volumes:
+      - wl_data_alpha:/app/data
+
+  node_beta:
+    build: 
+      context: ..
+      dockerfile: deploy/Dockerfile
+    environment:
+      - SOVEREIGN_NODE_ID=BETA
+      - BOOTSTRAP_PEERS=bootstrap:20000
+    depends_on:
+      - bootstrap
+    volumes:
+      - wl_data_beta:/app/data
+
+volumes:
+  wl_data_bootstrap:
+  wl_data_alpha:
+  wl_data_beta:

@@ -1,0 +1,12 @@
+{
+  "schema": "warmlogic.bundle_manifest.v1",
+  "bundle_id": "OSV2_PUBLIC_SANITY_V1",
+  "files": [
+    "run_manifest.json",
+    "run_manifest_v2.json",
+    "verify_report.json",
+    "proof_manifest.json",
+    "govdec.json"
+  ]
+}
+

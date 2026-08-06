@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WarmLogic Console (demo)</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 16px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    th, td { border: 1px solid #ccc; padding: 6px 8px; }
+    th { background: #f5f5f5; }
+    .status-pass { color: green; font-weight: bold; }
+    .status-fail { color: red; font-weight: bold; }
+    .status-warn { color: orange; font-weight: bold; }
+    .badge.warning { display: inline-block; padding: 2px 6px; background: #ffcc00; color: #000; font-size: 11px; border-radius: 3px; margin-left: 4px; }
+    nav a { margin-right: 12px; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/runs">Runs</a>
+    <a href="/ce-ledger">CE Ledger</a>
+    <a href="/cohorts">Cohorts</a>
+  </nav>
+  <hr>
+  {% block content %}{% endblock %}
+</body>
+</html>

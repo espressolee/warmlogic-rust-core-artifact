@@ -1,0 +1,5 @@
+{
+  "minimum_total_percent": 6.5,
+  "metric": "totals.percent_covered",
+  "scope": "warm_logic"
+}

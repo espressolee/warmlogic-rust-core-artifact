@@ -1,0 +1,16 @@
+FROM python:3.11-slim
+
+LABEL org.opencontainers.image.title="WarmLogic Core"
+LABEL org.opencontainers.image.description="Minimal production image for WarmLogic core services"
+
+WORKDIR /app
+
+# Keep build deterministic and lightweight for CI publish checks.
+COPY src ./src
+COPY pyproject.toml README.md ./
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+CMD ["python", "-m", "warm_logic.app.cli.wlctl", "--help"]
+

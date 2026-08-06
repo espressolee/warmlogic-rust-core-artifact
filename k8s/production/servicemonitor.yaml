@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: warmlogic-gateway
+  namespace: warmlogic-production
+  labels:
+    app: warmlogic
+    component: gateway
+spec:
+  selector:
+    matchLabels:
+      app: warmlogic
+      component: gateway
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s
+  namespaceSelector:
+    matchNames:
+      - warmlogic-production

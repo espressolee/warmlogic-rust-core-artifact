@@ -1,0 +1,69 @@
+{{ define "warmlogic.title" }}
+[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+{{ end }}
+
+{{ define "warmlogic.text" }}
+{{ range .Alerts }}
+*Alert:* {{ .Annotations.summary }}
+*Description:* {{ .Annotations.description }}
+*Severity:* {{ .Labels.severity }}
+*Component:* {{ .Labels.component }}
+*Instance:* {{ .Labels.instance }}
+*Started:* {{ .StartsAt.Format "2006-01-02 15:04:05 MST" }}
+{{ if .Annotations.runbook }}*Runbook:* {{ .Annotations.runbook }}{{ end }}
+---
+{{ end }}
+{{ end }}
+
+{{ define "warmlogic.email.subject" }}
+[WarmLogic {{ .Status | toUpper }}] {{ .CommonLabels.alertname }} - {{ .CommonAnnotations.summary }}
+{{ end }}
+
+{{ define "warmlogic.email.html" }}
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .alert { padding: 15px; margin: 10px 0; border-radius: 4px; }
+    .critical { background-color: #fee; border-left: 4px solid #c00; }
+    .warning { background-color: #ffc; border-left: 4px solid #cc0; }
+    .resolved { background-color: #efe; border-left: 4px solid #0c0; }
+    .label { font-weight: bold; color: #333; }
+    .value { color: #666; }
+  </style>
+</head>
+<body>
+  <h1>WarmLogic Alert: {{ .CommonLabels.alertname }}</h1>
+  <p>Status: <strong>{{ .Status | toUpper }}</strong></p>
+
+  {{ range .Alerts }}
+  <div class="alert {{ .Labels.severity }}">
+    <p><span class="label">Summary:</span> <span class="value">{{ .Annotations.summary }}</span></p>
+    <p><span class="label">Description:</span> <span class="value">{{ .Annotations.description }}</span></p>
+    <p><span class="label">Severity:</span> <span class="value">{{ .Labels.severity }}</span></p>
+    <p><span class="label">Component:</span> <span class="value">{{ .Labels.component }}</span></p>
+    <p><span class="label">Instance:</span> <span class="value">{{ .Labels.instance }}</span></p>
+    <p><span class="label">Started:</span> <span class="value">{{ .StartsAt.Format "2006-01-02 15:04:05 MST" }}</span></p>
+    {{ if .Annotations.runbook }}
+    <p><span class="label">Runbook:</span> <a href="{{ .Annotations.runbook }}">{{ .Annotations.runbook }}</a></p>
+    {{ end }}
+  </div>
+  {{ end }}
+
+  <hr>
+  <p style="color: #999; font-size: 12px;">
+    Sent by WarmLogic AlertManager |
+    <a href="http://grafana.warmlogic.local/d/warmlogic-dash">Grafana Dashboard</a>
+  </p>
+</body>
+</html>
+{{ end }}
+
+{{ define "pagerduty.default.description" }}
+{{ range .Alerts }}
+Alert: {{ .Annotations.summary }}
+Description: {{ .Annotations.description }}
+Labels: {{ range .Labels.SortedPairs }}{{ .Name }}={{ .Value }} {{ end }}
+{{ end }}
+{{ end }}

@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: warmlogic-staging
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: warmlogic
+    app.kubernetes.io/part-of: warmlogic-platform
+    environment: staging
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/espressolee/WarmLogic.git
+    targetRevision: develop
+    path: deploy/helm/warmlogic
+    helm:
+      releaseName: warmlogic-staging
+      valueFiles:
+        - values.yaml
+        - values-staging.yaml
+      parameters:
+        - name: image.tag
+          value: develop
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: warmlogic-staging
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 1m
+
+  revisionHistoryLimit: 5

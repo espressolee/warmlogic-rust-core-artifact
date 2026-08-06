@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: warmlogic-staging
+  labels:
+    app: warmlogic
+    environment: staging
+    era: "4000"

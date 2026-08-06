@@ -1,0 +1,16 @@
+# Grafana Dashboard Provisioning
+# Automatically load WarmLogic dashboard on startup
+
+apiVersion: 1
+
+providers:
+  - name: 'WarmLogic Dashboards'
+    orgId: 1
+    folder: 'WarmLogic'
+    folderUid: 'warmlogic'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards

@@ -1,0 +1,12 @@
+{
+  "schema": "warmlogic.run_manifest.v2",
+  "run_id": "OSV2_PUBLIC_SANITY_V1",
+  "mode": "public_sanity",
+  "status": "pass",
+  "evidence": {
+    "verify_report": "verify_report.json",
+    "proof_manifest": "proof_manifest.json",
+    "bundle_manifest": "bundle_manifest.json"
+  }
+}
+

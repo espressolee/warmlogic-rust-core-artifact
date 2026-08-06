@@ -1,0 +1,33 @@
+# Build artifacts
+target/
+**/target/
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Dependencies
+venv/
+.venv/
+node_modules/
+.env
+
+# Project specific bloat
+archives/
+out/
+logs/
+.gemini/
+.DS_Store
+*.log
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore

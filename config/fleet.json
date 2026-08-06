@@ -1,0 +1,19 @@
+{
+    "fleet_name": "Resonance_Alpha",
+    "trust_anchors": [
+        {
+            "address": "100.64.0.1",
+            "port": 5000,
+            "comment": "Mac root authority (Tailscale)"
+        },
+        {
+            "address": "127.0.0.1",
+            "port": 5000,
+            "comment": "Local Development Node"
+        }
+    ],
+    "discovery": {
+        "bootstrap_on_startup": true,
+        "enable_udp_broadcast": false
+    }
+}

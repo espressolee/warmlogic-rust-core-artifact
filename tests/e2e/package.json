@@ -1,0 +1,11 @@
+{
+  "name": "warmlogic-e2e",
+  "private": true,
+  "version": "0.1.0",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1"
+  },
+  "scripts": {
+    "test": "playwright test"
+  }
+}

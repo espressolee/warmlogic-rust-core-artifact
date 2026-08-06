@@ -1,0 +1,22 @@
+# Warm Logic CODEOWNERS (aligns with docs/org/Hiring_and_Delegation_Plan_2026_v1.md)
+
+# Protocol, schema, and core math/governance remain under espressolee
+docs/protocol/**          @espressolee
+spec/schema/**            @espressolee
+meta/WarmLogic_P_Roadmap_* @espressolee
+docs/math/**              @espressolee
+
+# Ops / incident policy / incident logs
+docs/ops/**               @espressolee
+logs/incidents/**         @espressolee
+
+# Product docs / ICP / adoption
+docs/product/**           @espressolee
+
+# Scripts / CI / run_all
+scripts/**                @espressolee
+model/run_all*.sh         @espressolee
+.github/workflows/**      @espressolee
+
+# Default fallback
+*                         @espressolee

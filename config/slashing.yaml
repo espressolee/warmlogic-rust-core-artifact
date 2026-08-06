@@ -1,0 +1,12 @@
+# Slashing Policy v1.0
+# "The Sovereign Teeth"
+
+thresholds:
+  policy_violation_max: 0.95
+  suspicious_economic_pattern: 0.80
+  drift_tolerance: 0.05
+
+penalties:
+  CRITICAL: "StateLock"
+  HIGH: "EconomicBurn:100"
+  MEDIUM: "IdentityIsolation"
