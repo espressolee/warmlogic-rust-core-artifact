@@ -37,7 +37,15 @@ jobs:
           test "$n" -eq 0 || { echo "BLOCKED_TRACKED_SYMLINK: $n"; exit 1; }
       - name: No over-claim vocabulary
         run: |
-          if git grep -InE "TRL[ -]?[0-9]|God[- ]?Tier|Singularity|Mothership|100/100|Production Ready" -- ':!*.lock'; then echo "BLOCKED_OVERCLAIM"; exit 1; fi
+          # This checker necessarily contains the forbidden words as pattern
+          # data, so it excludes itself - exactly as audit_export.sh does.
+          # Every other file is still checked.
+          # \bTRL avoids matching CTRL; the checker excludes itself because it
+          # necessarily contains the forbidden words as pattern data. Both
+          # exemptions match audit_export.sh. Every other file is checked.
+          if git grep -InE "\\bTRL[ -]?[0-9]|God[- ]?Tier|Singularity|Mothership|100/100|Production Ready" \
+               -- ':!*.lock' ':!.github/workflows/publication-audit.yml'; then
+            echo "BLOCKED_OVERCLAIM"; exit 1; fi
       - name: Workflow self-audit (two read-only workflows)
         run: |
           wf=$(ls .github/workflows/*.yml)
