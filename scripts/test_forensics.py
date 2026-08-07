@@ -53,7 +53,7 @@ def test_forensics():
             print("Last event mismatch.")
             sys.exit(1)
 
-    print("\nFORENSICS VERIFIED")
+    print("\nFORENSICS SCENARIO OK (not verification)")
 
 
 if __name__ == "__main__":

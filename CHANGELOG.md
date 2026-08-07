@@ -42,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **WarmLogic v1.0.0-omega** marks the transition from a research prototype to a a post-quantum signing/governance kernel. This is a single-host research prototype; see docs/CLAIM_EVIDENCE.md for the graded status of each claim.
 
 ### ✨ New Features (Sovereignty)
-- **Sovereign Intelligence Daemon**: A recursive, self-improving agent loop (`sovereign_intelligence.py`) capable of proactive goal setting and evolution.
+- **Sovereign Intelligence Daemon**: an agent loop (`sovereign_intelligence.py`). The original entry described it as "recursive, self-improving ... capable of proactive goal setting and evolution". Nothing in this artifact demonstrates self-improvement: there is no measured parent/child comparison, no equal-budget control, no held-out task, and no attribution of any improvement to the system rather than to its author. Historical entry, claim withdrawn.
 - **Hardware Anchoring**:
   - `HardwareAttestation` binds the OS to specific Silicon IDs (Milk-V Duo S / SG2000).
   - `ShieldGuard` (Rust) enforces memory boundaries and secret protection in the kernel.

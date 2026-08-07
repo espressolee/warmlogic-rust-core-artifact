@@ -110,7 +110,7 @@ def main():
 
     if mismatched == 0 and missing == 0:
         print(
-            "\n🏆 VERDICT: ARCHIVE INTEGRITY VERIFIED"
+            "\n🏆 VERDICT: ARCHIVE INTEGRITY SCENARIO OK (not verification)"
         )  # The original "(100% MATCH)" is removed.
         sys.exit(0)
     else:

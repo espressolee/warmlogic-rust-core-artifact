@@ -115,7 +115,7 @@ def main():
 
     trigger_latch()
     test_pardon_flow()
-    print("\nPARDON PROTOCOL VERIFIED")
+    print("\nPARDON PROTOCOL SCENARIO OK (not verification)")
 
 
 if __name__ == "__main__":

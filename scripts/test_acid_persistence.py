@@ -81,7 +81,7 @@ def test_acid_persistence():
         sys.exit(1)
 
     print("Hash Chain Valid.")
-    print("\nACID PERSISTENCE VERIFIED")
+    print("\nACID PERSISTENCE SCENARIO OK (not verification)")
 
 
 if __name__ == "__main__":

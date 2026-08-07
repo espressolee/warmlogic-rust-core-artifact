@@ -130,7 +130,7 @@ def test_mesh_lockdown():
 if __name__ == "__main__":
     success = test_mesh_lockdown()
     if success:
-        print("\nMESH SOVEREIGNTY VERIFIED")
+        print("\nMESH SOVEREIGNTY SCENARIO OK (not verification)")
     else:
         print("\nMESH SOVEREIGNTY TEST FAILED")
         exit(1)

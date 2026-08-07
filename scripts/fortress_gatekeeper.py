@@ -8,7 +8,7 @@ try:
     from warm_logic.kernel.infra.rust import warm_logic_rust
 
     if warm_logic_rust.check_multi_arch_integrity():
-        print("SILICON IDENTITY VERIFIED: Sovereign Fleet Membership Confirmed.")
+        print("SILICON IDENTITY SCENARIO OK (not verification): Sovereign Fleet Membership Confirmed.")
         sys.exit(0)
     else:
         print("ALIEN HARDWARE DETECTED: Startup denied.")

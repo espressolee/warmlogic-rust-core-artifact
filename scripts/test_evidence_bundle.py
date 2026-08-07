@@ -55,7 +55,7 @@ def test_evidence():
     shutil.rmtree(packager.output_dir)
     print("Cleanup complete.")
 
-    print("\nEVIDENCE BUNDLE VERIFIED")
+    print("\nEVIDENCE BUNDLE SCENARIO OK (not verification)")
 
 
 if __name__ == "__main__":

@@ -79,7 +79,7 @@ def test_sovereign_loop():
         sys.exit(1)
 
     print("Ledger recorded Boot and Heartbeat events.")
-    print("\nSOVEREIGN LOOP VERIFIED")
+    print("\nSOVEREIGN LOOP SCENARIO OK (not verification)")
 
 
 if __name__ == "__main__":

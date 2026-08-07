@@ -50,7 +50,7 @@ def test_aeon_engine_reality():
     assert "SEP" in context
     assert "requires" in context.lower() or "Relationships" in context
 
-    print("AEON ENGINE VERIFIED: Semantic Lattice Operational.")
+    print("AEON ENGINE SCENARIO OK (not verification): Semantic Lattice Operational.")
 
 
 if __name__ == "__main__":

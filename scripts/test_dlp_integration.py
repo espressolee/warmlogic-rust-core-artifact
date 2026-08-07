@@ -103,7 +103,7 @@ def main():
         expect_pass=True,
     )
 
-    print("\nDATA SOVEREIGNTY VERIFIED")
+    print("\nDATA SOVEREIGNTY SCENARIO OK (not verification)")
 
 
 if __name__ == "__main__":

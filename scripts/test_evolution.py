@@ -45,7 +45,21 @@ def test_sovereign_evolution():
         print("Scenario B Failed: Malicious patch was ACCEPTED! (Crisis)")
         sys.exit(1)
 
-    print("\nERA 8 VERIFIED: The OS is capable of safe self-evolution.")
+    # This line used to read:
+    #   "ERA 8 V-E-R-I-F-I-E-D: The OS is capable of safe self-evolution."
+    # (spelled out so the sweep that removed that word does not rewrite this
+    # record of what the word used to be)
+    # It is a capability claim, printed by a script that cannot support it.
+    # Two in-process scenarios ran and behaved as expected. Nothing here
+    # measures an accepted change surviving across generations, an equal-budget
+    # control arm, a held-out task, or attribution of an improvement to the
+    # system rather than to its author. Self-development is a research goal of
+    # this project; it is not demonstrated by this artifact, and the word
+    # VERIFIED had no evidence behind it.
+    print(
+        "\nBoth in-process scenarios behaved as expected."
+        "\nThis is NOT evidence of self-evolution -- see docs/CLAIM_EVIDENCE.md."
+    )
 
 
 if __name__ == "__main__":

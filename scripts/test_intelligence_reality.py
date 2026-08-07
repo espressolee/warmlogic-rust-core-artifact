@@ -61,7 +61,7 @@ async def test_intelligence_reality():
         print("   FAILED: Proof accepted wrong hardware secret!")
         return 1
 
-    print("\nINTELLIGENCE REALITY VERIFIED: Cogntive Sovereignty Proofs Active.")
+    print("\nINTELLIGENCE REALITY SCENARIO OK (not verification): Cogntive Sovereignty Proofs Active.")
     return 0
 
 

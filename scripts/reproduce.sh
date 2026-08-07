@@ -41,7 +41,7 @@ echo "📜 Reproduction Receipt:"
 echo "---------------------------------------------------"
 echo "Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 echo "Image ID:  $IMAGE_ID"
-echo "Status:    VERIFIED REALITY"
+echo "Status:    SCENARIO OK (not verification) REALITY"
 echo "---------------------------------------------------"
 
 exit 0

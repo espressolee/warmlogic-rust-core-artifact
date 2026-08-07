@@ -83,7 +83,7 @@ if __name__ == "__main__":
     success &= test_refusal_policy_mismatch()
 
     if success:
-        print("\nREFUSAL ENGINE INTEGRATION VERIFIED")
+        print("\nREFUSAL ENGINE INTEGRATION SCENARIO OK (not verification)")
         sys.exit(0)
     else:
         print("\nREFUSAL ENGINE FAILED")

@@ -86,7 +86,7 @@ def main():
     # 3. Test Benign
     run_test("Benign", "I love eating APPLE bread.", expect_pass=True)
 
-    print("\nFORGE CONSTITUTION VERIFIED")
+    print("\nFORGE CONSTITUTION SCENARIO OK (not verification)")
 
 
 if __name__ == "__main__":

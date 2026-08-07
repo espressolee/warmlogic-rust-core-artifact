@@ -49,7 +49,7 @@ def test_governance():
         print("FAIL: Destructive Mutation ALLOWED!")
         sys.exit(1)
 
-    print("\nTAU GOVERNANCE VERIFIED")
+    print("\nTAU GOVERNANCE SCENARIO OK (not verification)")
 
 
 if __name__ == "__main__":

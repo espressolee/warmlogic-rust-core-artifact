@@ -83,7 +83,7 @@ async def test_mesh_governance_verification():
     )
     print("   PASS")
 
-    print("\nALL MESH GOVERNANCE INVARIANTS VERIFIED.")
+    print("\nALL MESH GOVERNANCE INVARIANTS SCENARIO OK (not verification).")
 
 
 if __name__ == "__main__":

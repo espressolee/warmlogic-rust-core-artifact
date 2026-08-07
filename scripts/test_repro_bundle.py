@@ -66,7 +66,7 @@ def test_repro_bundle_generation():
     assert evidence["context"]["run_id"] == "BUNDLE_TEST_001"
 
     print("Bundle content valid.")
-    print("\nSOVEREIGN REPRO BUNDLES VERIFIED.")
+    print("\nSOVEREIGN REPRO BUNDLES SCENARIO OK (not verification).")
 
 
 if __name__ == "__main__":

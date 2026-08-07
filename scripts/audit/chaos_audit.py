@@ -37,7 +37,7 @@ def run_chaos_audit():
     for target, baseline in checksums.items():
         current = calculate_checksum(target)
         if current == baseline:
-            print(f"{target}: INTEGRITY VERIFIED")
+            print(f"{target}: INTEGRITY SCENARIO OK (not verification)")
         else:
             print(f"{target}: INTEGRITY FAILED!")
             sys.exit(1)

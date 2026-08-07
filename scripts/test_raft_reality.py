@@ -57,7 +57,7 @@ async def run_test():
     success = result["replicated"] and len(n2_log) > 0
 
     if success:
-        print("RAFT REALITY VERIFIED: P2P Replication Successful")
+        print("RAFT REALITY SCENARIO OK (not verification): P2P Replication Successful")
     else:
         print("RAFT REALITY FAILED: Replication Incomplete")
 

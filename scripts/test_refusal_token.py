@@ -43,7 +43,7 @@ def test_mint_and_verify_token():
     assert '"token_id":' in json_data
     assert event_hash in json_data
 
-    logger.info("\nREFUSAL TOKEN VERIFIED: Economic proof generated and signed.")
+    logger.info("\nREFUSAL TOKEN SCENARIO OK (not verification): Economic proof generated and signed.")
 
 
 if __name__ == "__main__":

@@ -60,7 +60,7 @@ def test_autonomy_mode_2_verification():
     assert outputs.reason == "autonomy_witness_unsat"
     print("   PASS")
 
-    print("\nALL AUTONOMY MODE 2 INVARIANTS VERIFIED.")
+    print("\nALL AUTONOMY MODE 2 INVARIANTS SCENARIO OK (not verification).")
 
 
 if __name__ == "__main__":

@@ -38,7 +38,7 @@ def test_forensic_replay():
             all_verified = False
 
     if all_verified:
-        print("\nPHASE 5.3 VERIFIED (All Refusals Reconstructed).")
+        print("\nPHASE 5.3 SCENARIO OK (not verification) (All Refusals Reconstructed).")
     else:
         print("\nPHASE 5.3 FAILED.")
         sys.exit(1)

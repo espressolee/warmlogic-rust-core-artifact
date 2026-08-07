@@ -93,7 +93,7 @@ async def run_test():
         print("   FAILURE: Follower did not catch tampered entry!")
         return 1
 
-    print("\nZKP/PCC REALITY VERIFIED: Verifiable Proof Chains Enforced.")
+    print("\nZKP/PCC REALITY SCENARIO OK (not verification): Verifiable Proof Chains Enforced.")
     return 0
 
 

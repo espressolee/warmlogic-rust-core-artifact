@@ -156,7 +156,7 @@ class PatchEngine:
             print("Injected code not found on disk.")
             sys.exit(1)
 
-    print("\nCLOSURE EVOLUTION VERIFIED")
+    print("\nCLOSURE EVOLUTION SCENARIO OK (not verification)")
 
 
 if __name__ == "__main__":

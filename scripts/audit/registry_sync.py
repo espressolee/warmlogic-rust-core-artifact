@@ -24,7 +24,7 @@ def sync_to_registry():
         "witness_timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "target_file": str(audit_report),
         "target_hash": file_hash,
-        "registry_consensus": "VERIFIED",
+        "registry_consensus": "SCENARIO OK (not verification)",
     }
 
     # Save Witness Receipt

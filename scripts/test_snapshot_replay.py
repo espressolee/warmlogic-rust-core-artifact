@@ -77,7 +77,7 @@ def test_time_travel():
     shutil.rmtree(snapshot_engine.snapshots_dir)
     print("Cleanup complete.")
 
-    print("\nTIME TRAVEL VERIFIED")
+    print("\nTIME TRAVEL SCENARIO OK (not verification)")
 
 
 if __name__ == "__main__":

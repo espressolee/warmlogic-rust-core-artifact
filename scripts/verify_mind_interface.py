@@ -21,7 +21,7 @@ def test_mind_logic():
     except Exception as e:
         print(f"Rust correctly handled missing weights: {e}")
 
-    print("\n Architectural Foundation: VERIFIED.")
+    print("\n Architectural Foundation: SCENARIO OK (not verification).")
 
 if __name__ == "__main__":
     test_mind_logic()

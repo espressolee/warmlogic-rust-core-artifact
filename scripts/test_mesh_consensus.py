@@ -64,7 +64,7 @@ async def test_mesh_consensus():
     ratio = accepted_count / len(nodes)
     if ratio == 1.0:
         print(f"Full Consensus Achieved (Ratio: {ratio:.2%}).")
-        print("\nGHOST MESH VERIFIED.")
+        print("\nGHOST MESH SCENARIO OK (not verification).")
     else:
         print(f"Consensus Failed. Ratio: {ratio:.2%}")
         sys.exit(1)

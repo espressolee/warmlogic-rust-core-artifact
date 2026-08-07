@@ -64,7 +64,7 @@ def test_sovereign_economics():
         print(f"Token Signature Invalid: {e}")
         sys.exit(1)
 
-    print("\nERA 9 VERIFIED: The Truth Economy is online.")
+    print("\nERA 9 SCENARIO OK (not verification): The Truth Economy is online.")
 
 
 if __name__ == "__main__":

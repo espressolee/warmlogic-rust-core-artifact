@@ -70,7 +70,7 @@ def run_recovery_benchmark():
     # 5. Final Verification
     final_check = StateReconstructor.detect_bit_rot(main_ledger)
     if not final_check:
-        print(" Final Integrity: VERIFIED (Zero corrupted blocks)")
+        print(" Final Integrity: SCENARIO OK (not verification) (Zero corrupted blocks)")
         print(f"Result: PASS (Total Recovery Time: {t_detect + t_repair:.4f} ms)")
     else:
         print(f"Final Verification: FAILED (Residual corruption at {final_check})")

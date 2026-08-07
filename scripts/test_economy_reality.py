@@ -68,7 +68,7 @@ def test_economy_reality():
         print("   Failure: Attestation is not key-dependent!")
         return 1
 
-    print("\nECONOMY REALITY VERIFIED: Web3 Provider and Multi-Sig Enforced.")
+    print("\nECONOMY REALITY SCENARIO OK (not verification): Web3 Provider and Multi-Sig Enforced.")
     return 0
 
 

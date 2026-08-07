@@ -29,7 +29,7 @@ def test_hardware_enclave_init():
         print("   This is expected if the runner is not a signed macOS environment.")
         print("   Verification target: Bridge integrity.")
 
-    print("\nENCLAVE BRIDGE VERIFIED.")
+    print("\nENCLAVE BRIDGE SCENARIO OK (not verification).")
 
 
 if __name__ == "__main__":

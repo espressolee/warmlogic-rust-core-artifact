@@ -64,7 +64,7 @@ def test_provenance_veto():
     assert outputs.reason == "provenance_lineage_broken"
 
     print("Methodological Veto confirmed.")
-    print("\nPHASE 5.2 VERIFIED.")
+    print("\nPHASE 5.2 SCENARIO OK (not verification).")
 
 
 if __name__ == "__main__":

@@ -47,7 +47,7 @@ def test_intelligent_sieve():
         sys.exit(1)
 
     print("Semantic Intent Captured Successfully.")
-    print("\nINTELLIGENT SIEVE VERIFIED")
+    print("\nINTELLIGENT SIEVE SCENARIO OK (not verification)")
 
 
 if __name__ == "__main__":

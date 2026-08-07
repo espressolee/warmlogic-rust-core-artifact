@@ -93,7 +93,7 @@ def main():
         expect_pass=False,
     )
 
-    print("\nENTROPY GUARD VERIFIED")
+    print("\nENTROPY GUARD SCENARIO OK (not verification)")
 
 
 if __name__ == "__main__":

@@ -56,7 +56,7 @@ async def test_kernel_reality():
     finally:
         detector.stop()
 
-    print("\nKERNEL REALITY VERIFIED: OS-Native Probes and Events Active.")
+    print("\nKERNEL REALITY SCENARIO OK (not verification): OS-Native Probes and Events Active.")
     return 0
 
 

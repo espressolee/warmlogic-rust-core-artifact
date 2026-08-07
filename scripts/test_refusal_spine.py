@@ -70,7 +70,7 @@ def test_refusal_audit_spine():
         print(f"   Refusal Token Found: {token_data['token_id']}")
 
     print("   Refusal audit entry verified.")
-    print("\nSOVEREIGN COMPLIANCE SPINE VERIFIED.")
+    print("\nSOVEREIGN COMPLIANCE SPINE SCENARIO OK (not verification).")
 
 
 if __name__ == "__main__":

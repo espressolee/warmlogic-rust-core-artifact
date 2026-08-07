@@ -61,7 +61,7 @@ def main():
     # Verify state
     if args.verify:
         is_valid = bundle.is_verified()
-        print(f"Consensus Status: {'VERIFIED' if is_valid else '⏳ PENDING'}")
+        print(f"Consensus Status: {'SCENARIO OK (not verification)' if is_valid else '⏳ PENDING'}")
         print(f"Signatures: {len(bundle.signatures)} / {bundle.threshold}")
 
     if args.output:

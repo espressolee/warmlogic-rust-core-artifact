@@ -62,7 +62,7 @@ def test_enclave_reality():
         print(f"   SUCCESS: System blocked unsealing due to error: {e}")
 
     print(
-        "\n🎉 ENCLAVE REALITY VERIFIED: High-Fidelity Attestation and Sealing Active."
+        "\n🎉 ENCLAVE REALITY SCENARIO OK (not verification): High-Fidelity Attestation and Sealing Active."
     )
     return 0
 
