@@ -51,10 +51,18 @@
     "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
   },
   "commit_binding": {
-    "public_commit": "NOT_BOUND_HERE",
-    "public_tree": "NOT_BOUND_HERE",
+    "public_commit": "bound by the tag named below",
+    "public_tree": "bound by the tag named below",
     "rationale": "This file is inside the tree it describes, so it cannot state the commit or tree id of the commit that contains it without regress. The commit/tree binding is provided by the SIGNED RELEASE TAG, which is created only after the release gate passes. Until a signed tag exists, treat the commit binding as ABSENT, not as implied.",
-    "signed_tag": "NONE_YET",
+    "signed_tag": {
+      "name": "v1.1.0-artifact.1",
+      "signed": false,
+      "kind": "annotated, UNSIGNED",
+      "why_unsigned": "No signing key is configured on the authoring host (no GPG secret keys, user.signingkey unset). The release gate for this artifact asked for a SIGNED tag; that condition is NOT met and the claim is lowered rather than the tag being called signed.",
+      "what_it_does_bind": "the exact commit and tree id of the release, so content identity is recomputable",
+      "what_it_does_NOT_bind": "authorship. An unsigned tag proves nothing about who created it. Do not treat this release as cryptographically attributed.",
+      "scheme_rationale": "v0.1.0 would contradict the packaged version, which is single-valued at 1.1.0. `v1.1.0-artifact.1` reads as 'artifact release 1 of the 1.1.0 tree' and does not rewrite the lineage."
+    },
     "initial_public_commit": "c885faca",
     "known_successors": [
       "f169a23b (audit self-match fix)",
@@ -62,5 +70,17 @@
       "d6569bf6 (maturin venv fix + zk feature drop)",
       "a50a5c06 (private-repo links, SLA withdrawal, Helm restore) -- FIRST GREEN PUBLIC CI"
     ]
+  },
+  "release_gate": {
+    "P1_provenance_binds_content": "DONE",
+    "P2_no_contradiction_among_authoritative_docs": "DONE as far as measured",
+    "P3_license_version_urls_single_valued": "DONE (Apache-2.0, 1.1.0)",
+    "P4_public_core_ci_pass": "DONE",
+    "P5_audit_name_and_verdict_match_procedure": "DONE",
+    "P6_branch_protection": "DONE (required checks core+audit, strict, no force-push, no deletion, linear history; enforce_admins false so the owner is not locked out)",
+    "P7_external_reproduction_by_a_non_owner": "OPEN",
+    "P8_legacy_surfaces_non_authoritative": "DONE (9 documents)",
+    "P9_signed_tag": "NOT MET - no signing key; the tag is annotated and unsigned",
+    "note": "P7 was originally written as a precondition for tagging. That was a design error: reproduction is meant to be performed FROM the tagged release, so the two waited on each other. P7 now gates the stronger claim EXTERNALLY_REPRODUCED, not the tag itself."
   }
 }
