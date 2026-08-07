@@ -13,7 +13,8 @@
       "python": "3.12.13",
       "rustc": "1.93.0"
     },
-    "independent_external": "NOT_YET_TESTED"
+    "independent_external": "NOT_YET_TESTED",
+    "public_hosted_ci": "PASS on commit a50a5c06, run 31138019157 (Core CI) and 31138204298 (Publication Surface Sanity), Linux x86_64 -- a different platform from the author's macOS arm64"
   },
   "excluded_from_export": [
     "private git history",
@@ -33,7 +34,7 @@
   "content_identity": {
     "method": "sha256 over sorted records of \"path\\0mode\\0sha256(file bytes)\" for every tracked file, EXCLUDING PUBLIC_PROVENANCE.json itself",
     "why_self_excluded": "A file cannot contain its own hash. The excluded file is bound instead by the signed release tag.",
-    "content_manifest_root_excluding_self": "239f193f00deaf4a540b3386d1e96abc686210737e38d5e84d6dc5c359a6172e",
+    "content_manifest_root_excluding_self": "768957c4deb920372bacdaab1966f7b31e30a1c26358d98a5d81834fbd0d1416",
     "file_count_hashed": 1791,
     "recompute": "python3 - <<'EOF'  (see docs; algorithm is fully specified above)",
     "warning": "A digest over file NAMES alone does not bind content and must not be used. An earlier revision of this lane made exactly that error."
@@ -44,7 +45,7 @@
     "scripts/ci_core.sh": "162052e772909d1ac18a5cec740b10b3f768bfab86c0766806f43f12df6d97cf",
     ".github/workflows/core-ci.yml": "8c44319c842a53272ee3c3ac811759086d5db51901b2ee6cbfd81026cb4f4a31",
     ".github/workflows/publication-audit.yml": "8d50f7d474369bf5a10b10c21e5a9f6d8e97d36bf537804e4f7f354dd0f34b5c",
-    "docs/CLAIM_EVIDENCE.md": "14b7335a821360370ecb82e7d6841492469b9ae77a9928001a35a982e30e294c",
+    "docs/CLAIM_EVIDENCE.md": "a42ca5749155b4dde53a5da80f080cb09c4714a049ab26b8bcb1038b164c3ab7",
     "KNOWN_LIMITATIONS.md": "c541ce02f98b6d9582b82f62e069215edbeb5a142410e0e924183604703f74f6",
     "STATUS.md": "e97316de1fc6c60f25147f3380986675b21d334c5519be943d5e1b7a0e2683b2",
     "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
@@ -58,7 +59,8 @@
     "known_successors": [
       "f169a23b (audit self-match fix)",
       "7c8ee084 (maturin install fix)",
-      "d6569bf6 (maturin venv fix + zk feature drop)"
+      "d6569bf6 (maturin venv fix + zk feature drop)",
+      "a50a5c06 (private-repo links, SLA withdrawal, Helm restore) -- FIRST GREEN PUBLIC CI"
     ]
   }
 }

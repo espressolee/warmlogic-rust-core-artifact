@@ -14,11 +14,11 @@ executing check does not get credit for intention.
 
 | Claim | Grade | Evidence / how to re-check |
 |---|---|---|
-| ML-DSA-65 (FIPS 204) keygen, sign, verify | `TESTED_LOCAL` — **downgraded from `VERIFIED_IN_CI`** | `fips204` crate (real lattice implementation, not a wrapper stub). The roundtrip runs as the last step of `scripts/ci_core.sh`, verified on a clean checkout with `VIRTUAL_ENV` unset and `maturin` absent. It is **not** `VERIFIED_IN_CI`: by the grade's own definition that needs a *green* run, and this repository has no green Core CI run yet. The previous text also cited a job — CI Core "Verify Rust Core exports" — that exists only in the private 54-workflow repo, not here. Upgrades to `VERIFIED_IN_CI` when Core CI is green on the exact commit. Re-check: `bash scripts/ci_core.sh` |
+| ML-DSA-65 (FIPS 204) keygen, sign, verify | `VERIFIED_IN_CI` | `fips204` crate (real lattice implementation, not a wrapper stub). Green on the public hosted runner: [run 31138019157](https://github.com/espressolee/warmlogic-rust-core-artifact/actions/runs/31138019157) on commit `a50a5c06`, Linux x86_64 — a different platform from the author's macOS arm64 — building `warm_logic_rs-1.1.0-cp312-cp312-manylinux_2_39_x86_64`, 57 tests passed, `core sanity OK: ML-DSA-65 sign+verify`. This row was previously graded `VERIFIED_IN_CI` with **no green run existing at all**; it was downgraded to `TESTED_LOCAL` and is restored only now that the run exists. Re-check: `bash scripts/ci_core.sh`. |
 | ML-KEM-768 (FIPS 203) encapsulation | `TESTED_LOCAL` | `fips203` crate, `MLKEM` class exported to Python. Unit-tested; no dedicated CI job asserts KEM roundtrips. |
 | AES-256-GCM authenticated encryption | `TESTED_LOCAL` | `aes-gcm` crate (real AEAD). Exercised inside crypto unit tests; no dedicated CI assertion. |
 | BFT consensus | `TESTED_LOCAL`, single-host only | 34 unit tests in `consensus/bft.rs` pass. No multi-node deployment has ever been exercised by a currently-enabled CI job (the multinode E2E gate is deliberately disabled — see below). |
-| Zero-knowledge proofs (Groth16 / BLS12-381) | `DOES_NOT_BUILD` | Measured 2026-08-06: `cargo check --features zk` fails (21 errors). Arkworks Groth16 code exists, but the feature has never compiled in this state, is not enabled in default builds or the Python wheel, and `zk/aggregator.rs` holds a fixed `[0x11; 32]` placeholder. Two modules importing a `dusk_plonk` crate that is not a dependency at all were deleted as unbuildable; the remaining errors are consumers of that removed module. The wheel ships the *deprecated* Sigma-protocol `proof_zk` instead. Treat every ZK claim as unimplemented. |
+| Zero-knowledge proofs (Groth16 / BLS12-381) | `DOES_NOT_BUILD` | Measured 2026-08-06: `cargo check --features zk` fails (21 errors); re-measured 2026-08-07 as `--features python,zk`, 22 errors (`unresolved import crate::zk::plonk_engine`, `unlinked crate dusk_plonk`). The count varies with the feature combination; the failure does not. `rust_core/pyproject.toml` no longer declares `zk`, so `pip install ./rust_core` no longer attempts it. Arkworks Groth16 code exists, but the feature has never compiled in this state, is not enabled in default builds or the Python wheel, and `zk/aggregator.rs` holds a fixed `[0x11; 32]` placeholder. Two modules importing a `dusk_plonk` crate that is not a dependency at all were deleted as unbuildable; the remaining errors are consumers of that removed module. The wheel ships the *deprecated* Sigma-protocol `proof_zk` instead. Treat every ZK claim as unimplemented. |
 | Kani formal verification harnesses | `IMPLEMENTED_UNVERIFIED` | Harness code exists (`verification_kani.rs`); **no CI job runs `cargo kani`**. The runtime `#[test]`s in that file do run; the proofs do not. |
 | TLA+ model checking | `NOT_PRESENT` (as verification) | Three `.tla` spec files exist as documents. The workflow that referenced TLC could never trigger (its path filters point at directories that do not exist) and its target model path was absent; it has been removed. Specs are design documents, not checked models. |
 | Hardware attestation (TPM 2.0 / Apple Secure Enclave) | `GATED_OFF` / platform-conditional | Code paths exist (`tpm` feature, macOS SEP). Default builds fall back to a software HSM. CI runners exercise the software path only. |
@@ -41,10 +41,13 @@ be treated as engineering intent, not delivered capability.
 
 ## Standing decisions this ledger records
 
-- The publication lineage is a **squashed single commit**. This intentionally
-  severs git-level merge ancestry with any prior history; synchronization with
-  other working copies is by file content, not by merge. (Content-hash
-  comparison, not path comparison, is the correct way to diff against it.)
+- The publication lineage has a **single parentless root** (`c885fac`), which
+  severs git-level merge ancestry with any prior history. It is no longer a
+  *single commit*: post-publication corrections are appended as successor
+  commits, never by force-push or history rewrite, because the public refs are
+  now other people's fetch targets. Synchronization with other working copies
+  is by file content, not by merge. (Content-hash comparison, not path
+  comparison, is the correct way to diff against it.)
 - Provenance signing keys were rotated on 2026-08-06 (the prior keys
   were treated as leaked). The tracked public keys and signed
   constitution/manifest are the post-rotation set; the private keys are
