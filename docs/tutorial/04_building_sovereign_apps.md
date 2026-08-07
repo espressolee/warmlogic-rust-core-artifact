@@ -110,4 +110,3 @@ print(f"Connected to {len(peers)} peers")
 
 - [API_SDK.md](../API_SDK.md) - Full SDK API reference
 - [ARCHITECTURE.md](../ARCHITECTURE.md) - System architecture deep dive
-- [examples/](../../examples/) - More code examples

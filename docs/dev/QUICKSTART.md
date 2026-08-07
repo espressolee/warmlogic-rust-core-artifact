@@ -21,7 +21,7 @@ open http://localhost:8033
 **Done!** You now have a running WarmLogic node with:
 - Sovereign Cockpit Dashboard at `http://localhost:8033`
 - REST API at `http://localhost:8033/api/v1`
-- Persistence: All decision data is stored in `Resonance/Citadel/out`
+- Persistence: decision data is written under `out/` in the working directory
 
 ---
 
