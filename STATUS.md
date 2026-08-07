@@ -48,6 +48,7 @@ exercised, and should not be relied on or cited:
 | Formal verification (Kani / TLA+) | Harnesses and specs exist; no job runs them |
 | Hardware-rooted trust | Host-identifier-derived demonstration seal, not TPM/SEP-backed |
 | Audit trail | Writes to stdout; not a durable or tamper-evident ledger |
+| MCP server (`src/warm_logic/app/sdk/mcp-server`) | Fail-open by construction: `check_veto` maps only five action strings to the `finance` and `ops` packs, and everything else returns `allowed: true, reason: "no_governance_policy_found"`. A caller cannot distinguish that from a policy that ran, because an allow that passed the pack returns `reason: "validated_by_warmlogic"`. Never built or exercised by `scripts/ci_core.sh` |
 
 Reporting a bug in the second table is welcome as an accuracy correction. It
 will not be fixed as a product defect — see the maintenance scope in
